@@ -1,0 +1,59 @@
+{
+  "properties": [
+    {
+      "name": "chari.baas.base-url",
+      "type": "java.lang.String",
+      "description": "Base URL for the Chari BaaS API, for example https://api.chari.ma."
+    },
+    {
+      "name": "chari.baas.api-key",
+      "type": "java.lang.String",
+      "description": "API key sent as the Chari-Api-Key header to authenticate Chari BaaS HTTP requests."
+    },
+    {
+      "name": "chari.baas.webhook-secret",
+      "type": "java.lang.String",
+      "description": "HMAC-SHA256 secret used to verify incoming Chari webhook signatures. If blank, signature verification is skipped."
+    },
+    {
+      "name": "chari.baas.timeout-ms",
+      "type": "java.lang.Integer",
+      "description": "HTTP connection and read timeout in milliseconds.",
+      "defaultValue": 10000
+    },
+    {
+      "name": "chari.baas.principal-agent-id",
+      "type": "java.lang.String",
+      "description": "Principal agent code used for Agent Principal bank-transfer operations."
+    },
+    {
+      "name": "chari.baas.principal-agent-rib",
+      "type": "java.lang.String",
+      "description": "Principal agent RIB used as the default bank account for Agent Principal operations."
+    },
+    {
+      "name": "chari.baas.webhook.enabled",
+      "type": "java.lang.Boolean",
+      "description": "Whether to auto-register the Chari webhook controller.",
+      "defaultValue": true
+    },
+    {
+      "name": "chari.baas.webhook.path",
+      "type": "java.lang.String",
+      "description": "URL path that receives Chari webhook POST requests.",
+      "defaultValue": "/webhooks/chari"
+    },
+    {
+      "name": "chari.baas.audit.enabled",
+      "type": "java.lang.Boolean",
+      "description": "Whether the client logs structured request and response audit entries.",
+      "defaultValue": true
+    },
+    {
+      "name": "chari.baas.audit.mask-sensitive",
+      "type": "java.lang.Boolean",
+      "description": "Whether audit logs mask card PAN, CVV, PIN, and expiry values.",
+      "defaultValue": true
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+server:
+  port: 8081
+
+chari:
+  baas:
+    base-url: ${CHARI_BASE_URL:https://sandbox.charimoney.com}
+    api-key: ${CHARI_API_KEY:chari_api_key}
+    principal-agent-id: ${CHARI_PRINCIPAL_AGENT_ID:principal_agent_id}
+    webhook-secret: ${CHARI_WEBHOOK_SECRET:}
+    timeout-ms: 10000
+    card-funding:
+      accept-url: ${CHARI_ACCEPT_URL:http://localhost:8081/test/chari/card/accept}
+      decline-url: ${CHARI_DECLINE_URL:http://localhost:8081/test/chari/card/decline}
+    webhook:
+      enabled: true
+      path: /webhooks/chari
+    audit:
+      enabled: true
+      mask-sensitive: true
+
+logging:
+  level:
+    com.github.hamzaelalaouiismaili.chari: INFO
+    com.example.charitest: INFO
