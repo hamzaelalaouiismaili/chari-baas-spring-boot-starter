@@ -2,6 +2,10 @@
 
 Spring Boot starter for integrating with the Chari Banking-as-a-Service HTTP API.
 
+Official ChariBaaS API documentation: https://baas.ma/en/api-docs
+
+For complete `ChariBaasClient` examples, see [SDK_USAGE.md](SDK_USAGE.md).
+
 ## Installation
 
 ```xml
