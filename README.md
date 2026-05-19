@@ -33,7 +33,7 @@ chari:
     api-key: ${CHARI_API_KEY}
     webhook-secret: ${CHARI_WEBHOOK_SECRET:}
     timeout-ms: 10000
-    principal-agent-id: AG-123
+    principal-agent-id: "11098"
     principal-agent-rib: "007123456789012345678901"
     webhook:
       enabled: true
@@ -49,7 +49,7 @@ chari:
 | `chari.baas.api-key`                  |      Yes |                   | API key sent as the `Chari-Api-Key` header.                           |
 | `chari.baas.webhook-secret`           |       No |                   | HMAC-SHA256 secret for `x-chari-signature`. Blank skips verification. |
 | `chari.baas.timeout-ms`               |       No | `10000`           | HTTP connect and read timeout.                                        |
-| `chari.baas.principal-agent-id`       |       No |                   | Agent code used by AP bank-transfer methods.                          |
+| `chari.baas.principal-agent-id`       |       No |                   | Principal agent code sent as `/api/agents/principal?code=...`.        |
 | `chari.baas.principal-agent-rib`      |       No |                   | Default RIB used by AP bank-transfer methods.                         |
 | `chari.baas.card-funding.accept-url`  |       No |                   | Default 3DS success return URL for card cash-in execution.            |
 | `chari.baas.card-funding.decline-url` |       No |                   | Default 3DS failure return URL for card cash-in execution.            |

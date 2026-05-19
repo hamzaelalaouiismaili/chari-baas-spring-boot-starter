@@ -24,7 +24,7 @@
     {
       "name": "chari.baas.principal-agent-id",
       "type": "java.lang.String",
-      "description": "Principal agent code used for Agent Principal bank-transfer operations."
+      "description": "Principal agent code sent as the code query parameter."
     },
     {
       "name": "chari.baas.principal-agent-rib",

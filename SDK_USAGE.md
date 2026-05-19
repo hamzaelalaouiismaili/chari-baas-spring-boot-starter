@@ -437,7 +437,7 @@ chari.addRetailAgent(
                 .build()
 );
 
-chari.getPrincipalAgentInfo("11098");
+chari.getPrincipalAgentInfoByCode("11098");
 chari.getPrincipalAgentWallet();
 ```
 

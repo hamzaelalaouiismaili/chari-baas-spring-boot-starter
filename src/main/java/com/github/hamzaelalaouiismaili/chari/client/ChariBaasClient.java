@@ -357,21 +357,31 @@ public class ChariBaasClient {
      * @return principal agent wallet response
      */
     public BaasWalletResponse getPrincipalAgentWallet() {
-        return getWallet(properties.getPrincipalAgentId());
+        return getWallet(getConfiguredPrincipalAgentCode());
     }
 
     /**
      * Get principal agent information.
      *
-     * @param agentId optional agent ID (uses configured ID if null)
+     * @param agentCode optional agent code (uses configured code if null)
      * @return principal agent response
      */
-    public ChariPrincipalAgentResponse getPrincipalAgentInfo(String agentId) {
-        String id = agentId != null ? agentId : properties.getPrincipalAgentId();
-        log.debug("Getting principal agent info for ID: {}", id);
+    public ChariPrincipalAgentResponse getPrincipalAgentInfo(String agentCode) {
+        return getPrincipalAgentInfoByCode(agentCode);
+    }
+
+    /**
+     * Get principal agent information by code.
+     *
+     * @param agentCode optional agent code (uses configured code if null)
+     * @return principal agent response
+     */
+    public ChariPrincipalAgentResponse getPrincipalAgentInfoByCode(String agentCode) {
+        String code = agentCode != null ? agentCode : getConfiguredPrincipalAgentCode();
+        log.debug("Getting principal agent info for code: {}", code);
 
         String url = UriComponentsBuilder.fromPath("/api/agents/principal")
-                .queryParam("code", id)
+                .queryParam("code", code)
                 .toUriString();
 
         return executeGet(url, ChariPrincipalAgentResponse.class, "GET_PRINCIPAL_AGENT");
@@ -835,13 +845,20 @@ public class ChariBaasClient {
      * Get the configured principal agent code.
      */
     public String getConfiguredPrincipalAgentId() {
-        return getPrincipalAgentId();
+        return getConfiguredPrincipalAgentCode();
     }
 
     /**
      * Get the configured principal agent code.
      */
     public String getPrincipalAgentId() {
+        return getConfiguredPrincipalAgentCode();
+    }
+
+    /**
+     * Get the configured principal agent code.
+     */
+    public String getConfiguredPrincipalAgentCode() {
         return properties.getPrincipalAgentId();
     }
 

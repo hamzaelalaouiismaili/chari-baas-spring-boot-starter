@@ -42,8 +42,8 @@ public class ChariTestController {
     }
 
     @GetMapping("/agent-wallet")
-    public Object getPrincipalAgentWallet() {
-        return chari.getPrincipalAgentInfo(null);
+    public Object getPrincipalAgentWallet(@RequestParam(required = false) String code) {
+        return chari.getPrincipalAgentInfoByCode(code);
     }
 
     @GetMapping("/info")
