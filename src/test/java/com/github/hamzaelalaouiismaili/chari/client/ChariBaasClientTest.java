@@ -1609,12 +1609,12 @@ class ChariBaasClientTest {
   }
 
   @Test
-  void getPrincipalAgentInfoSendsOfficialCodeQueryAndMapsResponse() {
+  void getPrincipalAgentInfoSendsOfficialIdPathAndMapsResponse() {
     RestTemplate restTemplate = new RestTemplate();
     MockRestServiceServer server = MockRestServiceServer.bindTo(restTemplate).build();
     ChariBaasClient client = new ChariBaasClient(restTemplate, properties());
 
-    server.expect(once(), requestTo("https://sandbox.charimoney.com/api/agents/principal?code=11098"))
+    server.expect(once(), requestTo("https://sandbox.charimoney.com/api/agents/principal/11098"))
         .andExpect(method(HttpMethod.GET))
         .andExpect(header("Chari-Api-Key", "test-key"))
         .andExpect(header("C-Request-Id", matchesPattern(uuidPattern())))
@@ -1645,14 +1645,14 @@ class ChariBaasClientTest {
   }
 
   @Test
-  void getPrincipalAgentInfoUsesConfiguredPrincipalAgentIdAsCode() {
+  void getPrincipalAgentInfoUsesConfiguredPrincipalAgentId() {
     RestTemplate restTemplate = new RestTemplate();
     MockRestServiceServer server = MockRestServiceServer.bindTo(restTemplate).build();
     ChariBaasProperties properties = properties();
     properties.setPrincipalAgentId("11098");
     ChariBaasClient client = new ChariBaasClient(restTemplate, properties);
 
-    server.expect(once(), requestTo("https://sandbox.charimoney.com/api/agents/principal?code=11098"))
+    server.expect(once(), requestTo("https://sandbox.charimoney.com/api/agents/principal/11098"))
         .andExpect(method(HttpMethod.GET))
         .andRespond(withSuccess("""
             {
@@ -1662,7 +1662,7 @@ class ChariBaasClientTest {
             }
             """, MediaType.APPLICATION_JSON));
 
-    client.getPrincipalAgentInfoByCode(null);
+    client.getPrincipalAgentInfo(null);
 
     server.verify();
   }

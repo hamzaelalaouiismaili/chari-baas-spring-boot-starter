@@ -21,7 +21,7 @@ For JitPack:
 <dependency>
     <groupId>com.github.hamzaelalaouiismaili</groupId>
     <artifactId>chari-baas-spring-boot-starter</artifactId>
-    <version>v1.0.0</version>
+    <version>v1.0.1</version>
 </dependency>
 ```
 
@@ -31,7 +31,7 @@ For local development, install the SDK first:
 JAVA_HOME=/path/to/jdk-21 mvn clean install
 ```
 
-Then use version `1.0.0` in the consuming project.
+Then use version `1.0.1` in the consuming project.
 
 ## Configuration
 
@@ -437,7 +437,7 @@ chari.addRetailAgent(
                 .build()
 );
 
-chari.getPrincipalAgentInfoByCode("11098");
+chari.getPrincipalAgentInfo("11098");
 chari.getPrincipalAgentWallet();
 ```
 

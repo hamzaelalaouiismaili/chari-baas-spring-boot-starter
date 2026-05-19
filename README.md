@@ -20,7 +20,7 @@ For webhook implementation examples, see [WEBHOOK_USAGE.md](WEBHOOK_USAGE.md).
 <dependency>
     <groupId>com.github.hamzaelalaouiismaili</groupId>
     <artifactId>chari-baas-spring-boot-starter</artifactId>
-    <version>1.0.0</version>
+    <version>v1.0.1</version>
 </dependency>
 ```
 
@@ -49,7 +49,7 @@ chari:
 | `chari.baas.api-key`                  |      Yes |                   | API key sent as the `Chari-Api-Key` header.                           |
 | `chari.baas.webhook-secret`           |       No |                   | HMAC-SHA256 secret for `x-chari-signature`. Blank skips verification. |
 | `chari.baas.timeout-ms`               |       No | `10000`           | HTTP connect and read timeout.                                        |
-| `chari.baas.principal-agent-id`       |       No |                   | Principal agent code sent as `/api/agents/principal?code=...`.        |
+| `chari.baas.principal-agent-id`       |       No |                   | Principal agent ID sent as `/api/agents/principal/{id}`.              |
 | `chari.baas.principal-agent-rib`      |       No |                   | Default RIB used by AP bank-transfer methods.                         |
 | `chari.baas.card-funding.accept-url`  |       No |                   | Default 3DS success return URL for card cash-in execution.            |
 | `chari.baas.card-funding.decline-url` |       No |                   | Default 3DS failure return URL for card cash-in execution.            |

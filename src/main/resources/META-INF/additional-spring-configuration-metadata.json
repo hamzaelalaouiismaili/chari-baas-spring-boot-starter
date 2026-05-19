@@ -24,7 +24,7 @@
     {
       "name": "chari.baas.principal-agent-id",
       "type": "java.lang.String",
-      "description": "Principal agent code sent as the code query parameter."
+      "description": "Principal agent ID sent to /api/agents/principal/{id}."
     },
     {
       "name": "chari.baas.principal-agent-rib",

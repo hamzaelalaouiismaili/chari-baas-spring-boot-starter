@@ -1,14 +1,18 @@
 # Chari BaaS Test App
 
-Small Spring Boot app for testing the local `chari-baas-spring-boot-starter` artifact.
+Small Spring Boot app for testing `chari-baas-spring-boot-starter`.
 
 ## Prerequisite
 
-From the SDK root, install the starter locally:
+For JitPack resolution, keep the `jitpack.io` repository in `pom.xml` and use version `v1.0.1`.
+
+For local development, install the starter from the SDK root:
 
 ```bash
 mvn clean install
 ```
+
+Then change the dependency version in this app to `1.0.1`.
 
 ## Run
 
