@@ -650,7 +650,7 @@ class ChariBaasClientTest {
             }
             """, MediaType.APPLICATION_JSON));
 
-    ChariCardFundingPreviewResponse response = client.previewCardFundingByAgent("21011",
+    ChariCardFundingPreviewResponse response = client.previewCardFundingByAgent(" 21011 ",
         new BigDecimal("100"));
 
     assertThat(response.getData().getType()).isEqualTo(1);
@@ -874,6 +874,51 @@ class ChariBaasClientTest {
     assertThat(response.getData().getReason()).isEqualTo("test operation");
     assertThat(response.getData().getRecipientRib()).isEqualTo("827640000010000000001234");
     assertThat(response.getData().getCheckedAt()).isEqualTo("2025-04-02T12:31:59.313Z");
+    server.verify();
+  }
+
+  @Test
+  void previewBankTransferFromApNormalizesConfiguredAgentCodeAndRib() {
+    RestTemplate restTemplate = new RestTemplate();
+    MockRestServiceServer server = MockRestServiceServer.bindTo(restTemplate).build();
+    ChariBaasProperties properties = properties();
+    properties.setPrincipalAgentId(" 1710301 ");
+    ChariBaasClient client = new ChariBaasClient(restTemplate, properties);
+
+    ChariBankTransferPayload payload = ChariBankTransferPayload.builder()
+        .amount(new BigDecimal("10"))
+        .reason("test preview")
+        .rib(" 827640000710000000030360 ")
+        .build();
+
+    server.expect(once(), requestTo("https://sandbox.charimoney.com/api/operations/bank-transfer/preview"))
+        .andExpect(method(HttpMethod.POST))
+        .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+        .andExpect(content().string(containsString("\"AgentCode\":\"1710301\"")))
+        .andExpect(content().string(containsString("\"rib\":\"827640000710000000030360\"")))
+        .andExpect(content().string(not(containsString("1710301 "))))
+        .andRespond(withSuccess("""
+            {
+              "data": {
+                "type": 3,
+                "operation": {
+                  "agentCode": "1710301",
+                  "amount": 10,
+                  "reason": "test preview",
+                  "rib": "827640000710000000030360"
+                },
+                "feesAmount": 0,
+                "totalAmount": 10,
+                "checkedAt": "2025-04-02T12:31:59.313Z",
+                "openLoop": true
+              }
+            }
+            """, MediaType.APPLICATION_JSON));
+
+    ChariBankTransferPreviewResponse response = client.previewBankTransferFromAP(payload);
+
+    assertThat(response.getData().getOperation().getAgentCode()).isEqualTo("1710301");
+    assertThat(response.getData().getOperation().getRib()).isEqualTo("827640000710000000030360");
     server.verify();
   }
 
@@ -1633,7 +1678,7 @@ class ChariBaasClientTest {
             }
             """, MediaType.APPLICATION_JSON));
 
-    ChariPrincipalAgentResponse response = client.getPrincipalAgentInfo("11098");
+    ChariPrincipalAgentResponse response = client.getPrincipalAgentInfo(" 11098 ");
 
     assertThat(response.getData().getCode()).isEqualTo("11098");
     assertThat(response.getData().getCreatedAt()).isEqualTo("2025-05-15T23:55:55.082Z");
@@ -1649,7 +1694,7 @@ class ChariBaasClientTest {
     RestTemplate restTemplate = new RestTemplate();
     MockRestServiceServer server = MockRestServiceServer.bindTo(restTemplate).build();
     ChariBaasProperties properties = properties();
-    properties.setPrincipalAgentId("11098");
+    properties.setPrincipalAgentId(" 11098 ");
     ChariBaasClient client = new ChariBaasClient(restTemplate, properties);
 
     server.expect(once(), requestTo("https://sandbox.charimoney.com/api/agents/principal/11098"))
@@ -2233,7 +2278,7 @@ class ChariBaasClientTest {
             }
             """, MediaType.APPLICATION_JSON));
 
-    ChariCardFundingExecutionResponse response = client.executeCardFundingByAgent("11023", payload);
+    ChariCardFundingExecutionResponse response = client.executeCardFundingByAgent(" 11023 ", payload);
 
     assertThat(response.getData().getRedirect()).isTrue();
     assertThat(response.getData().getAmount()).isEqualByComparingTo("100");
@@ -2550,6 +2595,30 @@ class ChariBaasClientTest {
         .andExpect(content().string(containsString("\"code\":\"365-768\"")))
         .andExpect(content().string(containsString("\"walletType\":\"P\"")))
         .andExpect(content().string(containsString("\"autoActivate\":true")))
+        .andRespond(withSuccess("{\"data\":true}", MediaType.APPLICATION_JSON));
+
+    assertThat(client.confirmCustomer(payload).getData()).isTrue();
+    server.verify();
+  }
+
+  @Test
+  void confirmCustomerFormatsCompactOtpCode() {
+    RestTemplate restTemplate = new RestTemplate();
+    MockRestServiceServer server = MockRestServiceServer.bindTo(restTemplate).build();
+    ChariBaasClient client = new ChariBaasClient(restTemplate, properties());
+
+    ChariCustomerConfirmPayload payload = ChariCustomerConfirmPayload.builder()
+        .phoneNumber("0612345678")
+        .code("365768")
+        .walletType(WalletType.P)
+        .build();
+
+    server.expect(once(), requestTo("https://sandbox.charimoney.com/api/customers/confirm"))
+        .andExpect(method(HttpMethod.POST))
+        .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+        .andExpect(content().string(containsString("\"phoneNumber\":\"+212612345678\"")))
+        .andExpect(content().string(containsString("\"code\":\"365-768\"")))
+        .andExpect(content().string(not(containsString("\"code\":\"365768\""))))
         .andRespond(withSuccess("{\"data\":true}", MediaType.APPLICATION_JSON));
 
     assertThat(client.confirmCustomer(payload).getData()).isTrue();

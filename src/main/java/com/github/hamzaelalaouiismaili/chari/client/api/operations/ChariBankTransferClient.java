@@ -5,6 +5,7 @@ import com.github.hamzaelalaouiismaili.chari.config.ChariBaasProperties;
 import com.github.hamzaelalaouiismaili.chari.model.payload.ChariBankTransferPayload;
 import com.github.hamzaelalaouiismaili.chari.model.response.ChariBankTransferPreviewResponse;
 import com.github.hamzaelalaouiismaili.chari.model.response.ChariBankTransferResponse;
+import com.github.hamzaelalaouiismaili.chari.util.NumericIdentifierUtil;
 import com.github.hamzaelalaouiismaili.chari.util.PhoneNumberUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -65,7 +66,7 @@ public class ChariBankTransferClient {
     private Map<String, Object> buildPrincipalAgentPayload(ChariBankTransferPayload payload) {
         Map<String, Object> normalizedPayload = basePayload(payload,
                 payload.getRib() != null ? payload.getRib() : properties.getPrincipalAgentRib());
-        normalizedPayload.put("AgentCode", properties.getPrincipalAgentId());
+        normalizedPayload.put("AgentCode", NumericIdentifierUtil.normalize(properties.getPrincipalAgentId()));
         return normalizedPayload;
     }
 
@@ -73,7 +74,7 @@ public class ChariBankTransferClient {
         Map<String, Object> normalizedPayload = new HashMap<>();
         normalizedPayload.put("amount", payload.getAmount());
         normalizedPayload.put("reason", payload.getReason());
-        normalizedPayload.put("rib", rib);
+        normalizedPayload.put("rib", NumericIdentifierUtil.normalize(rib));
         String beneficiaryName = payload.getBeneficiaryName() != null ? payload.getBeneficiaryName() : "";
         normalizedPayload.put("BeneficiaryName", beneficiaryName);
         normalizedPayload.put("ForceCustomerName",

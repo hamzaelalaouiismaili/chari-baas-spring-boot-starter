@@ -19,6 +19,7 @@ import com.github.hamzaelalaouiismaili.chari.domain.enums.ChariClosureReason;
 import com.github.hamzaelalaouiismaili.chari.model.payload.ChariMerchantKycUploadPayload.KycDocument;
 import com.github.hamzaelalaouiismaili.chari.model.payload.*;
 import com.github.hamzaelalaouiismaili.chari.model.response.*;
+import com.github.hamzaelalaouiismaili.chari.util.NumericIdentifierUtil;
 import com.github.hamzaelalaouiismaili.chari.util.PhoneNumberUtil;
 import com.github.hamzaelalaouiismaili.chari.config.ChariBaasProperties;
 import lombok.extern.slf4j.Slf4j;
@@ -367,7 +368,7 @@ public class ChariBaasClient {
      * @return principal agent response
      */
     public ChariPrincipalAgentResponse getPrincipalAgentInfo(String principalAgentId) {
-        String id = principalAgentId != null ? principalAgentId : getPrincipalAgentId();
+        String id = NumericIdentifierUtil.normalize(principalAgentId != null ? principalAgentId : getPrincipalAgentId());
         log.debug("Getting principal agent info for ID: {}", id);
 
         String url = UriComponentsBuilder.fromPath("/api/agents/principal/{id}")
@@ -842,14 +843,14 @@ public class ChariBaasClient {
      * Get the configured principal agent ID.
      */
     public String getPrincipalAgentId() {
-        return properties.getPrincipalAgentId();
+        return NumericIdentifierUtil.normalize(properties.getPrincipalAgentId());
     }
 
     /**
      * Get the configured principal agent RIB.
      */
     public String getPrincipalAgentRib() {
-        return properties.getPrincipalAgentRib();
+        return NumericIdentifierUtil.normalize(properties.getPrincipalAgentRib());
     }
 
     // ==================== HTTP Helper Methods ====================

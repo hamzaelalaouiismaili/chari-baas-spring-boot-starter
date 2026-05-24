@@ -311,7 +311,7 @@ ChariCustomerConfirmPayload payload = ChariCustomerConfirmPayload.builder()
 ChariBooleanResponse response = chari.confirmCustomer(payload);
 ```
 
-The SDK sends `POST /api/customers/confirm`, normalizes `phoneNumber`, and omits `autoActivate` when it is not set. If `autoActivate=true`, the wallet is activated after OTP validation without requiring a PIN.
+The SDK sends `POST /api/customers/confirm`, normalizes `phoneNumber`, formats OTP codes as `XXX-XXX` when callers pass `XXXXXX`, and omits `autoActivate` when it is not set. If `autoActivate=true`, the wallet is activated after OTP validation without requiring a PIN.
 
 ### Resend OTP
 

@@ -7,6 +7,7 @@ import com.github.hamzaelalaouiismaili.chari.model.payload.ChariSavedCardCashinP
 import com.github.hamzaelalaouiismaili.chari.model.response.ChariCardFundingExecutionResponse;
 import com.github.hamzaelalaouiismaili.chari.model.response.ChariCardFundingPreviewResponse;
 import com.github.hamzaelalaouiismaili.chari.model.response.ChariSavedCardCashinResponse;
+import com.github.hamzaelalaouiismaili.chari.util.NumericIdentifierUtil;
 import com.github.hamzaelalaouiismaili.chari.util.PhoneNumberUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -42,13 +43,14 @@ public class ChariCashInCardClient {
     }
 
     public ChariCardFundingPreviewResponse previewByAgent(String code, BigDecimal amount) {
+        String normalizedCode = NumericIdentifierUtil.normalize(code);
         log.debug("Previewing card funding for agent code: {}, amount: {}", code, amount);
 
         Map<String, Object> payload = new HashMap<>();
         payload.put("amount", amount);
 
         String endpoint = UriComponentsBuilder.fromPath("/api/operations/cashin/card/agent/preview")
-                .queryParam("code", code)
+                .queryParam("code", normalizedCode)
                 .toUriString();
         return httpClient.post(endpoint, payload,
                 ChariCardFundingPreviewResponse.class, "PREVIEW_CARD_FUNDING_BY_AGENT");
@@ -68,10 +70,11 @@ public class ChariCashInCardClient {
     }
 
     public ChariCardFundingExecutionResponse executeByAgent(String code, ChariCardCashinPayload payload) {
+        String normalizedCode = NumericIdentifierUtil.normalize(code);
         log.info("Executing card funding for agent code: {}, amount: {}", code, payload.getAmount());
 
         String endpoint = UriComponentsBuilder.fromPath("/api/operations/cashin/card/agent")
-                .queryParam("code", code)
+                .queryParam("code", normalizedCode)
                 .toUriString();
         return httpClient.post(endpoint, buildCardFundingExecutionPayload(payload),
                 ChariCardFundingExecutionResponse.class, "EXECUTE_CARD_FUNDING_BY_AGENT");

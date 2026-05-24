@@ -14,6 +14,7 @@ import com.github.hamzaelalaouiismaili.chari.model.response.ChariCustomerInfoRes
 import com.github.hamzaelalaouiismaili.chari.model.response.ChariCustomerStatusResponse;
 import com.github.hamzaelalaouiismaili.chari.model.response.ChariDefaultWalletResponse;
 import com.github.hamzaelalaouiismaili.chari.model.response.ChariLoginWithPinResponse;
+import com.github.hamzaelalaouiismaili.chari.util.OtpCodeUtil;
 import com.github.hamzaelalaouiismaili.chari.util.PhoneNumberUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -117,7 +118,7 @@ public class ChariCustomerRegistrationClient {
 
                 ChariCustomerConfirmPayload normalizedPayload = ChariCustomerConfirmPayload.builder()
                                 .phoneNumber(PhoneNumberUtil.normalize(payload.getPhoneNumber()))
-                                .code(payload.getCode())
+                                .code(OtpCodeUtil.normalizeConfirmationCode(payload.getCode()))
                                 .walletType(payload.getWalletType())
                                 .autoActivate(payload.getAutoActivate())
                                 .build();

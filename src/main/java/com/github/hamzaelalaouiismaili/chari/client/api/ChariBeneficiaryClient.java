@@ -5,6 +5,7 @@ import com.github.hamzaelalaouiismaili.chari.model.payload.ChariBeneficiaryPaylo
 import com.github.hamzaelalaouiismaili.chari.model.response.ChariBeneficiariesResponse;
 import com.github.hamzaelalaouiismaili.chari.model.response.ChariBeneficiaryResponse;
 import com.github.hamzaelalaouiismaili.chari.model.response.ChariBooleanResponse;
+import com.github.hamzaelalaouiismaili.chari.util.NumericIdentifierUtil;
 import com.github.hamzaelalaouiismaili.chari.util.PhoneNumberUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -61,7 +62,7 @@ public class ChariBeneficiaryClient {
             requestPayload.put("PhoneNumber", PhoneNumberUtil.normalize(payload.getPhoneNumber()));
         }
         if (payload.getRib() != null) {
-            requestPayload.put("Rib", payload.getRib());
+            requestPayload.put("Rib", NumericIdentifierUtil.normalize(payload.getRib()));
         }
         if (payload.getEmail() != null) {
             requestPayload.put("Email", payload.getEmail());

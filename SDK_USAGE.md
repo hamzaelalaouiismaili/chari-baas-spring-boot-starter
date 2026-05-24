@@ -119,6 +119,8 @@ ChariBooleanResponse response = chari.confirmCustomer(
 );
 ```
 
+The SDK accepts both `365-768` and `365768`, and sends the OTP in the `XXX-XXX` format expected by the API.
+
 PIN operations:
 
 ```java
