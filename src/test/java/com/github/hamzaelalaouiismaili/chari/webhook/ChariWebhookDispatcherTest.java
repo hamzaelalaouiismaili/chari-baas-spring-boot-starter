@@ -120,6 +120,40 @@ class ChariWebhookDispatcherTest {
     }
 
     @Test
+    void dispatchesFlatLivePayloadByOperationType() {
+        RecordingHandler handler = new RecordingHandler();
+        ChariWebhookDispatcher dispatcher = new ChariWebhookDispatcher(
+                properties(null),
+                objectMapper(),
+                List.of(handler));
+        // Exact live payload shape from Chari: flat (no "data" wrapper),
+        // WebhookEventId, offset-less CreatedAt, escaped + in account numbers.
+        String body = "{\"WebhookEventId\":\"webhook-2ad1112b76\","
+                + "\"CRequestId\":\"feced5e5-9fb7-44f2-97f8-37f8cc8540a9\","
+                + "\"OperationId\":13662,\"OperationType\":1,\"OperationStatus\":2,"
+                + "\"CreatedAt\":\"2026-06-30T22:02:01.127087\","
+                + "\"ExecutedAt\":\"2026-06-30T23:02:13.3321866Z\","
+                + "\"Amount\":10.0,\"FeeAmount\":0.0,\"CustomData\":null,\"ExternalId\":null,"
+                + "\"PrimaryAccountNumber\":\"\\u002B212608814003\","
+                + "\"SecondaryAccountNumber\":\"\\u002B212608814003\","
+                + "\"Description\":\"6286\",\"Method\":\"card\","
+                + "\"GatewayTrackId\":\"938029614288\",\"GatewayOrderId\":\"CHf3cca1626e04\","
+                + "\"GatewayReferenceId\":\"938029614288\"}";
+
+        ChariWebhookResponse response = dispatcher.dispatch(null, null, body);
+
+        assertThat(response.getStatus()).isEqualTo("accepted");
+        // OperationType 1 -> CASHIN
+        assertThat(handler.cashInOperationId).isEqualTo(13662L);
+        assertThat(handler.cashInWebhookEventId).isEqualTo("webhook-2ad1112b76");
+        assertThat(handler.cashInPrimaryAccount).isEqualTo("+212608814003");
+        assertThat(handler.cashInDescription).isEqualTo("6286");
+        // offset-less CreatedAt parsed as UTC
+        assertThat(handler.cashInCreatedAt).isEqualTo(java.time.Instant.parse("2026-06-30T22:02:01.127087Z"));
+        assertThat(handler.cashInExecutedAt).isEqualTo(java.time.Instant.parse("2026-06-30T23:02:13.3321866Z"));
+    }
+
+    @Test
     void rejectsInvalidSignature() {
         ChariWebhookDispatcher dispatcher = new ChariWebhookDispatcher(
                 properties("secret"),
@@ -187,6 +221,22 @@ class ChariWebhookDispatcherTest {
         private String cashInCardReference;
         private String cashInCardNetworkName;
         private java.math.BigDecimal cashInCardFeeAmount;
+        private Long cashInOperationId;
+        private String cashInWebhookEventId;
+        private String cashInPrimaryAccount;
+        private String cashInDescription;
+        private java.time.Instant cashInCreatedAt;
+        private java.time.Instant cashInExecutedAt;
+
+        @Override
+        public void onCashIn(WebhookData data) {
+            this.cashInOperationId = data.getOperationId();
+            this.cashInWebhookEventId = data.getWebhookEventId();
+            this.cashInPrimaryAccount = data.getPrimaryAccountNumber();
+            this.cashInDescription = data.getDescription();
+            this.cashInCreatedAt = data.getCreatedAt();
+            this.cashInExecutedAt = data.getExecutedAt();
+        }
 
         @Override
         public void onBankTransfer(WebhookData data) {

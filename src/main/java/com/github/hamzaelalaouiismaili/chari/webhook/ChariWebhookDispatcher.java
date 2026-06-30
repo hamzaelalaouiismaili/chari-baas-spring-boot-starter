@@ -1,12 +1,12 @@
 package com.github.hamzaelalaouiismaili.chari.webhook;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.hamzaelalaouiismaili.chari.config.ChariBaasProperties;
 import com.github.hamzaelalaouiismaili.chari.domain.enums.ChariOperationType;
 import com.github.hamzaelalaouiismaili.chari.domain.enums.ChariWebhookEventType;
 import com.github.hamzaelalaouiismaili.chari.domain.exception.ChariWebhookSignatureException;
-import com.github.hamzaelalaouiismaili.chari.model.webhook.ChariWebhookEvent;
 import com.github.hamzaelalaouiismaili.chari.model.webhook.ChariWebhookEvent.WebhookData;
 import com.github.hamzaelalaouiismaili.chari.model.webhook.ChariWebhookResponse;
 import java.nio.charset.StandardCharsets;
@@ -44,17 +44,22 @@ public class ChariWebhookDispatcher {
     public ChariWebhookResponse dispatch(String signature, String timestamp, String rawBody) {
         verifySignature(signature, timestamp, rawBody);
 
-        ChariWebhookEvent event;
+        WebhookData data;
         try {
-            event = objectMapper.readValue(rawBody, ChariWebhookEvent.class);
+            JsonNode root = objectMapper.readTree(rawBody);
+            // Chari sends the event fields flat at the top level. Older/wrapped
+            // payloads nest them under "data"; support both.
+            JsonNode dataNode = root.has("data") && root.get("data").isObject()
+                    ? root.get("data")
+                    : root;
+            data = objectMapper.treeToValue(dataNode, WebhookData.class);
         } catch (JsonProcessingException e) {
             log.warn("Rejected Chari webhook with invalid JSON: {}", e.getMessage());
             return ChariWebhookResponse.rejected("Invalid JSON payload");
         }
 
-        WebhookData data = event.getData();
         if (data == null) {
-            return ChariWebhookResponse.rejected("Missing 'data' field");
+            return ChariWebhookResponse.rejected("Empty webhook payload");
         }
 
         ChariOperationType operationType = data.getOperationType() == null
@@ -63,7 +68,7 @@ public class ChariWebhookDispatcher {
         ChariWebhookEventType eventType = data.getEventType();
 
         if (handlers.isEmpty()) {
-            log.info("Accepted Chari webhook {} with no registered ChariWebhookHandler", data.getWebhookId());
+            log.info("Accepted Chari webhook {} with no registered ChariWebhookHandler", webhookId(data));
             return ChariWebhookResponse.accepted();
         }
 
@@ -139,6 +144,10 @@ public class ChariWebhookDispatcher {
             case CHARGEBACK -> handler.onChargeback(data);
             default -> handler.onUnknown(data);
         }
+    }
+
+    private static String webhookId(WebhookData data) {
+        return data.getWebhookEventId() != null ? data.getWebhookEventId() : data.getWebhookId();
     }
 
     private boolean isTimestampRecent(String timestamp) {
