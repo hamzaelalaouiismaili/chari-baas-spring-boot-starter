@@ -78,6 +78,10 @@ public class ChariWebhookDispatcher {
     }
 
     public void verifySignature(String signature, String timestamp, String rawBody) {
+        if (!properties.getWebhook().isVerify()) {
+            log.debug("chari.baas.webhook.verify is false; bypassing Chari webhook signature verification");
+            return;
+        }
         String secret = properties.getWebhookSecret();
         if (secret == null || secret.isBlank()) {
             log.warn("chari.baas.webhook-secret is blank; skipping Chari webhook signature verification");

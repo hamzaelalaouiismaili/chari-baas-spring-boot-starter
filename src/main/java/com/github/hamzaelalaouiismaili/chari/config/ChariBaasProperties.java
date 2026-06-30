@@ -78,6 +78,14 @@ public class ChariBaasProperties {
         private boolean enabled = true;
 
         /**
+         * Whether to verify the HMAC-SHA256 signature of incoming webhooks.
+         * When {@code false}, signature verification is bypassed entirely even
+         * if {@code chari.baas.webhook-secret} is set. Useful when the upstream
+         * provider does not sign its webhook callbacks.
+         */
+        private boolean verify = true;
+
+        /**
          * HTTP path that receives Chari webhook POST requests.
          */
         private String path = "/webhooks/chari";
