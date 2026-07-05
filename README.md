@@ -123,7 +123,7 @@ public class MyChariWebhookHandler implements ChariWebhookHandler {
 }
 ```
 
-Webhook payloads expose `data.getEventId()` and `data.getEventType()` for typed routing. Event-specific handler methods are available for `cashin.card.authorized`, `payment.card.authorized`, `payment.received`, `transfer.received`, `bank-transfer.initiated`, `bank-transfer.completed`, `bank-transfer.failed`, `bank-transfer.received`, `cashin.network.executed`, and `cashout.network.executed`. The older generic hooks such as `onBankTransfer` and `onCashIn` still work through default delegation.
+Webhook payloads expose `data.getEventId()` and `data.getEventType()` for typed routing. Event-specific handler methods are available for `cashin.card.authorized`, `payment.card.authorized`, `payment.received`, bill-payment resolution events (`payment.confirmed`, `payment.cancelled`, `payment.refunded`, `payment.failed`), `transfer.received`, `bank-transfer.initiated`, `bank-transfer.completed`, `bank-transfer.failed`, `bank-transfer.received`, `cashin.network.executed`, and `cashout.network.executed`. Generic hooks such as `onBillPayment`, `onBankTransfer`, and `onCashIn` work through default delegation.
 
 The auto-configured endpoint accepts:
 
@@ -137,7 +137,7 @@ The HMAC payload is `{timestamp}.{rawBody}` with `chari.baas.webhook-secret`.
 
 ## Operations
 
-`ChariBaasClient` exposes customer status/info/balance, registration/OTP/PIN, wallet info, wallet transfers, bank transfers, AP bank transfers, card funding, QR payments, QR generation, Telco top-up, saved cards, cash-in/cash-out by reference, and refunds.
+`ChariBaasClient` exposes customer status/info/balance, registration/OTP/PIN, wallet info, wallet transfers, bank transfers, AP bank transfers, card funding, QR payments, QR generation, Telco top-up, vouchers, Fatourati bill payment, saved cards, cash-in/cash-out by reference, and refunds.
 
 ### Telco Top-up
 
@@ -193,6 +193,61 @@ String voucherCode = confirmed.getData().getOperation().getCode();
 
 Catalog methods include `getVoucherArticles`, `getVoucherBrands`, `getVoucherBrand`, and `getVouchersByBrand`. Local Moroccan phone numbers are normalized automatically. Voucher preview and confirmation report `ChariOperationType.VOUCHER` (operation code 23).
 
+### Bill Payment (Fatourati)
+
+The client follows the required single-creditor, five-step flow:
+
+```java
+// 1. Creditors; safe to cache in your application for several hours.
+ChariBillCreditorsResponse creditors = chari.getBillCreditors();
+
+// 2. Services exposed by the selected creditor.
+ChariBillReceivablesResponse services = chari.getBillReceivables("1008");
+
+// 3. Build your UI dynamically. Never submit fields where shouldSubmit() is false.
+ChariBillFormResponse form = chari.getBillIdentificationForm("1008", "01");
+
+List<ChariBillFieldValue> identification = List.of(
+        ChariBillFieldValue.builder()
+                .nomChamp("numeroProduit")
+                .valeurChamp("16422270229")
+                .build());
+
+// 4. Opens an EN_ATTENTE transaction valid for seven calendar days.
+ChariBillUnpaidItemsResponse unpaid = chari.getBillUnpaidItems(
+        "1008",
+        "01",
+        ChariBillUnpaidItemsPayload.builder()
+                .creditorValues(identification)
+                .build());
+
+// Select one or more articles; selecting a subset performs a partial payment.
+List<ChariBillArticle> selected = List.of(unpaid.getImpayesParams().getFirst());
+
+// 5. Confirm using the same creditor/service and the transaction reference.
+ChariBillPaymentResponse payment = chari.confirmBillPayment(
+        "0670770743",
+        ChariBillPaymentPayload.builder()
+                .creancierId("1008")
+                .creanceId("01")
+                .refTxFatourati(unpaid.getRefTxFatourati())
+                .creditorValues(identification)
+                .selectedArticles(selected)
+                .build());
+```
+
+Always inspect the Fatourati business result, even when HTTP succeeds:
+
+```java
+if (payment.isReceiptAvailable()) {       // 000 or already processed 301
+    String receiptReference = payment.getRefReglement();
+} else if (payment.isAwaitingWebhookResolution()) { // 908, 909, or 910
+    // Do not report a definitive failure; wait for the payment webhook.
+}
+```
+
+`form.getCreancierParams()` exposes dynamic field type, requiredness, length, and select values. `unpaid.getDisplayableGlobalParams()` removes technical parameters with empty labels. Article prices and totals are mapped to `BigDecimal`; `getTypedArticleType()` maps article codes 0–3.
+
 ### Error Handling
 
 Non-2xx responses throw `ChariBaasException`. When Chari returns its error envelope, the exception includes the raw Chari code, description, and typed enum:
@@ -223,7 +278,7 @@ Known Chari error codes are available in `ChariErrorCode`, including `MISSING_PA
 
 The SDK includes typed enums for official Chari codes:
 
-`ChariCustomerStatus`, `ChariAccountLevel`, `ChariOperationType`, `ChariTransactionType`, `ChariOperationStatus`, `ChariDirection`, `ChariClosureReason`, `ChariDocumentType`, `ChariRequestOperationType`, `ChariRequestOperationStatus`, `ChariTelcoOperator`, and `ChariTelcoRechargeType`. `ChariOperationType.VOUCHER` maps operation code 23.
+`ChariCustomerStatus`, `ChariAccountLevel`, `ChariOperationType`, `ChariTransactionType`, `ChariOperationStatus`, `ChariDirection`, `ChariClosureReason`, `ChariDocumentType`, `ChariRequestOperationType`, `ChariRequestOperationStatus`, `ChariTelcoOperator`, `ChariTelcoRechargeType`, `ChariBillFormFieldType`, and `ChariBillArticleType`. `ChariOperationType.VOUCHER` maps operation code 23.
 
 DTOs with raw integer IDs expose typed helpers where applicable, for example `getCustomerStatus()`, `getCurrentAccountLevel()`, `getTypedOperationType()`, `getTypedOperationStatus()`, `getTypedStatus()`, and `getTypedType()`.
 

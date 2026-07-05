@@ -2,6 +2,7 @@ package com.github.hamzaelalaouiismaili.chari.client;
 
 import com.github.hamzaelalaouiismaili.chari.client.core.ChariHttpClient;
 import com.github.hamzaelalaouiismaili.chari.client.api.ChariBeneficiaryClient;
+import com.github.hamzaelalaouiismaili.chari.client.api.ChariBillPaymentClient;
 import com.github.hamzaelalaouiismaili.chari.client.api.ChariCustomerRegistrationClient;
 import com.github.hamzaelalaouiismaili.chari.client.api.ChariKycClient;
 import com.github.hamzaelalaouiismaili.chari.client.api.ChariRetailAgentClient;
@@ -58,6 +59,7 @@ public class ChariBaasClient {
     private final ChariRefundClient refundClient;
     private final ChariTelcoTopUpClient telcoTopUpClient;
     private final ChariVoucherClient voucherClient;
+    private final ChariBillPaymentClient billPaymentClient;
 
     public ChariBaasClient(
             @Qualifier("chariBaasRestTemplate") RestTemplate restTemplate,
@@ -79,6 +81,7 @@ public class ChariBaasClient {
         this.refundClient = new ChariRefundClient(httpClient);
         this.telcoTopUpClient = new ChariTelcoTopUpClient(httpClient);
         this.voucherClient = new ChariVoucherClient(httpClient);
+        this.billPaymentClient = new ChariBillPaymentClient(httpClient);
     }
 
     // ==================== Customer Operations ====================
@@ -919,6 +922,38 @@ public class ChariBaasClient {
                 .page(page)
                 .take(take)
                 .build();
+    }
+
+    // ==================== Bill Payment Operations ====================
+
+    /** Step 1: lists active creditors available through Fatourati. */
+    public ChariBillCreditorsResponse getBillCreditors() {
+        return billPaymentClient.getCreditors();
+    }
+
+    /** Step 2: lists active receivables for one creditor. */
+    public ChariBillReceivablesResponse getBillReceivables(String creditorId) {
+        return billPaymentClient.getReceivables(creditorId);
+    }
+
+    /** Step 3: retrieves the dynamic customer-identification form. */
+    public ChariBillFormResponse getBillIdentificationForm(
+            String creditorId, String receivableId) {
+        return billPaymentClient.getIdentificationForm(creditorId, receivableId);
+    }
+
+    /** Step 4: opens a Fatourati transaction and retrieves unpaid items. */
+    public ChariBillUnpaidItemsResponse getBillUnpaidItems(
+            String creditorId,
+            String receivableId,
+            ChariBillUnpaidItemsPayload payload) {
+        return billPaymentClient.getUnpaidItems(creditorId, receivableId, payload);
+    }
+
+    /** Step 5: pays the selected articles for a single creditor. */
+    public ChariBillPaymentResponse confirmBillPayment(
+            String phoneNumber, ChariBillPaymentPayload payload) {
+        return billPaymentClient.confirmPayment(phoneNumber, payload);
     }
 
     // ==================== Refund Operations ====================

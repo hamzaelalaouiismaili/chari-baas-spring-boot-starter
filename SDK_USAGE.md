@@ -574,3 +574,4 @@ Prefer these enums over hard-coded integer codes where builder overloads or resp
 | Operation history | `getOperationsByCustomer`, `getAllOperationsByPartner`, `getOperationById` |
 | Telco top-up | `getSupportedTelcoOperators`, `getTelcoCatalog`, `rechargeTelco` |
 | Vouchers | `getVoucherArticles`, `getVoucherBrands`, `getVoucherBrand`, `getVouchersByBrand`, `previewVoucherPurchase`, `confirmVoucherPurchase` |
+| Bill payment | `getBillCreditors`, `getBillReceivables`, `getBillIdentificationForm`, `getBillUnpaidItems`, `confirmBillPayment` |

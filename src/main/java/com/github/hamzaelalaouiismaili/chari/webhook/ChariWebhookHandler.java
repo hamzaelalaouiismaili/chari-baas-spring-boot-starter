@@ -58,6 +58,22 @@ public interface ChariWebhookHandler {
         onPaymentPush(data);
     }
 
+    default void onBillPaymentConfirmed(WebhookData data) {
+        onBillPayment(data);
+    }
+
+    default void onBillPaymentCancelled(WebhookData data) {
+        onBillPayment(data);
+    }
+
+    default void onBillPaymentRefunded(WebhookData data) {
+        onBillPayment(data);
+    }
+
+    default void onBillPaymentFailed(WebhookData data) {
+        onBillPayment(data);
+    }
+
     default void onCashInNetworkExecuted(WebhookData data) {
         onCashIn(data);
     }
@@ -82,6 +98,9 @@ public interface ChariWebhookHandler {
     }
 
     default void onPaymentCard(WebhookData data) {
+    }
+
+    default void onBillPayment(WebhookData data) {
     }
 
     default void onPaymentRefund(WebhookData data) {

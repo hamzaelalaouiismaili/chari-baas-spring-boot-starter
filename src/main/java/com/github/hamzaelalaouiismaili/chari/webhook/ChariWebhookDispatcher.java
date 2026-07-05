@@ -118,6 +118,10 @@ public class ChariWebhookDispatcher {
             case CASHIN_CARD_AUTHORIZED -> handler.onCashInCardAuthorized(data);
             case PAYMENT_CARD_AUTHORIZED -> handler.onPaymentCardAuthorized(data);
             case PAYMENT_RECEIVED -> handler.onPaymentReceived(data);
+            case PAYMENT_CONFIRMED -> handler.onBillPaymentConfirmed(data);
+            case PAYMENT_CANCELLED -> handler.onBillPaymentCancelled(data);
+            case PAYMENT_REFUNDED -> handler.onBillPaymentRefunded(data);
+            case PAYMENT_FAILED -> handler.onBillPaymentFailed(data);
             case BANK_TRANSFER_INITIATED -> handler.onBankTransferInitiated(data);
             case BANK_TRANSFER_COMPLETED -> handler.onBankTransferCompleted(data);
             case BANK_TRANSFER_FAILED -> handler.onBankTransferFailed(data);
@@ -142,6 +146,7 @@ public class ChariWebhookDispatcher {
             case CARD_PAYMENT -> handler.onPaymentCard(data);
             case PAYMENT_REFUND -> handler.onPaymentRefund(data);
             case CHARGEBACK -> handler.onChargeback(data);
+            case BILL_PAYMENT -> handler.onBillPayment(data);
             default -> handler.onUnknown(data);
         }
     }

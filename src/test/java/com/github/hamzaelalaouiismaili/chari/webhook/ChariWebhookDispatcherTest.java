@@ -120,6 +120,21 @@ class ChariWebhookDispatcherTest {
     }
 
     @Test
+    void dispatchesBillPaymentFinalResolutionEvent() {
+        RecordingHandler handler = new RecordingHandler();
+        ChariWebhookDispatcher dispatcher = new ChariWebhookDispatcher(
+                properties(null), objectMapper(), List.of(handler));
+        String body = "{\"data\":{\"WebhookId\":123,\"EventId\":\"payment.confirmed\","
+                + "\"OperationType\":25,\"OperationId\":456}}";
+
+        ChariWebhookResponse response = dispatcher.dispatch(null, null, body);
+
+        assertThat(response.getStatus()).isEqualTo("accepted");
+        assertThat(handler.billPaymentOperationId).isEqualTo(456L);
+        assertThat(handler.billPaymentConfirmedOperationId).isEqualTo(456L);
+    }
+
+    @Test
     void dispatchesFlatLivePayloadByOperationType() {
         RecordingHandler handler = new RecordingHandler();
         ChariWebhookDispatcher dispatcher = new ChariWebhookDispatcher(
@@ -227,6 +242,8 @@ class ChariWebhookDispatcherTest {
         private String cashInDescription;
         private java.time.Instant cashInCreatedAt;
         private java.time.Instant cashInExecutedAt;
+        private Long billPaymentOperationId;
+        private Long billPaymentConfirmedOperationId;
 
         @Override
         public void onCashIn(WebhookData data) {
@@ -270,6 +287,17 @@ class ChariWebhookDispatcherTest {
             this.cashInCardFeeAmount = data.getFeeAmount();
             this.operationType = data.getTypedOperationType();
             this.operationStatus = data.getTypedOperationStatus();
+        }
+
+        @Override
+        public void onBillPayment(WebhookData data) {
+            this.billPaymentOperationId = data.getOperationId();
+        }
+
+        @Override
+        public void onBillPaymentConfirmed(WebhookData data) {
+            ChariWebhookHandler.super.onBillPaymentConfirmed(data);
+            this.billPaymentConfirmedOperationId = data.getOperationId();
         }
     }
 }

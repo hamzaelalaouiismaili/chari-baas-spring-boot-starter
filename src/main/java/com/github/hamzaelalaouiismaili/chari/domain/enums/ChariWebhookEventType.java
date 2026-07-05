@@ -25,6 +25,10 @@ public enum ChariWebhookEventType {
     CASHIN_CARD_AUTHORIZED("cashin.card.authorized", "CashIn by Card accepted"),
     PAYMENT_CARD_AUTHORIZED("payment.card.authorized", "Payment by Card accepted"),
     PAYMENT_RECEIVED("payment.received", "Merchant payment received"),
+    PAYMENT_CONFIRMED("payment.confirmed", "Bill payment confirmed"),
+    PAYMENT_CANCELLED("payment.cancelled", "Bill payment cancelled"),
+    PAYMENT_REFUNDED("payment.refunded", "Bill payment refunded"),
+    PAYMENT_FAILED("payment.failed", "Bill payment failed"),
 
     // ==================== Bank Transfer Events ====================
     BANK_TRANSFER_INITIATED("bank-transfer.initiated", "Bank transfer sent"),
