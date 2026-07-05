@@ -164,6 +164,8 @@ chari.uploadMerchantKycDocuments("+2126xxxxxxxx", List.of(document));
 
 `docBack` is required for identity card, driving license, and residence permit.
 
+The complete KYB checklist for legal entities, individual professionals, and foundations/associations is documented under **Merchant KYC Upload** in [README.md](README.md#merchant-kyc-upload).
+
 ## Transfers
 
 Wallet-to-wallet transfer preview and execution:
@@ -575,3 +577,4 @@ Prefer these enums over hard-coded integer codes where builder overloads or resp
 | Telco top-up | `getSupportedTelcoOperators`, `getTelcoCatalog`, `rechargeTelco` |
 | Vouchers | `getVoucherArticles`, `getVoucherBrands`, `getVoucherBrand`, `getVouchersByBrand`, `previewVoucherPurchase`, `confirmVoucherPurchase` |
 | Bill payment | `getBillCreditors`, `getBillReceivables`, `getBillIdentificationForm`, `getBillUnpaidItems`, `confirmBillPayment` |
+| Card management | `getCardPrograms`, `addCardApplication`, `getCardApplications`, `getCardApplicationsByCustomer`, `validateCardApplication`, `rejectCardApplication`, `getManagedCards`, `getManagedCard`, `manageCard`, `updateCardUsageControl`, `getCardTransactions` |

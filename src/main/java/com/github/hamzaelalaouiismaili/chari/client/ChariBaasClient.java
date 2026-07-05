@@ -3,6 +3,7 @@ package com.github.hamzaelalaouiismaili.chari.client;
 import com.github.hamzaelalaouiismaili.chari.client.core.ChariHttpClient;
 import com.github.hamzaelalaouiismaili.chari.client.api.ChariBeneficiaryClient;
 import com.github.hamzaelalaouiismaili.chari.client.api.ChariBillPaymentClient;
+import com.github.hamzaelalaouiismaili.chari.client.api.ChariCardManagementClient;
 import com.github.hamzaelalaouiismaili.chari.client.api.ChariCustomerRegistrationClient;
 import com.github.hamzaelalaouiismaili.chari.client.api.ChariKycClient;
 import com.github.hamzaelalaouiismaili.chari.client.api.ChariRetailAgentClient;
@@ -19,6 +20,7 @@ import com.github.hamzaelalaouiismaili.chari.client.api.operations.ChariRequestO
 import com.github.hamzaelalaouiismaili.chari.client.api.operations.ChariTransferClient;
 import com.github.hamzaelalaouiismaili.chari.domain.enums.ChariAccountLevel;
 import com.github.hamzaelalaouiismaili.chari.domain.enums.ChariClosureReason;
+import com.github.hamzaelalaouiismaili.chari.domain.enums.ChariCardAction;
 import com.github.hamzaelalaouiismaili.chari.domain.enums.ChariTelcoOperator;
 import com.github.hamzaelalaouiismaili.chari.domain.enums.ChariTelcoRechargeType;
 import com.github.hamzaelalaouiismaili.chari.model.payload.ChariMerchantKycUploadPayload.KycDocument;
@@ -60,6 +62,7 @@ public class ChariBaasClient {
     private final ChariTelcoTopUpClient telcoTopUpClient;
     private final ChariVoucherClient voucherClient;
     private final ChariBillPaymentClient billPaymentClient;
+    private final ChariCardManagementClient cardManagementClient;
 
     public ChariBaasClient(
             @Qualifier("chariBaasRestTemplate") RestTemplate restTemplate,
@@ -82,6 +85,7 @@ public class ChariBaasClient {
         this.telcoTopUpClient = new ChariTelcoTopUpClient(httpClient);
         this.voucherClient = new ChariVoucherClient(httpClient);
         this.billPaymentClient = new ChariBillPaymentClient(httpClient);
+        this.cardManagementClient = new ChariCardManagementClient(httpClient);
     }
 
     // ==================== Customer Operations ====================
@@ -954,6 +958,91 @@ public class ChariBaasClient {
     public ChariBillPaymentResponse confirmBillPayment(
             String phoneNumber, ChariBillPaymentPayload payload) {
         return billPaymentClient.confirmPayment(phoneNumber, payload);
+    }
+
+    // ==================== Card Management Operations ====================
+
+    public ChariCardProgramsResponse getCardPrograms() {
+        return cardManagementClient.getPrograms(10, 1);
+    }
+
+    public ChariCardProgramsResponse getCardPrograms(Integer pageSize, Integer pageNumber) {
+        return cardManagementClient.getPrograms(pageSize, pageNumber);
+    }
+
+    public ChariCardApplicationCreatedResponse addCardApplication(
+            String phoneNumber, Long cardProgramId) {
+        return cardManagementClient.addApplication(phoneNumber, cardProgramId);
+    }
+
+    public ChariCardApplicationsResponse getCardApplications(ChariCardApplicationsQuery query) {
+        return cardManagementClient.getApplications(query);
+    }
+
+    public ChariCardApplicationsResponse getCardApplicationsByCustomer(
+            Integer pageSize, Integer pageNumber) {
+        return cardManagementClient.getApplicationsByCustomer(pageSize, pageNumber);
+    }
+
+    public ChariCardApplicationResponse validateCardApplication(
+            Long applicationId, String phoneNumber) {
+        return cardManagementClient.updateApplication(applicationId, phoneNumber, true);
+    }
+
+    public ChariCardApplicationResponse rejectCardApplication(
+            Long applicationId, String phoneNumber) {
+        return cardManagementClient.updateApplication(applicationId, phoneNumber, false);
+    }
+
+    public ChariManagedCardsResponse getManagedCards(ChariManagedCardsQuery query) {
+        return cardManagementClient.getCards(query);
+    }
+
+    public ChariManagedCardResponse getManagedCard(Long cardId, String phoneNumber) {
+        return cardManagementClient.getCard(cardId, phoneNumber);
+    }
+
+    public ChariBooleanResponse manageCard(
+            Long cardId, String phoneNumber, ChariCardAction action) {
+        return cardManagementClient.runAction(cardId, phoneNumber, action);
+    }
+
+    public ChariBooleanResponse activateCard(Long cardId, String phoneNumber) {
+        return manageCard(cardId, phoneNumber, ChariCardAction.ACTIVATE);
+    }
+
+    public ChariBooleanResponse blockCard(Long cardId, String phoneNumber) {
+        return manageCard(cardId, phoneNumber, ChariCardAction.BLOCK);
+    }
+
+    public ChariBooleanResponse suspendCard(Long cardId, String phoneNumber) {
+        return manageCard(cardId, phoneNumber, ChariCardAction.SUSPEND);
+    }
+
+    public ChariBooleanResponse reactivateCard(Long cardId, String phoneNumber) {
+        return manageCard(cardId, phoneNumber, ChariCardAction.REACTIVATE);
+    }
+
+    public ChariBooleanResponse cancelCard(Long cardId, String phoneNumber) {
+        return manageCard(cardId, phoneNumber, ChariCardAction.CANCEL);
+    }
+
+    public ChariBooleanResponse unblockCardPin(Long cardId, String phoneNumber) {
+        return manageCard(cardId, phoneNumber, ChariCardAction.UNBLOCK_PIN);
+    }
+
+    public ChariBooleanResponse resetCardPin(Long cardId, String phoneNumber) {
+        return manageCard(cardId, phoneNumber, ChariCardAction.RESET_PIN);
+    }
+
+    public ChariBooleanResponse updateCardUsageControl(
+            Long cardId, String phoneNumber, ChariCardUsageControlPayload payload) {
+        return cardManagementClient.updateUsageControl(cardId, phoneNumber, payload);
+    }
+
+    public ChariCardTransactionsResponse getCardTransactions(
+            Long cardId, ChariCardTransactionsQuery query) {
+        return cardManagementClient.getTransactions(cardId, query);
     }
 
     // ==================== Refund Operations ====================

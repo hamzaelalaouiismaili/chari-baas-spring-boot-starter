@@ -7,6 +7,7 @@ Official ChariBaaS API documentation: https://baas.ma/en/api-docs
 For complete `ChariBaasClient` examples, see [SDK_USAGE.md](SDK_USAGE.md).
 For webhook implementation examples, see [WEBHOOK_USAGE.md](WEBHOOK_USAGE.md).
 
+
 ## Installation
 
 ```xml
@@ -137,7 +138,7 @@ The HMAC payload is `{timestamp}.{rawBody}` with `chari.baas.webhook-secret`.
 
 ## Operations
 
-`ChariBaasClient` exposes customer status/info/balance, registration/OTP/PIN, wallet info, wallet transfers, bank transfers, AP bank transfers, card funding, QR payments, QR generation, Telco top-up, vouchers, Fatourati bill payment, saved cards, cash-in/cash-out by reference, and refunds.
+`ChariBaasClient` exposes customer status/info/balance, registration/OTP/PIN, wallet info, wallet transfers, bank transfers, AP bank transfers, card funding, issued-card management, QR payments, QR generation, Telco top-up, vouchers, Fatourati bill payment, saved cards, cash-in/cash-out by reference, and refunds.
 
 ### Telco Top-up
 
@@ -389,6 +390,24 @@ ChariBooleanResponse response = chari.uploadMerchantKycDocuments(
 The SDK sends `POST /api/merchant/kyc/request?phoneNumber=+212...` as `multipart/form-data` with indexed fields like `KycDocuments[0].DocType`, `KycDocuments[0].DocFront`, and `KycDocuments[0].DocBack`. An existing pending upgrade maps to `ChariErrorCode.UPGRADE_REQUEST_UNDER_REVIEW`.
 
 `DocBack` is enforced by the SDK for `IdentityCard`, `DrivingLicense`, and `ResidencePermit`. Other document types may omit it.
+
+#### KYB documents by professional client type
+
+Every merchant-wallet application requires:
+
+- The contract signatory's national identity card or passport (`IdentityCard`, DocType 1; or `Passport`, DocType 3).
+- Bank-account proof: a RIB/bank-account certificate, void cheque, or cheque specimen.
+- Each file uploaded separately with the matching document type supplied by Chari.
+
+Additional documents depend on the client's legal status:
+
+| Professional client type | Required documents |
+|---|---|
+| Legal entity (company or organization) | Company articles/statutes; latest General Assembly minutes confirming signing authority when the manager/legal representative is not the sole signatory named in the statutes; Commercial Register certificate (`CommercialRegister`, DocType 8) issued less than 90 days ago; Professional Tax registration certificate (Patente). |
+| Individual professional (auto-entrepreneur, freelancer, or sole proprietor) | Auto-entrepreneur card or professional registration document; Professional Tax registration certificate (Patente); Commercial Register certificate (`CommercialRegister`, DocType 8) issued less than 90 days ago and company statutes when applicable. |
+| Foundation or association | Latest General Assembly minutes confirming signing authority when the authorized representative is not clearly named in the statutes; list of authorized representatives or board members; association/foundation statute. |
+
+The common identity and bank-account documents are required in addition to each row. Confirm the upload codes for document categories not represented by `ChariDocumentType` with Chari before submitting the KYB request.
 
 ### Register Customer
 
