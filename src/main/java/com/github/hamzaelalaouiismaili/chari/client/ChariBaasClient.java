@@ -6,6 +6,7 @@ import com.github.hamzaelalaouiismaili.chari.client.api.ChariCustomerRegistratio
 import com.github.hamzaelalaouiismaili.chari.client.api.ChariKycClient;
 import com.github.hamzaelalaouiismaili.chari.client.api.ChariRetailAgentClient;
 import com.github.hamzaelalaouiismaili.chari.client.api.ChariTokenizedCardClient;
+import com.github.hamzaelalaouiismaili.chari.client.api.ChariTelcoTopUpClient;
 import com.github.hamzaelalaouiismaili.chari.client.api.operations.ChariBankTransferClient;
 import com.github.hamzaelalaouiismaili.chari.client.api.operations.ChariCashInCardClient;
 import com.github.hamzaelalaouiismaili.chari.client.api.operations.ChariChargebackClient;
@@ -16,6 +17,8 @@ import com.github.hamzaelalaouiismaili.chari.client.api.operations.ChariRequestO
 import com.github.hamzaelalaouiismaili.chari.client.api.operations.ChariTransferClient;
 import com.github.hamzaelalaouiismaili.chari.domain.enums.ChariAccountLevel;
 import com.github.hamzaelalaouiismaili.chari.domain.enums.ChariClosureReason;
+import com.github.hamzaelalaouiismaili.chari.domain.enums.ChariTelcoOperator;
+import com.github.hamzaelalaouiismaili.chari.domain.enums.ChariTelcoRechargeType;
 import com.github.hamzaelalaouiismaili.chari.model.payload.ChariMerchantKycUploadPayload.KycDocument;
 import com.github.hamzaelalaouiismaili.chari.model.payload.*;
 import com.github.hamzaelalaouiismaili.chari.model.response.*;
@@ -52,6 +55,7 @@ public class ChariBaasClient {
     private final ChariRequestOperationClient requestOperationClient;
     private final ChariOperationsClient operationsClient;
     private final ChariRefundClient refundClient;
+    private final ChariTelcoTopUpClient telcoTopUpClient;
 
     public ChariBaasClient(
             @Qualifier("chariBaasRestTemplate") RestTemplate restTemplate,
@@ -71,6 +75,7 @@ public class ChariBaasClient {
         this.requestOperationClient = new ChariRequestOperationClient(httpClient);
         this.operationsClient = new ChariOperationsClient(httpClient);
         this.refundClient = new ChariRefundClient(httpClient);
+        this.telcoTopUpClient = new ChariTelcoTopUpClient(httpClient);
     }
 
     // ==================== Customer Operations ====================
@@ -802,6 +807,61 @@ public class ChariBaasClient {
      */
     public ChariOperationResponse getOperationById(Long id, String phoneNumber) {
         return operationsClient.getOperationById(id, phoneNumber);
+    }
+
+    // ==================== Telco Top-up Operations ====================
+
+    /**
+     * Returns every Moroccan mobile operator supported by Telco top-up.
+     */
+    public List<ChariTelcoOperator> getSupportedTelcoOperators() {
+        return List.of(ChariTelcoOperator.values());
+    }
+
+    /**
+     * Retrieves recharge products for a phone number, amount, and operator.
+     */
+    public ChariTelcoCatalogResponse getTelcoCatalog(ChariTelcoCatalogPayload payload) {
+        return telcoTopUpClient.getCatalog(payload);
+    }
+
+    /**
+     * Convenience overload for retrieving recharge products without building a payload.
+     */
+    public ChariTelcoCatalogResponse getTelcoCatalog(
+            String recipientPhoneNumber, Integer amount, ChariTelcoOperator operator) {
+        return getTelcoCatalog(ChariTelcoCatalogPayload.builder()
+                .recipientPhoneNumber(recipientPhoneNumber)
+                .amount(amount)
+                .operator(operator)
+                .build());
+    }
+
+    /**
+     * Executes a Telco top-up using a product returned by {@link #getTelcoCatalog}.
+     */
+    public ChariTelcoRechargeResponse rechargeTelco(ChariTelcoRechargePayload payload) {
+        return telcoTopUpClient.recharge(payload);
+    }
+
+    /**
+     * Convenience overload for executing a Telco top-up without building a payload.
+     */
+    public ChariTelcoRechargeResponse rechargeTelco(
+            String recipientPhoneNumber,
+            Integer amount,
+            ChariTelcoOperator operator,
+            ChariTelcoRechargeType rechargeType,
+            Integer productCode,
+            String principalAgentCode) {
+        return rechargeTelco(ChariTelcoRechargePayload.builder()
+                .recipientPhoneNumber(recipientPhoneNumber)
+                .amount(amount)
+                .operator(operator)
+                .rechargeType(rechargeType)
+                .productCode(productCode)
+                .code(principalAgentCode)
+                .build());
     }
 
     // ==================== Refund Operations ====================

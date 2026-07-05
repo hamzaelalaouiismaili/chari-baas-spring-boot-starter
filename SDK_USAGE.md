@@ -548,6 +548,8 @@ ChariDocumentType
 ChariRequestOperationType
 ChariRequestOperationStatus
 WalletType
+ChariTelcoOperator
+ChariTelcoRechargeType
 ```
 
 Prefer these enums over hard-coded integer codes where builder overloads or response helpers are available.
@@ -570,3 +572,4 @@ Prefer these enums over hard-coded integer codes where builder overloads or resp
 | Request operations | `requestCashinByReference`, `requestCashoutByReference`, `getCashinByReference`, `executeCashinByReference`, `getCashoutByReference`, `executeCashoutByReference` |
 | Retail agents | `getRetailAgents`, `getRetailAgentByCode`, `addRetailAgent` |
 | Operation history | `getOperationsByCustomer`, `getAllOperationsByPartner`, `getOperationById` |
+| Telco top-up | `getSupportedTelcoOperators`, `getTelcoCatalog`, `rechargeTelco` |

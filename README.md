@@ -137,7 +137,32 @@ The HMAC payload is `{timestamp}.{rawBody}` with `chari.baas.webhook-secret`.
 
 ## Operations
 
-`ChariBaasClient` exposes customer status/info/balance, registration/OTP/PIN, wallet info, wallet transfers, bank transfers, AP bank transfers, card funding, QR payments, QR generation, saved cards, cash-in/cash-out by reference, and refunds.
+`ChariBaasClient` exposes customer status/info/balance, registration/OTP/PIN, wallet info, wallet transfers, bank transfers, AP bank transfers, card funding, QR payments, QR generation, Telco top-up, saved cards, cash-in/cash-out by reference, and refunds.
+
+### Telco Top-up
+
+Use typed operators instead of API integer codes. Local Moroccan numbers are normalized to `+212...` automatically.
+
+```java
+List<ChariTelcoOperator> operators = chari.getSupportedTelcoOperators();
+
+ChariTelcoCatalogResponse catalog = chari.getTelcoCatalog(
+        "0661231234",
+        10,
+        ChariTelcoOperator.ORANGE);
+
+ChariTelcoCatalogResponse.TelcoProduct product = catalog.getEnabledProducts().getFirst();
+
+ChariTelcoRechargeResponse result = chari.rechargeTelco(
+        "0661231234",
+        10,
+        ChariTelcoOperator.ORANGE,
+        ChariTelcoRechargeType.PRODUCT,
+        product.getProductCode(),
+        "12003"); // principal agent code supplied by Chari
+```
+
+Supported operators are `MAROC_TELECOM` (API code 1), `ORANGE` (2), and `INWI` (3). Recharge types are `CLASSIC` (0) and `PRODUCT` (1). The recharge endpoint reports `ChariOperationType.RECHARGE` (operation code 10).
 
 ### Error Handling
 
@@ -169,7 +194,7 @@ Known Chari error codes are available in `ChariErrorCode`, including `MISSING_PA
 
 The SDK includes typed enums for official Chari codes:
 
-`ChariCustomerStatus`, `ChariAccountLevel`, `ChariOperationType`, `ChariTransactionType`, `ChariOperationStatus`, `ChariDirection`, `ChariClosureReason`, `ChariDocumentType`, `ChariRequestOperationType`, and `ChariRequestOperationStatus`.
+`ChariCustomerStatus`, `ChariAccountLevel`, `ChariOperationType`, `ChariTransactionType`, `ChariOperationStatus`, `ChariDirection`, `ChariClosureReason`, `ChariDocumentType`, `ChariRequestOperationType`, `ChariRequestOperationStatus`, `ChariTelcoOperator`, and `ChariTelcoRechargeType`.
 
 DTOs with raw integer IDs expose typed helpers where applicable, for example `getCustomerStatus()`, `getCurrentAccountLevel()`, `getTypedOperationType()`, `getTypedOperationStatus()`, `getTypedStatus()`, and `getTypedType()`.
 
