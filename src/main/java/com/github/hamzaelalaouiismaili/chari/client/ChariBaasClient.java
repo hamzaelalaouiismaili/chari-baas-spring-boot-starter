@@ -7,6 +7,7 @@ import com.github.hamzaelalaouiismaili.chari.client.api.ChariKycClient;
 import com.github.hamzaelalaouiismaili.chari.client.api.ChariRetailAgentClient;
 import com.github.hamzaelalaouiismaili.chari.client.api.ChariTokenizedCardClient;
 import com.github.hamzaelalaouiismaili.chari.client.api.ChariTelcoTopUpClient;
+import com.github.hamzaelalaouiismaili.chari.client.api.ChariVoucherClient;
 import com.github.hamzaelalaouiismaili.chari.client.api.operations.ChariBankTransferClient;
 import com.github.hamzaelalaouiismaili.chari.client.api.operations.ChariCashInCardClient;
 import com.github.hamzaelalaouiismaili.chari.client.api.operations.ChariChargebackClient;
@@ -56,6 +57,7 @@ public class ChariBaasClient {
     private final ChariOperationsClient operationsClient;
     private final ChariRefundClient refundClient;
     private final ChariTelcoTopUpClient telcoTopUpClient;
+    private final ChariVoucherClient voucherClient;
 
     public ChariBaasClient(
             @Qualifier("chariBaasRestTemplate") RestTemplate restTemplate,
@@ -76,6 +78,7 @@ public class ChariBaasClient {
         this.operationsClient = new ChariOperationsClient(httpClient);
         this.refundClient = new ChariRefundClient(httpClient);
         this.telcoTopUpClient = new ChariTelcoTopUpClient(httpClient);
+        this.voucherClient = new ChariVoucherClient(httpClient);
     }
 
     // ==================== Customer Operations ====================
@@ -862,6 +865,60 @@ public class ChariBaasClient {
                 .productCode(productCode)
                 .code(principalAgentCode)
                 .build());
+    }
+
+    // ==================== Voucher Operations ====================
+
+    /** Retrieves a paginated voucher article catalog for a brand. */
+    public ChariVoucherArticlesResponse getVoucherArticles(ChariVoucherCatalogQuery query) {
+        return voucherClient.getArticles(query);
+    }
+
+    /** Retrieves the first ten voucher articles for a brand. */
+    public ChariVoucherArticlesResponse getVoucherArticles(
+            String phoneNumber, Integer brandId) {
+        return getVoucherArticles(voucherCatalogQuery(phoneNumber, brandId, 1, 10));
+    }
+
+    /** Retrieves the current paginated voucher brand catalog. */
+    public ChariVoucherBrandsResponse getVoucherBrands(ChariVoucherCatalogQuery query) {
+        return voucherClient.getBrands(query);
+    }
+
+    /** Retrieves the first ten voucher brands using the required brand filter. */
+    public ChariVoucherBrandsResponse getVoucherBrands(
+            String phoneNumber, Integer brandId) {
+        return getVoucherBrands(voucherCatalogQuery(phoneNumber, brandId, 1, 10));
+    }
+
+    /** Retrieves one voucher brand by ID. */
+    public ChariVoucherBrandResponse getVoucherBrand(Integer id, String phoneNumber) {
+        return voucherClient.getBrand(id, phoneNumber);
+    }
+
+    /** Calls the provider's vouchers-by-brand endpoint. */
+    public ChariVoucherBrandResponse getVouchersByBrand(Integer id, String phoneNumber) {
+        return voucherClient.getVouchersByBrand(id, phoneNumber);
+    }
+
+    /** Previews voucher pricing and fees without purchasing it. */
+    public ChariVoucherPreviewResponse previewVoucherPurchase(ChariVoucherPurchasePayload payload) {
+        return voucherClient.previewPurchase(payload);
+    }
+
+    /** Confirms the purchase and returns the redeemable voucher code. */
+    public ChariVoucherPurchaseResponse confirmVoucherPurchase(ChariVoucherPurchasePayload payload) {
+        return voucherClient.confirmPurchase(payload);
+    }
+
+    private ChariVoucherCatalogQuery voucherCatalogQuery(
+            String phoneNumber, Integer brandId, Integer page, Integer take) {
+        return ChariVoucherCatalogQuery.builder()
+                .phoneNumber(phoneNumber)
+                .brandId(brandId)
+                .page(page)
+                .take(take)
+                .build();
     }
 
     // ==================== Refund Operations ====================

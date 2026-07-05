@@ -164,6 +164,35 @@ ChariTelcoRechargeResponse result = chari.rechargeTelco(
 
 Supported operators are `MAROC_TELECOM` (API code 1), `ORANGE` (2), and `INWI` (3). Recharge types are `CLASSIC` (0) and `PRODUCT` (1). The recharge endpoint reports `ChariOperationType.RECHARGE` (operation code 10).
 
+### Vouchers
+
+Voucher purchases use a preview/confirm flow. The same payload can be passed to both operations.
+
+```java
+ChariVoucherArticlesResponse catalog = chari.getVoucherArticles(
+        "0661231234",
+        25);
+
+ChariVoucherArticlesResponse.VoucherArticle article =
+        catalog.getData().getCollection().getFirst();
+
+ChariVoucherPurchasePayload purchase = ChariVoucherPurchasePayload.builder()
+        .customerPhoneNumber("0661231234")
+        .destinationPhoneNumber("0662345678")
+        .beneficiaryName("Abdennour")
+        .providerSkuId(article.getProviderSkuId())
+        .providerId(article.getProviderId())
+        .build();
+
+ChariVoucherPreviewResponse preview = chari.previewVoucherPurchase(purchase);
+
+// Confirm only after displaying preview fees and total to the customer.
+ChariVoucherPurchaseResponse confirmed = chari.confirmVoucherPurchase(purchase);
+String voucherCode = confirmed.getData().getOperation().getCode();
+```
+
+Catalog methods include `getVoucherArticles`, `getVoucherBrands`, `getVoucherBrand`, and `getVouchersByBrand`. Local Moroccan phone numbers are normalized automatically. Voucher preview and confirmation report `ChariOperationType.VOUCHER` (operation code 23).
+
 ### Error Handling
 
 Non-2xx responses throw `ChariBaasException`. When Chari returns its error envelope, the exception includes the raw Chari code, description, and typed enum:
@@ -194,7 +223,7 @@ Known Chari error codes are available in `ChariErrorCode`, including `MISSING_PA
 
 The SDK includes typed enums for official Chari codes:
 
-`ChariCustomerStatus`, `ChariAccountLevel`, `ChariOperationType`, `ChariTransactionType`, `ChariOperationStatus`, `ChariDirection`, `ChariClosureReason`, `ChariDocumentType`, `ChariRequestOperationType`, `ChariRequestOperationStatus`, `ChariTelcoOperator`, and `ChariTelcoRechargeType`.
+`ChariCustomerStatus`, `ChariAccountLevel`, `ChariOperationType`, `ChariTransactionType`, `ChariOperationStatus`, `ChariDirection`, `ChariClosureReason`, `ChariDocumentType`, `ChariRequestOperationType`, `ChariRequestOperationStatus`, `ChariTelcoOperator`, and `ChariTelcoRechargeType`. `ChariOperationType.VOUCHER` maps operation code 23.
 
 DTOs with raw integer IDs expose typed helpers where applicable, for example `getCustomerStatus()`, `getCurrentAccountLevel()`, `getTypedOperationType()`, `getTypedOperationStatus()`, `getTypedStatus()`, and `getTypedType()`.
 

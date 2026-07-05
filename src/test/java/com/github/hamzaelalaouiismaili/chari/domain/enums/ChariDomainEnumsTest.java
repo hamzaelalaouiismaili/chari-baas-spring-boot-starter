@@ -20,6 +20,7 @@ class ChariDomainEnumsTest {
     void operationTypesMatchOfficialCodes() {
         assertThat(ChariOperationType.fromCode(5)).isEqualTo(ChariOperationType.MOBILE_PAYMENT);
         assertThat(ChariOperationType.fromCode(10)).isEqualTo(ChariOperationType.RECHARGE);
+        assertThat(ChariOperationType.fromCode(23)).isEqualTo(ChariOperationType.VOUCHER);
         assertThat(ChariOperationType.fromCode(24)).isEqualTo(ChariOperationType.CARD_PAYMENT);
         assertThat(ChariOperationType.fromCode(25)).isEqualTo(ChariOperationType.BILL_PAYMENT);
     }

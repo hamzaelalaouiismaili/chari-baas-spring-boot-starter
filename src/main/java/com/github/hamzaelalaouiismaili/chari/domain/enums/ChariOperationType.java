@@ -21,6 +21,7 @@ public enum ChariOperationType {
     BANK_TRANSFER(9, "Bank Transfer"),
     RECHARGE(10, "Mobile top-up / recharge"),
     CHARGEBACK(12, "Chargeback"),
+    VOUCHER(23, "Voucher purchase"),
     CARD_PAYMENT(24, "Merchant card payment"),
     BILL_PAYMENT(25, "Bill payment"),
 
@@ -62,7 +63,7 @@ public enum ChariOperationType {
      */
     public boolean isDebit() {
         return this == CASHOUT || this == MOBILE_PAYMENT || this == BANK_TRANSFER
-                || this == CARD_PAYMENT || this == RECHARGE || this == BILL_PAYMENT;
+                || this == VOUCHER || this == CARD_PAYMENT || this == RECHARGE || this == BILL_PAYMENT;
     }
 
     /**

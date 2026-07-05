@@ -573,3 +573,4 @@ Prefer these enums over hard-coded integer codes where builder overloads or resp
 | Retail agents | `getRetailAgents`, `getRetailAgentByCode`, `addRetailAgent` |
 | Operation history | `getOperationsByCustomer`, `getAllOperationsByPartner`, `getOperationById` |
 | Telco top-up | `getSupportedTelcoOperators`, `getTelcoCatalog`, `rechargeTelco` |
+| Vouchers | `getVoucherArticles`, `getVoucherBrands`, `getVoucherBrand`, `getVouchersByBrand`, `previewVoucherPurchase`, `confirmVoucherPurchase` |
