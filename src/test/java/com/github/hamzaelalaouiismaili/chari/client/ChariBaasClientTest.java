@@ -1039,7 +1039,7 @@ class ChariBaasClientTest {
   }
 
   @Test
-  void previewQrCodePaymentSendsOfficialPayloadAndMapsResponse() {
+  void previewQrCodePaymentSendsOfficialPayloadWithoutAmountAndMapsResponse() {
     RestTemplate restTemplate = new RestTemplate();
     MockRestServiceServer server = MockRestServiceServer.bindTo(restTemplate).build();
     ChariBaasClient client = new ChariBaasClient(restTemplate, properties());
@@ -1060,7 +1060,7 @@ class ChariBaasClientTest {
             .string(containsString("\"customerPhoneNumber\":\"+212612345678\"")))
         .andExpect(content()
             .string(containsString("\"qrCodeContent\":\"00020101021126xxxxxx\"")))
-        .andExpect(content().string(containsString("\"amount\":10")))
+        .andExpect(content().string(not(containsString("\"amount\""))))
         .andExpect(content().string(not(containsString("\"CustomerPhoneNumber\""))))
         .andRespond(withSuccess("""
             {

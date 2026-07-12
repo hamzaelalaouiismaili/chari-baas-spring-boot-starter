@@ -56,7 +56,7 @@ public class ChariMerchantPaymentClient {
                                 PhoneNumberUtil.mask(payload.getCustomerPhoneNumber()));
 
                 return httpClient.post("/api/operations/merchant/payment/push/qrcode/preview",
-                                buildQrPaymentPayload(payload),
+                                buildQrPaymentPreviewPayload(payload),
                                 ChariQrCodePaymentPreviewResponse.class, "PREVIEW_QR_PAYMENT");
         }
 
@@ -141,11 +141,16 @@ public class ChariMerchantPaymentClient {
         }
 
         private Map<String, Object> buildQrPaymentPayload(ChariQrCodePaymentPayload payload) {
+                Map<String, Object> normalizedPayload = buildQrPaymentPreviewPayload(payload);
+                normalizedPayload.put("amount", payload.getAmount());
+                return normalizedPayload;
+        }
+
+        private Map<String, Object> buildQrPaymentPreviewPayload(ChariQrCodePaymentPayload payload) {
                 Map<String, Object> normalizedPayload = new HashMap<>();
                 normalizedPayload.put("customerPhoneNumber",
                                 PhoneNumberUtil.normalize(payload.getCustomerPhoneNumber()));
                 normalizedPayload.put("qrCodeContent", payload.getQrCodeContent());
-                normalizedPayload.put("amount", payload.getAmount());
                 if (payload.getIdempotencyKey() != null) {
                         normalizedPayload.put("idempotencyKey", payload.getIdempotencyKey());
                 }
