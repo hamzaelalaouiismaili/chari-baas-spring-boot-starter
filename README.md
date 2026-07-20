@@ -6,6 +6,7 @@ Official ChariBaaS API documentation: https://baas.ma/en/api-docs
 
 For complete `ChariBaasClient` examples, see [SDK_USAGE.md](SDK_USAGE.md).
 For webhook implementation examples, see [WEBHOOK_USAGE.md](WEBHOOK_USAGE.md).
+For personal and merchant KYC/KYB upgrade flows, see [KYC_UPGRADE_GUIDE.md](KYC_UPGRADE_GUIDE.md).
 
 
 ## Installation
@@ -349,6 +350,8 @@ ChariBooleanResponse response = chari.unregisterCustomer(
 The SDK sends `PUT /api/customers/unregister`, normalizes `phoneNumber`, and sends the closure reason code. Closure reasons are available in `ChariClosureReason`.
 
 ### ShareID KYC Authentication
+
+For the full personal wallet and merchant wallet KYC/KYB sequence, including app/backend responsibilities, ShareID handoff, file upload validation, and review tracking, see [KYC_UPGRADE_GUIDE.md](KYC_UPGRADE_GUIDE.md).
 
 ```java
 ChariShareIdAuthResponse response = chari.authenticateShareId("0612345678");
