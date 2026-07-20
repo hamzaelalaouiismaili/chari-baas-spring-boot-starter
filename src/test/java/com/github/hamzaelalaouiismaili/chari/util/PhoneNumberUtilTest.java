@@ -15,8 +15,14 @@ class PhoneNumberUtilTest {
     }
 
     @Test
+    void normalizesNineDigitMoroccanNumberWithoutCountryPrefix() {
+        assertThat(PhoneNumberUtil.normalize("608814002")).isEqualTo("+212608814002");
+    }
+
+    @Test
     void validatesMoroccanMobileNumber() {
         assertThat(PhoneNumberUtil.isValidMoroccanNumber("0712345678")).isTrue();
+        assertThat(PhoneNumberUtil.isValidMoroccanNumber("608814002")).isTrue();
         assertThat(PhoneNumberUtil.isValidMoroccanNumber("+212412345678")).isFalse();
     }
 

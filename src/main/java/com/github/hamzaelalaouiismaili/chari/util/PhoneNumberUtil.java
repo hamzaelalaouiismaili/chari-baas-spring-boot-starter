@@ -8,6 +8,7 @@ import java.util.regex.Pattern;
 public final class PhoneNumberUtil {
 
     private static final Pattern MOROCCO_PATTERN = Pattern.compile("^\\+212[5-7]\\d{8}$");
+    private static final Pattern NINE_DIGIT_NUMBER_PATTERN = Pattern.compile("^\\d{9}$");
     private static final String MOROCCO_PREFIX = "+212";
 
     private PhoneNumberUtil() {
@@ -29,6 +30,8 @@ public final class PhoneNumberUtil {
             cleaned = "+" + cleaned.substring(2);
         } else if (cleaned.startsWith("0")) {
             cleaned = MOROCCO_PREFIX + cleaned.substring(1);
+        } else if (NINE_DIGIT_NUMBER_PATTERN.matcher(cleaned).matches()) {
+            cleaned = MOROCCO_PREFIX + cleaned;
         } else if (!cleaned.startsWith("+")) {
             cleaned = "+" + cleaned;
         }

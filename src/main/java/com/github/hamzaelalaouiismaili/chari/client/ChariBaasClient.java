@@ -247,6 +247,50 @@ public class ChariBaasClient {
     }
 
     /**
+     * Submit a KYC request using the merchant verification document payload.
+     *
+     * @param payload KYC multipart payload
+     * @return boolean response
+     */
+    public ChariBooleanResponse requestKyc(ChariMerchantKycUploadPayload payload) {
+        return kycClient.requestKyc(payload);
+    }
+
+    /**
+     * Submit a KYC request using the merchant verification document parameters.
+     *
+     * @param phoneNumber  customer phone number
+     * @param kycDocuments document list to upload
+     * @return boolean response
+     */
+    public ChariBooleanResponse requestKyc(String phoneNumber, List<KycDocument> kycDocuments) {
+        return kycClient.requestKyc(phoneNumber, kycDocuments);
+    }
+
+    /**
+     * Submit a KYB request using the same payload accepted by
+     * {@link #requestKyc(ChariMerchantKycUploadPayload)}.
+     *
+     * @param payload KYB multipart payload
+     * @return boolean response
+     */
+    public ChariBooleanResponse requestKyb(ChariMerchantKycUploadPayload payload) {
+        return kycClient.requestKyb(payload);
+    }
+
+    /**
+     * Submit a KYB request using the same parameters accepted by
+     * {@link #requestKyc(String, List)}.
+     *
+     * @param phoneNumber  merchant phone number
+     * @param kycDocuments document list to upload
+     * @return boolean response
+     */
+    public ChariBooleanResponse requestKyb(String phoneNumber, List<KycDocument> kycDocuments) {
+        return kycClient.requestKyb(phoneNumber, kycDocuments);
+    }
+
+    /**
      * Register a new customer.
      *
      * @param payload registration payload

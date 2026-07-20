@@ -449,7 +449,7 @@ class ChariBaasClientTest {
   }
 
   @Test
-  void uploadMerchantKycDocumentsUsesIndexedMultipartFields() {
+  void requestKycUsesNewEndpointAndIndexedMultipartFields() {
     RestTemplate restTemplate = new RestTemplate();
     MockRestServiceServer server = MockRestServiceServer.bindTo(restTemplate).build();
     ChariBaasClient client = new ChariBaasClient(restTemplate, properties());
@@ -467,7 +467,7 @@ class ChariBaasClientTest {
         .build();
 
     server.expect(once(),
-        requestTo("https://sandbox.charimoney.com/api/merchant/kyc/request?phoneNumber=+212612345678"))
+        requestTo("https://sandbox.charimoney.com/api/customers/merchant/kyc/request?phoneNumber=+212612345678"))
         .andExpect(method(HttpMethod.POST))
         .andExpect(header("Chari-Api-Key", "test-key"))
         .andExpect(header("C-Request-Id", matchesPattern(uuidPattern())))
@@ -482,10 +482,39 @@ class ChariBaasClientTest {
         .andExpect(content().string(containsString("filename=\"rc.pdf\"")))
         .andRespond(withSuccess("{\"data\":true}", MediaType.APPLICATION_JSON));
 
-    ChariBooleanResponse response = client.uploadMerchantKycDocuments("0612345678",
+    ChariBooleanResponse response = client.requestKyc("0612345678",
         List.of(identityCard, commercialRegister));
 
     assertThat(response.getData()).isTrue();
+    server.verify();
+  }
+
+  @Test
+  void requestKybUsesNewEndpointAndSameMultipartPayload() {
+    RestTemplate restTemplate = new RestTemplate();
+    MockRestServiceServer server = MockRestServiceServer.bindTo(restTemplate).build();
+    ChariBaasClient client = new ChariBaasClient(restTemplate, properties());
+
+    ChariMerchantKycUploadPayload payload = ChariMerchantKycUploadPayload.builder()
+        .phoneNumber("0612345678")
+        .kycDocuments(List.of(ChariMerchantKycUploadPayload.KycDocument.builder()
+            .docType(ChariDocumentType.CommercialRegister)
+            .docFront(resource("rc.pdf", "%PDF"))
+            .build()))
+        .build();
+
+    server.expect(once(),
+        requestTo("https://sandbox.charimoney.com/api/customers/merchant/kyb/request?phoneNumber=+212612345678"))
+        .andExpect(method(HttpMethod.POST))
+        .andExpect(header("Chari-Api-Key", "test-key"))
+        .andExpect(header("C-Request-Id", matchesPattern(uuidPattern())))
+        .andExpect(content().contentTypeCompatibleWith(MediaType.MULTIPART_FORM_DATA))
+        .andExpect(content().string(containsString("name=\"KycDocuments[0].DocType\"")))
+        .andExpect(content().string(containsString("name=\"KycDocuments[0].DocFront\"")))
+        .andExpect(content().string(containsString("filename=\"rc.pdf\"")))
+        .andRespond(withSuccess("{\"data\":true}", MediaType.APPLICATION_JSON));
+
+    assertThat(client.requestKyb(payload).getData()).isTrue();
     server.verify();
   }
 
@@ -496,7 +525,7 @@ class ChariBaasClientTest {
     ChariBaasClient client = new ChariBaasClient(restTemplate, properties());
 
     server.expect(once(),
-        requestTo("https://sandbox.charimoney.com/api/merchant/kyc/request?phoneNumber=+212612345678"))
+        requestTo("https://sandbox.charimoney.com/api/customers/merchant/kyc/request?phoneNumber=+212612345678"))
         .andRespond(withStatus(HttpStatus.BAD_REQUEST)
             .contentType(MediaType.APPLICATION_JSON)
             .body("""

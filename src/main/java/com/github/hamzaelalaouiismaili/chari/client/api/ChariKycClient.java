@@ -53,12 +53,48 @@ public class ChariKycClient {
     }
 
     public ChariBooleanResponse uploadMerchantKycDocuments(ChariMerchantKycUploadPayload payload) {
-        return uploadMerchantKycDocuments(payload.getPhoneNumber(), payload.getKycDocuments());
+        return requestKyc(payload);
     }
 
     public ChariBooleanResponse uploadMerchantKycDocuments(String phoneNumber, List<KycDocument> kycDocuments) {
+        return requestKyc(phoneNumber, kycDocuments);
+    }
+
+    public ChariBooleanResponse requestKyc(ChariMerchantKycUploadPayload payload) {
+        return requestKyc(payload.getPhoneNumber(), payload.getKycDocuments());
+    }
+
+    public ChariBooleanResponse requestKyc(String phoneNumber, List<KycDocument> kycDocuments) {
+        return requestMerchantVerification(
+                phoneNumber,
+                kycDocuments,
+                "/api/customers/merchant/kyc/request",
+                "REQUEST_KYC",
+                "KYC");
+    }
+
+    public ChariBooleanResponse requestKyb(ChariMerchantKycUploadPayload payload) {
+        return requestKyb(payload.getPhoneNumber(), payload.getKycDocuments());
+    }
+
+    public ChariBooleanResponse requestKyb(String phoneNumber, List<KycDocument> kycDocuments) {
+        return requestMerchantVerification(
+                phoneNumber,
+                kycDocuments,
+                "/api/customers/merchant/kyb/request",
+                "REQUEST_KYB",
+                "KYB");
+    }
+
+    private ChariBooleanResponse requestMerchantVerification(
+            String phoneNumber,
+            List<KycDocument> kycDocuments,
+            String path,
+            String operation,
+            String requestType) {
         String normalizedPhone = PhoneNumberUtil.normalize(phoneNumber);
-        log.debug("Uploading merchant KYC documents for phone: {}", PhoneNumberUtil.mask(normalizedPhone));
+        log.debug("Submitting merchant {} documents for phone: {}",
+                requestType, PhoneNumberUtil.mask(normalizedPhone));
         validateMerchantKycDocuments(kycDocuments);
 
         MultiValueMap<String, Object> multipartBody = new LinkedMultiValueMap<>();
@@ -70,10 +106,10 @@ public class ChariKycClient {
             addMultipartFile(multipartBody, prefix + "DocBack", document.getDocBack());
         }
 
-        String url = UriComponentsBuilder.fromPath("/api/merchant/kyc/request")
+        String url = UriComponentsBuilder.fromPath(path)
                 .queryParam("phoneNumber", normalizedPhone)
                 .toUriString();
-        return httpClient.postMultipart(url, multipartBody, ChariBooleanResponse.class, "UPLOAD_MERCHANT_KYC");
+        return httpClient.postMultipart(url, multipartBody, ChariBooleanResponse.class, operation);
     }
 
     private void validateMerchantKycDocuments(List<KycDocument> kycDocuments) {
