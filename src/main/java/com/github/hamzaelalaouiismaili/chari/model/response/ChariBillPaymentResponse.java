@@ -1,31 +1,83 @@
 package com.github.hamzaelalaouiismaili.chari.model.response;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.github.hamzaelalaouiismaili.chari.model.bill.ChariBillFieldValue;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.math.BigDecimal;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
-/** Fatourati payment confirmation and receipt information. */
+/**
+ * Confirmation of a Fatourati bill payment as returned by
+ * {@code POST /api/bills/confirm} under a {@code data} envelope.
+ *
+ * <p>{@code operationId} identifies the wallet operation and is the value to
+ * pass to the bill-receipt endpoint. {@code fatouratiErrorCode} carries the
+ * Fatourati business outcome ({@code 000} = success).
+ */
 @Data
-@EqualsAndHashCode(callSuper = true)
-public class ChariBillPaymentResponse extends ChariFatouratiResponse {
-    private String refTxFatourati;
-    private String refReglement;
-    private String codeDevise;
-    private BigDecimal montantTotalTTC;
-    private List<ChariBillFieldValue> params;
+@NoArgsConstructor
+@AllArgsConstructor
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class ChariBillPaymentResponse {
+
+    @JsonProperty("data")
+    private Confirmation data;
+
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    public static class Confirmation {
+        private Integer operationType;
+
+        /** Wallet operation identifier; use it to download the bill receipt. */
+        private Long operationId;
+
+        private BigDecimal amount;
+        private BigDecimal feesAmount;
+        private BigDecimal totalAmount;
+        private String reason;
+        private String checkedAt;
+
+        /** Creditor display name, e.g. {@code "Orange Recharges et Catalogue Pass"}. */
+        private String creditor;
+
+        /** Receivable display name, e.g. {@code "Orange recharge Sim"}. */
+        private String debt;
+
+        private String categoryCode;
+        private String category;
+        private String authorizationCode;
+
+        /** Fatourati business result code; {@code 000} means success. */
+        private String fatouratiErrorCode;
+    }
 
     @JsonIgnore
-    private final Map<String, Object> additionalFields = new LinkedHashMap<>();
+    public Long getOperationId() {
+        return data == null ? null : data.getOperationId();
+    }
 
-    @JsonAnySetter
-    public void putAdditionalField(String name, Object value) {
-        additionalFields.put(name, value);
+    @JsonIgnore
+    public String getAuthorizationCode() {
+        return data == null ? null : data.getAuthorizationCode();
+    }
+
+    @JsonIgnore
+    public String getFatouratiErrorCode() {
+        return data == null ? null : data.getFatouratiErrorCode();
+    }
+
+    @JsonIgnore
+    public boolean hasCode(String code) {
+        return code != null && code.equals(getFatouratiErrorCode());
+    }
+
+    @JsonIgnore
+    public boolean isSuccessful() {
+        return hasCode("000");
     }
 
     /** Code 301 means Fatourati already processed the payment and is receipt-safe. */

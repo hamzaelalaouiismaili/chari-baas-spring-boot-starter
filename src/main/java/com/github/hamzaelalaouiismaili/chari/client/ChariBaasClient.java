@@ -1001,10 +1001,50 @@ public class ChariBaasClient {
         return billPaymentClient.getUnpaidItems(creditorId, receivableId, payload);
     }
 
+    /**
+     * Step 4 with the customer's phone number, required when saving the bill
+     * to favorites ({@code alias}/{@code addToFavorites}).
+     */
+    public ChariBillUnpaidItemsResponse getBillUnpaidItems(
+            String creditorId,
+            String receivableId,
+            ChariBillUnpaidItemsPayload payload,
+            String phoneNumber) {
+        return billPaymentClient.getUnpaidItems(creditorId, receivableId, payload, phoneNumber);
+    }
+
+    /**
+     * Step 4 with a local pre-check of the submitted values against the
+     * dynamic identification form, failing fast before any network call.
+     */
+    public ChariBillUnpaidItemsResponse getBillUnpaidItems(
+            String creditorId,
+            String receivableId,
+            ChariBillFormResponse form,
+            ChariBillUnpaidItemsPayload payload,
+            String phoneNumber) {
+        return billPaymentClient.getUnpaidItems(creditorId, receivableId, form, payload, phoneNumber);
+    }
+
+    /** Step 4 by scanned bill QR code, without filling the identification form. */
+    public ChariBillUnpaidItemsResponse getBillUnpaidItemsByQrCode(
+            String creditorId,
+            String receivableId,
+            String qrCodeContent,
+            String phoneNumber) {
+        return billPaymentClient.getUnpaidItems(creditorId, receivableId,
+                ChariBillUnpaidItemsPayload.forQrCode(qrCodeContent), phoneNumber);
+    }
+
     /** Step 5: pays the selected articles for a single creditor. */
     public ChariBillPaymentResponse confirmBillPayment(
             String phoneNumber, ChariBillPaymentPayload payload) {
         return billPaymentClient.confirmPayment(phoneNumber, payload);
+    }
+
+    /** Step 6: downloads the receipt of a settled bill payment operation. */
+    public ChariBillReceiptResponse getBillReceipt(long operationId, String phoneNumber) {
+        return billPaymentClient.getBillReceipt(operationId, phoneNumber);
     }
 
     // ==================== Card Management Operations ====================
