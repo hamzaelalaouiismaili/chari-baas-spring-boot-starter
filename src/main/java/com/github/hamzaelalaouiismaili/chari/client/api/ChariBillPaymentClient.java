@@ -24,13 +24,13 @@ public class ChariBillPaymentClient {
     private final ChariHttpClient httpClient;
 
     public ChariBillCreditorsResponse getCreditors() {
-        return httpClient.get("/api/fatourati/creanciers",
+        return httpClient.get("/api/bills/creanciers",
                 ChariBillCreditorsResponse.class, "GET_BILL_CREDITORS");
     }
 
     public ChariBillReceivablesResponse getReceivables(String creditorId) {
         validateCreditorId(creditorId);
-        String path = UriComponentsBuilder.fromPath("/api/fatourati/creances")
+        String path = UriComponentsBuilder.fromPath("/api/bills/creances")
                 .queryParam("creancierId", creditorId)
                 .toUriString();
         return httpClient.get(path, ChariBillReceivablesResponse.class, "GET_BILL_RECEIVABLES");
@@ -39,7 +39,7 @@ public class ChariBillPaymentClient {
     public ChariBillFormResponse getIdentificationForm(
             String creditorId, String receivableId) {
         validateServiceIds(creditorId, receivableId);
-        String path = servicePath("/api/fatourati/form", creditorId, receivableId);
+        String path = servicePath("/api/bills/form", creditorId, receivableId);
         return httpClient.get(path, ChariBillFormResponse.class, "GET_BILL_IDENTIFICATION_FORM");
     }
 
@@ -52,7 +52,7 @@ public class ChariBillPaymentClient {
             throw new IllegalArgumentException("Bill identification values are required");
         }
         validateFieldValues(payload.getCreditorValues());
-        String path = servicePath("/api/fatourati/impayes", creditorId, receivableId);
+        String path = servicePath("/api/bills/impayes", creditorId, receivableId);
         return httpClient.post(path, payload, ChariBillUnpaidItemsResponse.class, "GET_BILL_UNPAID_ITEMS");
     }
 
@@ -63,7 +63,7 @@ public class ChariBillPaymentClient {
         }
         validatePayment(payload);
         String normalizedPhone = PhoneNumberUtil.normalize(phoneNumber);
-        String path = UriComponentsBuilder.fromPath("/api/fatourati/confirm")
+        String path = UriComponentsBuilder.fromPath("/api/bills/confirm")
                 .queryParam("phoneNumber", normalizedPhone)
                 .toUriString();
         log.info("Confirming Fatourati payment {} for customer {}",

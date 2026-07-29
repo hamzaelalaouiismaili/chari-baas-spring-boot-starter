@@ -423,11 +423,13 @@ public class ChariBaasClient {
     /**
      * Get principal agent information.
      *
-     * @param principalAgentId optional principal agent ID (uses configured ID if null)
+     * @param principalAgentId optional principal agent ID (uses configured ID if
+     *                         null)
      * @return principal agent response
      */
     public ChariPrincipalAgentResponse getPrincipalAgentInfo(String principalAgentId) {
-        String id = NumericIdentifierUtil.normalize(principalAgentId != null ? principalAgentId : getPrincipalAgentId());
+        String id = NumericIdentifierUtil
+                .normalize(principalAgentId != null ? principalAgentId : getPrincipalAgentId());
         log.debug("Getting principal agent info for ID: {}", id);
 
         String url = UriComponentsBuilder.fromPath("/api/agents/principal/{id}")
@@ -880,7 +882,8 @@ public class ChariBaasClient {
     }
 
     /**
-     * Convenience overload for retrieving recharge products without building a payload.
+     * Convenience overload for retrieving recharge products without building a
+     * payload.
      */
     public ChariTelcoCatalogResponse getTelcoCatalog(
             String recipientPhoneNumber, Integer amount, ChariTelcoOperator operator) {
