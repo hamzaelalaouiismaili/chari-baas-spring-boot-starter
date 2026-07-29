@@ -1,0 +1,1199 @@
+{
+  "info": {
+    "_postman_id": "e5df9b5f-bac1-4e5c-957a-816adc686719",
+    "name": "Maxab-bills",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "51803851",
+    "_collection_link": "https://go.postman.co/collection/51803851-e5df9b5f-bac1-4e5c-957a-816adc686719?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Bills",
+      "item": [
+        {
+          "name": "Creancier",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { 
+              "raw": "{{host}}/api/bills/creanciers",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "api",
+                "bills",
+                "creanciers"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Creancier",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{host}}/api/bills/creanciers",
+                  "host": [
+                    "{{host}}"
+                  ],
+                  "path": [
+                    "api",
+                    "bills",
+                    "creanciers"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": ":status",
+                  "value": 200
+                },
+                {
+                  "key": "date",
+                  "value": "Wed, 29 Jul 2026 19:02:54 GMT"
+                },
+                {
+                  "key": "content-type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "x-content-type-options",
+                  "value": "nosniff"
+                },
+                {
+                  "key": "x-frame-options",
+                  "value": "DENY"
+                },
+                {
+                  "key": "strict-transport-security",
+                  "value": "max-age=31536000; includeSubDomains"
+                },
+                {
+                  "key": "content-security-policy",
+                  "value": "default-src 'none'; frame-ancestors 'none'"
+                },
+                {
+                  "key": "permissions-policy",
+                  "value": "accelerometer=(), camera=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()"
+                },
+                {
+                  "key": "referrer-policy",
+                  "value": "strict-origin-when-cross-origin"
+                },
+                {
+                  "key": "x-permitted-cross-domain-policies",
+                  "value": "none"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"data\": [\n        {\n            \"categoryName\": \"Téléphone et Internet\",\n            \"categoryDescription\": \"Téléphone et Internet\",\n            \"categoryCode\": \"101\",\n            \"order\": 1,\n            \"listeCreanciersListe\": [\n                {\n                    \"codeCreancier\": \"1002\",\n                    \"descriptionCreancier\": \"Paiement des factures Fixe, Mobile et Internet de IAM\",\n                    \"listeCreances\": [\n                        {\n                            \"codeCreance\": \"03\",\n                            \"nomCreance\": \"Produit Internet Sim\"\n                        },\n                        {\n                            \"codeCreance\": \"04\",\n                            \"nomCreance\": \"Payer une avance\"\n                        },\n                        {\n                            \"codeCreance\": \"02\",\n                            \"nomCreance\": \"Produit Mobile Sim\"\n                        },\n                        {\n                            \"codeCreance\": \"01\",\n                            \"nomCreance\": \"Produit Fixe Sim\"\n                        },\n                        {\n                            \"codeCreance\": \"05\",\n                            \"nomCreance\": \"Payer une avance\"\n                        }\n                    ],\n                    \"logoPath\": \"/upload/logos/logo_iam_p.png\",\n                    \"nomCreancier\": \"IAM Factures\",\n                    \"params\": [\n                        {\n                            \"nomChamp\": \"publicDomain\",\n                            \"valChamp\": \"https://www.fatourati.ma\"\n                        },\n                        {\n                            \"nomChamp\": \"categorieCode\",\n                            \"valChamp\": \"101\"\n                        }\n                    ],\n                    \"siteWeb\": \"http://www.iam.ma\"\n                },\n                {\n                    \"codeCreancier\": \"1001\",\n                    \"descriptionCreancier\": null,\n                    \"listeCreances\": [\n                        {\n                            \"codeCreance\": \"01\",\n                            \"nomCreance\": \"Téléphonie et internet Sim\"\n                        }\n                    ],\n                    \"logoPath\": \"/upload/logos/logo_iam_p.png\",\n                    \"nomCreancier\": \"IAM Recharge\",\n                    \"params\": [\n                        {\n                            \"nomChamp\": \"publicDomain\",\n                            \"valChamp\": \"https://www.fatourati.ma\"\n                        },\n                        {\n                            \"nomChamp\": \"categorieCode\",\n                            \"valChamp\": \"101\"\n                        }\n                    ],\n                    \"siteWeb\": \"http://www.iam.ma\"\n                },\n                {\n                    \"codeCreancier\": \"1004\",\n                    \"descriptionCreancier\": \"Orange\",\n                    \"listeCreances\": [\n                        {\n                            \"codeCreance\": \"05\",\n                            \"nomCreance\": \"Paiement particulier par CIN ou autres\"\n                        },\n                        {\n                            \"codeCreance\": \"03\",\n                            \"nomCreance\": \"Paiement particulier par N de téléphone\"\n                        },\n                        {\n                            \"codeCreance\": \"02\",\n                            \"nomCreance\": \"Téléphonie et internet pour Entreprises\"\n                        },\n                        {\n                            \"codeCreance\": \"06\",\n                            \"nomCreance\": \"Avance Tasbik\"\n                        }\n                    ],\n                    \"logoPath\": \"/upload/logos/logo_meditel.png\",\n                    \"nomCreancier\": \"Orange Factures\",\n                    \"params\": [\n                        {\n                            \"nomChamp\": \"publicDomain\",\n                            \"valChamp\": \"https://www.fatourati.ma\"\n                        },\n                        {\n                            \"nomChamp\": \"categorieCode\",\n                            \"valChamp\": \"101\"\n                        }\n                    ],\n                    \"siteWeb\": \"http://www.orange.ma/\"\n                },\n                {\n                    \"codeCreancier\": \"1003\",\n                    \"descriptionCreancier\": \"Orange\",\n                    \"listeCreances\": [\n                        {\n                            \"codeCreance\": \"01\",\n                            \"nomCreance\": \"Orange recharge Sim\"\n                        }\n                    ],\n                    \"logoPath\": \"/upload/logos/logo_meditel.png\",\n                    \"nomCreancier\": \"Orange Recharges et Catalogue Pass\",\n                    \"params\": [\n                        {\n                            \"nomChamp\": \"publicDomain\",\n                            \"valChamp\": \"https://www.fatourati.ma\"\n                        },\n                        {\n                            \"nomChamp\": \"categorieCode\",\n                            \"valChamp\": \"101\"\n                        }\n                    ],\n                    \"siteWeb\": \"http://www.orange.ma/\"\n                },\n                {\n                    \"codeCreancier\": \"1138\",\n                    \"descriptionCreancier\": null,\n                    \"listeCreances\": [\n                        {\n                            \"codeCreance\": \"01\",\n                            \"nomCreance\": \"Paiement Orange Yoxo\"\n                        }\n                    ],\n                    \"logoPath\": \"/upload/logos/1138.jpg\",\n                    \"nomCreancier\": \"Yoxo By Orange\",\n                    \"params\": [\n                        {\n                            \"nomChamp\": \"publicDomain\",\n                            \"valChamp\": \"https://www.fatourati.ma\"\n                        },\n                        {\n                            \"nomChamp\": \"categorieCode\",\n                            \"valChamp\": \"101\"\n                        }\n                    ],\n                    \"siteWeb\": \"http://www.orange.ma/\"\n                },\n                {\n                    \"codeCreancier\": \"1018\",\n                    \"descriptionCreancier\": null,\n                    \"listeCreances\": [\n                        {\n                            \"codeCreance\": \"01\",\n                            \"nomCreance\": \"Téléphonie et internet Sim\"\n                        },\n                        {\n                            \"codeCreance\": \"03\",\n                            \"nomCreance\": \"Téléphonie et internet v2\"\n                        }\n                    ],\n                    \"logoPath\": \"/upload/logos/logo_inwi_p.png\",\n                    \"nomCreancier\": \"inwi Factures\",\n                    \"params\": [\n                        {\n                            \"nomChamp\": \"publicDomain\",\n                            \"valChamp\": \"https://www.fatourati.ma\"\n                        },\n                        {\n                            \"nomChamp\": \"categorieCode\",\n                            \"valChamp\": \"101\"\n                        }\n                    ],\n                    \"siteWeb\": \"http://www.inwi.ma\"\n                },\n                {\n                    \"codeCreancier\": \"1013\",\n                    \"descriptionCreancier\": null,\n                    \"listeCreances\": [\n                        {\n                            \"codeCreance\": \"01\",\n                            \"nomCreance\": \"Téléphonie et internet Sim\"\n                        }\n                    ],\n                    \"logoPath\": \"/upload/logos/logo_inwi_p.png\",\n                    \"nomCreancier\": \"inwi Recharges\",\n                    \"params\": [\n                        {\n                            \"nomChamp\": \"publicDomain\",\n                            \"valChamp\": \"https://www.fatourati.ma\"\n                        },\n                        {\n                            \"nomChamp\": \"categorieCode\",\n                            \"valChamp\": \"101\"\n                        }\n                    ],\n                    \"siteWeb\": \"http://www.inwi.ma\"\n                }\n            ]\n        },\n        {\n            \"categoryName\": \"Eau et électricité\",\n            \"categoryDescription\": \"Eau et électricité\",\n            \"categoryCode\": \"102\",\n            \"order\": 2,\n            \"listeCreanciersListe\": [\n                {\n                    \"codeCreancier\": \"1008\",\n                    \"descriptionCreancier\": null,\n                    \"listeCreances\": [\n                        {\n                            \"codeCreance\": \"01\",\n                            \"nomCreance\": \"Factures Amendis Tanger\"\n                        }\n                    ],\n                    \"logoPath\": \"/upload/logos/logo_amendis_p.jpg\",\n                    \"nomCreancier\": \"Amendis Tanger\",\n                    \"params\": [\n                        {\n                            \"nomChamp\": \"publicDomain\",\n                            \"valChamp\": \"https://www.fatourati.ma\"\n                        },\n                        {\n                            \"nomChamp\": \"categorieCode\",\n                            \"valChamp\": \"102\"\n                        }\n                    ],\n                    \"siteWeb\": \"http://www.amendis.ma\"\n                },\n                {\n                    \"codeCreancier\": \"1009\",\n                    \"descriptionCreancier\": null,\n                    \"listeCreances\": [\n                        {\n                            \"codeCreance\": \"01\",\n                            \"nomCreance\": \"Factures Amendis Tetouan\"\n                        }\n                    ],\n                    \"logoPath\": \"/upload/logos/logo_amendis_p.jpg\",\n                    \"nomCreancier\": \"Amendis Tetouan\",\n                    \"params\": [\n                        {\n                            \"nomChamp\": \"publicDomain\",\n                            \"valChamp\": \"https://www.fatourati.ma\"\n                        },\n                        {\n                            \"nomChamp\": \"categorieCode\",\n                            \"valChamp\": \"102\"\n                        }\n                    ],\n                    \"siteWeb\": \"http://www.amendis.ma\"\n                },\n                {\n                    \"codeCreancier\": \"1039\",\n                    \"descriptionCreancier\": null,\n                    \"listeCreances\": [\n                        {\n                            \"codeCreance\": \"02\",\n                            \"nomCreance\": \"Paiement par Nï¿½ facture\"\n                        },\n                        {\n                            \"codeCreance\": \"01\",\n                            \"nomCreance\": \"Paiement par Nï¿½ contrat\"\n                        }\n                    ],\n                    \"logoPath\": \"/upload/logos/logo_onee-be.jpg\",\n                    \"nomCreancier\": \"ONEE-BE\",\n                    \"params\": [\n                        {\n                            \"nomChamp\": \"publicDomain\",\n                            \"valChamp\": \"https://www.fatourati.ma\"\n                        },\n                        {\n                            \"nomChamp\": \"categorieCode\",\n                            \"valChamp\": \"102\"\n                        }\n                    ],\n                    \"siteWeb\": \"http://www.one.org.ma\"\n                },\n                {\n                    \"codeCreancier\": \"1040\",\n                    \"descriptionCreancier\": \"La régie autonome intercommunale de distribution d'eau et d'électricité de la Province de Larache\",\n                    \"listeCreances\": [\n                        {\n                            \"codeCreance\": \"03\",\n                            \"nomCreance\": \"Paiement par Num Dossier\"\n                        },\n                        {\n                            \"codeCreance\": \"01\",\n                            \"nomCreance\": \"Factures RADEEL\"\n                        }\n                    ],\n                    \"logoPath\": \"/upload/logos/1040.jpg\",\n                    \"nomCreancier\": \"RADEEL\",\n                    \"params\": [\n                        {\n                            \"nomChamp\": \"publicDomain\",\n                            \"valChamp\": \"https://www.fatourati.ma\"\n                        },\n                        {\n                            \"nomChamp\": \"categorieCode\",\n                            \"valChamp\": \"102\"\n                        }\n                    ],\n                    \"siteWeb\": \"http://www.radeel.ma\"\n                },\n                {\n                    \"codeCreancier\": \"1007\",\n                    \"descriptionCreancier\": null,\n                    \"listeCreances\": [\n                        {\n                            \"codeCreance\": \"01\",\n                            \"nomCreance\": \"Factures Redal\"\n                        }\n                    ],\n                    \"logoPath\": \"/upload/logos/logo_redal_p.jpg\",\n                    \"nomCreancier\": \"Redal\",\n                    \"params\": [\n                        {\n                            \"nomChamp\": \"publicDomain\",\n                            \"valChamp\": \"https://www.fatourati.ma\"\n                        },\n                        {\n                            \"nomChamp\": \"categorieCode\",\n                            \"valChamp\": \"102\"\n                        }\n                    ],\n                    \"siteWeb\": \"http://www.redal.ma\"\n                },\n                {\n                    \"codeCreancier\": \"1005\",\n                    \"descriptionCreancier\": \"Distribution d'eau et d'électricité. Services d'assainisement. Maintenance de l'éclairage public de Casablanca. Certification ISO 9001/2000 (2005).\",\n                    \"listeCreances\": [\n                        {\n                            \"codeCreance\": \"04\",\n                            \"nomCreance\": \"Paiement par CIN TEST\"\n                        },\n                        {\n                            \"codeCreance\": \"03\",\n                            \"nomCreance\": \"Paiement par N de facture TEST\"\n                        },\n                        {\n                            \"codeCreance\": \"02\",\n                            \"nomCreance\": \"Paiement par N de Contrat TEST\"\n                        },\n                        {\n                            \"codeCreance\": \"01\",\n                            \"nomCreance\": \"Paiement par Rï¿½fï¿½rence TEST\"\n                        }\n                    ],\n                    \"logoPath\": \"/upload/logos/1005.jpg\",\n                    \"nomCreancier\": \"SRM Casablanca-Settat (Zone ex LYDEC)\",\n                    \"params\": [\n                        {\n                            \"nomChamp\": \"publicDomain\",\n                            \"valChamp\": \"https://www.fatourati.ma\"\n                        },\n                        {\n                            \"nomChamp\": \"categorieCode\",\n                            \"valChamp\": \"102\"\n                        }\n                    ],\n                    \"siteWeb\": \"http://www.lydec.ma/\"\n                },\n                {\n                    \"codeCreancier\": \"1157\",\n                    \"descriptionCreancier\": \"SRM-CAS\",\n                    \"listeCreances\": [\n                        {\n                            \"codeCreance\": \"01\",\n                            \"nomCreance\": \"Paiement facture SIM\"\n                        }\n                    ],\n                    \"logoPath\": \"/upload/logos/1157.jpg\",\n                    \"nomCreancier\": \"SRM Casablanca-Settat (Zone ex ONEE)\",\n                    \"params\": [\n                        {\n                            \"nomChamp\": \"publicDomain\",\n                            \"valChamp\": \"https://www.fatourati.ma\"\n                        },\n                        {\n                            \"nomChamp\": \"categorieCode\",\n                            \"valChamp\": \"102\"\n                        }\n                    ],\n                    \"siteWeb\": \"http://www.test.ma\"\n                },\n                {\n                    \"codeCreancier\": \"1020\",\n                    \"descriptionCreancier\": null,\n                    \"listeCreances\": [\n                        {\n                            \"codeCreance\": \"01\",\n                            \"nomCreance\": \"Factures RADEEC SIM\"\n                        }\n                    ],\n                    \"logoPath\": \"/upload/logos/1020_new.jpg\",\n                    \"nomCreancier\": \"SRM Casablanca-Settat (Zone ex RADEEC)\",\n                    \"params\": [\n                        {\n                            \"nomChamp\": \"publicDomain\",\n                            \"valChamp\": \"https://www.fatourati.ma\"\n                        },\n                        {\n                            \"nomChamp\": \"categorieCode\",\n                            \"valChamp\": \"102\"\n                        }\n                    ],\n                    \"siteWeb\": \"http://www.radeec.ma\"\n                },\n                {\n                    \"codeCreancier\": \"1172\",\n                    \"descriptionCreancier\": \"SRM-FM\",\n                    \"listeCreances\": [\n                        {\n                            \"codeCreance\": \"01\",\n                            \"nomCreance\": \"Paiement facture\"\n                        }\n                    ],\n                    \"logoPath\": \"/upload/logos/1172.jpg\",\n                    \"nomCreancier\": \"SRM Fès-Meknès (Zone ex ONEE)\",\n                    \"params\": [\n                        {\n                            \"nomChamp\": \"publicDomain\",\n                            \"valChamp\": \"https://www.fatourati.ma\"\n                        },\n                        {\n                            \"nomChamp\": \"categorieCode\",\n                            \"valChamp\": \"102\"\n                        }\n                    ],\n                    \"siteWeb\": \"http://\"\n                },\n                {\n                    \"codeCreancier\": \"1014\",\n                    \"descriptionCreancier\": null,\n                    \"listeCreances\": [\n                        {\n                            \"codeCreance\": \"01\",\n                            \"nomCreance\": \"Paiement par Num de contrat Sim\"\n                        }\n                    ],\n                    \"logoPath\": \"/upload/logos/1014.jpg\",\n                    \"nomCreancier\": \"SRM Fès-Meknès (Zone ex RADEEF)\",\n                    \"params\": [\n                        {\n                            \"nomChamp\": \"publicDomain\",\n                            \"valChamp\": \"https://www.fatourati.ma\"\n                        },\n                        {\n                            \"nomChamp\": \"categorieCode\",\n                            \"valChamp\": \"102\"\n                        }\n                    ],\n                    \"siteWeb\": \"http://www.radeef.ma\"\n                },\n                {\n                    \"codeCreancier\": \"1043\",\n                    \"descriptionCreancier\": null,\n                    \"listeCreances\": [\n                        {\n                            \"codeCreance\": \"01\",\n                            \"nomCreance\": \"Factures RADEETA Sim\"\n                        }\n                    ],\n                    \"logoPath\": \"/upload/logos/1043.jpg\",\n                    \"nomCreancier\": \"SRM Fès-Meknès (Zone ex RADEETA)\",\n                    \"params\": [\n                        {\n                            \"nomChamp\": \"publicDomain\",\n                            \"valChamp\": \"https://www.fatourati.ma\"\n                        },\n                        {\n                            \"nomChamp\": \"categorieCode\",\n                            \"valChamp\": \"102\"\n                        }\n                    ],\n                    \"siteWeb\": \"http://www.radee-ta.ma\"\n                },\n                {\n                    \"codeCreancier\": \"1155\",\n                    \"descriptionCreancier\": \"SRM-ORI\",\n                    \"listeCreances\": [\n                        {\n                            \"codeCreance\": \"01\",\n                            \"nomCreance\": \"Paiement facture\"\n                        }\n                    ],\n                    \"logoPath\": \"/upload/logos/1155.jpg\",\n                    \"nomCreancier\": \"SRM LOriental (Zone ex ONEE)\",\n                    \"params\": [\n                        {\n                            \"nomChamp\": \"publicDomain\",\n                            \"valChamp\": \"https://www.fatourati.ma\"\n                        },\n                        {\n                            \"nomChamp\": \"categorieCode\",\n                            \"valChamp\": \"102\"\n                        }\n                    ],\n                    \"siteWeb\": \"http://www.test.ma\"\n                },\n                {\n                    \"codeCreancier\": \"1154\",\n                    \"descriptionCreancier\": \"SRM-MAS\",\n                    \"listeCreances\": [\n                        {\n                            \"codeCreance\": \"01\",\n                            \"nomCreance\": \"Paiement facture SIM\"\n                        }\n                    ],\n                    \"logoPath\": \"/upload/logos/1154.jpg\",\n                    \"nomCreancier\": \"SRM Marrakech-Safi (Zone ex ONEE)\",\n                    \"params\": [\n                        {\n                            \"nomChamp\": \"publicDomain\",\n                            \"valChamp\": \"https://www.fatourati.ma\"\n                        },\n                        {\n                            \"nomChamp\": \"categorieCode\",\n                            \"valChamp\": \"102\"\n                        }\n                    ],\n                    \"siteWeb\": \"http://www.test.ma\"\n                },\n                {\n                    \"codeCreancier\": \"1010\",\n                    \"descriptionCreancier\": \"La RADEEMA S'occupe de la distribution de l'eau et de l'électricité à Marrakech\",\n                    \"listeCreances\": [\n                        {\n                            \"codeCreance\": \"01\",\n                            \"nomCreance\": \"factures radeema\"\n                        }\n                    ],\n                    \"logoPath\": \"/upload/logos/1010_bis.jpg\",\n                    \"nomCreancier\": \"SRM Marrakech-Safi (Zone ex RADEEMA)\",\n                    \"params\": [\n                        {\n                            \"nomChamp\": \"publicDomain\",\n                            \"valChamp\": \"https://www.fatourati.ma\"\n                        },\n                        {\n                            \"nomChamp\": \"categorieCode\",\n                            \"valChamp\": \"102\"\n                        }\n                    ],\n                    \"siteWeb\": \"http://www.radeema.ma\"\n                },\n                {\n                    \"codeCreancier\": \"1167\",\n                    \"descriptionCreancier\": \"SRM-RSK\",\n                    \"listeCreances\": [\n                        {\n                            \"codeCreance\": \"01\",\n                            \"nomCreance\": \"Paiement par N° de Contrat\"\n                        }\n                    ],\n                    \"logoPath\": \"/upload/logos/1167.jpg\",\n                    \"nomCreancier\": \"SRM Rabat-Salé-Kénitra (Zone ex ONEE)\",\n                    \"params\": [\n                        {\n                            \"nomChamp\": \"publicDomain\",\n                            \"valChamp\": \"https://www.fatourati.ma\"\n                        },\n                        {\n                            \"nomChamp\": \"categorieCode\",\n                            \"valChamp\": \"102\"\n                        }\n                    ],\n                    \"siteWeb\": \"http://www.srm-rsk.ma\"\n                },\n                {\n                    \"codeCreancier\": \"1156\",\n                    \"descriptionCreancier\": \"SRM-SOM\",\n                    \"listeCreances\": [\n                        {\n                            \"codeCreance\": \"01\",\n                            \"nomCreance\": \"Paiement facture SIM\"\n                        }\n                    ],\n                    \"logoPath\": \"/upload/logos/1156.jpg\",\n                    \"nomCreancier\": \"SRM Souss-Massa (Zone ex ONEE)\",\n                    \"params\": [\n                        {\n                            \"nomChamp\": \"publicDomain\",\n                            \"valChamp\": \"https://www.fatourati.ma\"\n                        },\n                        {\n                            \"nomChamp\": \"categorieCode\",\n                            \"valChamp\": \"102\"\n                        }\n                    ],\n                    \"siteWeb\": \"http://www.test.ma\"\n                },\n                {\n                    \"codeCreancier\": \"1015\",\n                    \"descriptionCreancier\": null,\n                    \"listeCreances\": [\n                        {\n                            \"codeCreance\": \"01\",\n                            \"nomCreance\": \"Factures RAMSA\"\n                        }\n                    ],\n                    \"logoPath\": \"/upload/logos/1015.jpg\",\n                    \"nomCreancier\": \"SRM Souss-Massa (Zone ex RAMSA)\",\n                    \"params\": [\n                        {\n                            \"nomChamp\": \"publicDomain\",\n                            \"valChamp\": \"https://www.fatourati.ma\"\n                        },\n                        {\n                            \"nomChamp\": \"categorieCode\",\n                            \"valChamp\": \"102\"\n                        }\n                    ],\n                    \"siteWeb\": \"http://www.ramsa.ma\"\n                },\n                {\n                    \"codeCreancier\": \"1171\",\n                    \"descriptionCreancier\": \"SRM-TTA\",\n                    \"listeCreances\": [\n                        {\n                            \"codeCreance\": \"01\",\n                            \"nomCreance\": \"Paiement facture Sim\"\n                        }\n                    ],\n                    \"logoPath\": \"/upload/logos/1171.jpg\",\n                    \"nomCreancier\": \"SRM Tanger-Tetouan-Al Hoceima (Zone ex ONEE)\",\n                    \"params\": [\n                        {\n                            \"nomChamp\": \"publicDomain\",\n                            \"valChamp\": \"https://www.fatourati.ma\"\n                        },\n                        {\n                            \"nomChamp\": \"categorieCode\",\n                            \"valChamp\": \"102\"\n                        }\n                    ],\n                    \"siteWeb\": \"http://\"\n                }\n            ]\n        },\n        {\n            \"categoryName\": \"Achats Internet\",\n            \"categoryDescription\": \"Achats Internet\",\n            \"categoryCode\": \"103\",\n            \"order\": 3,\n            \"listeCreanciersListe\": [\n                {\n                    \"codeCreancier\": \"1182\",\n                    \"descriptionCreancier\": \"CHARI\",\n                    \"listeCreances\": [\n                        {\n                            \"codeCreance\": \"01\",\n                            \"nomCreance\": \"Payer facture\"\n                        }\n                    ],\n                    \"logoPath\": null,\n                    \"nomCreancier\": \"CHARI\",\n                    \"params\": [\n                        {\n                            \"nomChamp\": \"publicDomain\",\n                            \"valChamp\": \"https://www.fatourati.ma\"\n                        },\n                        {\n                            \"nomChamp\": \"categorieCode\",\n                            \"valChamp\": \"103\"\n                        }\n                    ],\n                    \"siteWeb\": \"https://chari.ma\"\n                },\n                {\n                    \"codeCreancier\": \"1028\",\n                    \"descriptionCreancier\": \"description créances RAM\",\n                    \"listeCreances\": [\n                        {\n                            \"codeCreance\": \"01\",\n                            \"nomCreance\": \"Billeterie RAM\"\n                        }\n                    ],\n                    \"logoPath\": \"/upload/logos/logo_RoyalAirMaroc_p.png\",\n                    \"nomCreancier\": \"Royal Air Maroc\",\n                    \"params\": [\n                        {\n                            \"nomChamp\": \"publicDomain\",\n                            \"valChamp\": \"https://www.fatourati.ma\"\n                        },\n                        {\n                            \"nomChamp\": \"categorieCode\",\n                            \"valChamp\": \"103\"\n                        }\n                    ],\n                    \"siteWeb\": \"http://www.RoyalAirMaroc.com\"\n                }\n            ]\n        },\n        {\n            \"categoryName\": \"Associations\",\n            \"categoryDescription\": \"Associations\",\n            \"categoryCode\": \"104\",\n            \"order\": 4,\n            \"listeCreanciersListe\": [\n                {\n                    \"codeCreancier\": \"1160\",\n                    \"descriptionCreancier\": null,\n                    \"listeCreances\": [\n                        {\n                            \"codeCreance\": \"01\",\n                            \"nomCreance\": \"Dons Anfiq\"\n                        }\n                    ],\n                    \"logoPath\": \"/upload/logos/1160.jpg\",\n                    \"nomCreancier\": \"Anfiq\",\n                    \"params\": [\n                        {\n                            \"nomChamp\": \"publicDomain\",\n                            \"valChamp\": \"https://www.fatourati.ma\"\n                        },\n                        {\n                            \"nomChamp\": \"categorieCode\",\n                            \"valChamp\": \"104\"\n                        }\n                    ],\n                    \"siteWeb\": \"https://anfiq.ma/\"\n                },\n                {\n                    \"codeCreancier\": \"1145\",\n                    \"descriptionCreancier\": null,\n                    \"listeCreances\": [\n                        {\n                            \"codeCreance\": \"01\",\n                            \"nomCreance\": \"Collecte dons séisme Maroc 2023\"\n                        }\n                    ],\n                    \"logoPath\": \"/upload/logos/1145.jpg\",\n                    \"nomCreancier\": \"Collecte dons séisme Maroc 2023\",\n                    \"params\": [\n                        {\n                            \"nomChamp\": \"publicDomain\",\n                            \"valChamp\": \"https://www.fatourati.ma\"\n                        },\n                        {\n                            \"nomChamp\": \"categorieCode\",\n                            \"valChamp\": \"104\"\n                        }\n                    ],\n                    \"siteWeb\": \"http://\"\n                },\n                {\n                    \"codeCreancier\": \"1065\",\n                    \"descriptionCreancier\": null,\n                    \"listeCreances\": [\n                        {\n                            \"codeCreance\": \"01\",\n                            \"nomCreance\": \"ADHERANTS RABAT\"\n                        },\n                        {\n                            \"codeCreance\": \"02\",\n                            \"nomCreance\": \"CENTRE MARRAKECH\"\n                        },\n                        {\n                            \"codeCreance\": \"04\",\n                            \"nomCreance\": \"CENTRE MDIQ\"\n                        },\n                        {\n                            \"codeCreance\": \"03\",\n                            \"nomCreance\": \"CENTRE IFRANE\"\n                        },\n                        {\n                            \"codeCreance\": \"05\",\n                            \"nomCreance\": \"CENTRE AGADIR\"\n                        }\n                    ],\n                    \"logoPath\": \"/upload/logos/1065.jpg\",\n                    \"nomCreancier\": \"Fondation Hassan 2\",\n                    \"params\": [\n                        {\n                            \"nomChamp\": \"publicDomain\",\n                            \"valChamp\": \"https://www.fatourati.ma\"\n                        },\n                        {\n                            \"nomChamp\": \"categorieCode\",\n                            \"valChamp\": \"104\"\n                        }\n                    ],\n                    \"siteWeb\": \"https://www.fondationh2.ma\"\n                },\n                {\n                    \"codeCreancier\": \"1194\",\n                    \"descriptionCreancier\": null,\n                    \"listeCreances\": [\n                        {\n                            \"codeCreance\": \"01\",\n                            \"nomCreance\": \"TENOR - Don libre\"\n                        }\n                    ],\n                    \"logoPath\": null,\n                    \"nomCreancier\": \"Fondation TENOR\",\n                    \"params\": [\n                        {\n                            \"nomChamp\": \"publicDomain\",\n                            \"valChamp\": \"https://www.fatourati.ma\"\n                        },\n                        {\n                            \"nomChamp\": \"categorieCode\",\n                            \"valChamp\": \"104\"\n                        }\n                    ],\n                    \"siteWeb\": \"https://tenorgroup.ma/fondation-tenor/\"\n                }\n            ]\n        },\n        {\n            \"categoryName\": \"Frais administratifs\",\n            \"categoryDescription\": \"Frais administratifs\",\n            \"categoryCode\": \"105\",\n            \"order\": 5,\n            \"listeCreanciersListe\": [\n                {\n                    \"codeCreancier\": \"1030\",\n                    \"descriptionCreancier\": null,\n                    \"listeCreances\": [\n                        {\n                            \"codeCreance\": \"01\",\n                            \"nomCreance\": \"Consultation ANCFCC\"\n                        }\n                    ],\n                    \"logoPath\": \"/upload/logos/logo_ancfcc.jpg\",\n                    \"nomCreancier\": \"ANCFCC - Consultations et commandes\",\n                    \"params\": [\n                        {\n                            \"nomChamp\": \"publicDomain\",\n                            \"valChamp\": \"https://www.fatourati.ma\"\n                        },\n                        {\n                            \"nomChamp\": \"categorieCode\",\n                            \"valChamp\": \"105\"\n                        }\n                    ],\n                    \"siteWeb\": \"http://www.ancfcc.gov.ma\"\n                },\n                {\n                    \"codeCreancier\": \"1076\",\n                    \"descriptionCreancier\": null,\n                    \"listeCreances\": [\n                        {\n                            \"codeCreance\": \"01\",\n                            \"nomCreance\": \"Taxe d'Habitation et Services Communaux\"\n                        }\n                    ],\n                    \"logoPath\": \"/upload/logos/logo_dgi.png\",\n                    \"nomCreancier\": \"DGI  (TH - TSC)\",\n                    \"params\": [\n                        {\n                            \"nomChamp\": \"publicDomain\",\n                            \"valChamp\": \"https://www.fatourati.ma\"\n                        },\n                        {\n                            \"nomChamp\": \"categorieCode\",\n                            \"valChamp\": \"105\"\n                        }\n                    ],\n                    \"siteWeb\": \"https://tax.gov.ma\"\n                },\n                {\n                    \"codeCreancier\": \"1025\",\n                    \"descriptionCreancier\": null,\n                    \"listeCreances\": [\n                        {\n                            \"codeCreance\": \"01\",\n                            \"nomCreance\": \"DGI IR IS TVA DE et FI Sim\"\n                        }\n                    ],\n                    \"logoPath\": \"/upload/logos/logo_dgi.png\",\n                    \"nomCreancier\": \"DGI IR IS TVA DE et FI\",\n                    \"params\": [\n                        {\n                            \"nomChamp\": \"publicDomain\",\n                            \"valChamp\": \"https://www.fatourati.ma\"\n                        },\n                        {\n                            \"nomChamp\": \"categorieCode\",\n                            \"valChamp\": \"105\"\n                        }\n                    ],\n                    \"siteWeb\": \"http://www.tax.gov.ma\"\n                },\n                {\n                    \"codeCreancier\": \"1022\",\n                    \"descriptionCreancier\": null,\n                    \"listeCreances\": [\n                        {\n                            \"codeCreance\": \"01\",\n                            \"nomCreance\": \"Taxe Spéciale Annuelle sur Véhicule\"\n                        }\n                    ],\n                    \"logoPath\": \"/upload/logos/logo_dgi.png\",\n                    \"nomCreancier\": \"Paiement de vignette (TSAV)\",\n                    \"params\": [\n                        {\n                            \"nomChamp\": \"publicDomain\",\n                            \"valChamp\": \"https://www.fatourati.ma\"\n                        },\n                        {\n                            \"nomChamp\": \"categorieCode\",\n                            \"valChamp\": \"105\"\n                        }\n                    ],\n                    \"siteWeb\": \"http://www.tax.gov.ma\"\n                },\n                {\n                    \"codeCreancier\": \"1188\",\n                    \"descriptionCreancier\": null,\n                    \"listeCreances\": [\n                        {\n                            \"codeCreance\": \"01\",\n                            \"nomCreance\": \"Ministère des Habous et des Affaires Islamiques SIM\"\n                        },\n                        {\n                            \"codeCreance\": \"02\",\n                            \"nomCreance\": \"Agences de Voyage SIM\"\n                        }\n                    ],\n                    \"logoPath\": \"/upload/logos/1188.jpg\",\n                    \"nomCreancier\": \"Pèlerinage - paiement des frais\",\n                    \"params\": [\n                        {\n                            \"nomChamp\": \"publicDomain\",\n                            \"valChamp\": \"https://www.fatourati.ma\"\n                        },\n                        {\n                            \"nomChamp\": \"categorieCode\",\n                            \"valChamp\": \"105\"\n                        }\n                    ],\n                    \"siteWeb\": \"http://\"\n                },\n                {\n                    \"codeCreancier\": \"1006\",\n                    \"descriptionCreancier\": \"la TGR propose le service de paiement en ligne de la taxe\\n\",\n                    \"listeCreances\": [\n                        {\n                            \"codeCreance\": \"01\",\n                            \"nomCreance\": \"TGR Taxes, Douane, Amendes\"\n                        }\n                    ],\n                    \"logoPath\": \"/upload/logos/logo_tgr_g.gif\",\n                    \"nomCreancier\": \"TGR-Taxes, Douane, Amendes\",\n                    \"params\": [\n                        {\n                            \"nomChamp\": \"publicDomain\",\n                            \"valChamp\": \"https://www.fatourati.ma\"\n                        },\n                        {\n                            \"nomChamp\": \"categorieCode\",\n                            \"valChamp\": \"105\"\n                        }\n                    ],\n                    \"siteWeb\": \"http://www.tgr.gov.ma\"\n                }\n            ]\n        },\n        {\n            \"categoryName\": \"Ecoles et universités\",\n            \"categoryDescription\": \"Ecoles et universités\",\n            \"categoryCode\": \"106\",\n            \"order\": 6,\n            \"listeCreanciersListe\": [\n                {\n                    \"codeCreancier\": \"1051\",\n                    \"descriptionCreancier\": null,\n                    \"listeCreances\": [\n                        {\n                            \"codeCreance\": \"02\",\n                            \"nomCreance\": \"Paiement frais Aggr\"\n                        },\n                        {\n                            \"codeCreance\": \"01\",\n                            \"nomCreance\": \"Paiement frais\"\n                        }\n                    ],\n                    \"logoPath\": \"/upload/logos/1051.jpg\",\n                    \"nomCreancier\": \"BOTI SCHOOL\",\n                    \"params\": [\n                        {\n                            \"nomChamp\": \"publicDomain\",\n                            \"valChamp\": \"https://www.fatourati.ma\"\n                        },\n                        {\n                            \"nomChamp\": \"categorieCode\",\n                            \"valChamp\": \"106\"\n                        }\n                    ],\n                    \"siteWeb\": \"https://boti.education\"\n                },\n                {\n                    \"codeCreancier\": \"1158\",\n                    \"descriptionCreancier\": null,\n                    \"listeCreances\": [\n                        {\n                            \"codeCreance\": \"01\",\n                            \"nomCreance\": \"Droits de scolarité\"\n                        },\n                        {\n                            \"codeCreance\": \"02\",\n                            \"nomCreance\": \"Droits de scolarité\"\n                        }\n                    ],\n                    \"logoPath\": \"/upload/logos/1158.jpg\",\n                    \"nomCreancier\": \"Koolskools\",\n                    \"params\": [\n                        {\n                            \"nomChamp\": \"publicDomain\",\n                            \"valChamp\": \"https://www.fatourati.ma\"\n                        },\n                        {\n                            \"nomChamp\": \"categorieCode\",\n                            \"valChamp\": \"106\"\n                        }\n                    ],\n                    \"siteWeb\": \"http://koolskools\"\n                }\n            ]\n        },\n        {\n            \"categoryName\": \"Autres Services\",\n            \"categoryDescription\": \"Autres Services\",\n            \"categoryCode\": \"108\",\n            \"order\": 8,\n            \"listeCreanciersListe\": [\n                {\n                    \"codeCreancier\": \"1024\",\n                    \"descriptionCreancier\": null,\n                    \"listeCreances\": [\n                        {\n                            \"codeCreance\": \"01\",\n                            \"nomCreance\": \"Recharge Jawaz\"\n                        }\n                    ],\n                    \"logoPath\": \"/upload/logos/logo_adm.jpg\",\n                    \"nomCreancier\": \"Autoroutes du Maroc\",\n                    \"params\": [\n                        {\n                            \"nomChamp\": \"publicDomain\",\n                            \"valChamp\": \"https://www.fatourati.ma\"\n                        },\n                        {\n                            \"nomChamp\": \"categorieCode\",\n                            \"valChamp\": \"108\"\n                        }\n                    ],\n                    \"siteWeb\": \"http://www.adm.co.ma\"\n                },\n                {\n                    \"codeCreancier\": \"9999\",\n                    \"descriptionCreancier\": \"FATOURATI\",\n                    \"listeCreances\": [\n                        {\n                            \"codeCreance\": \"01\",\n                            \"nomCreance\": \"Paiement Fatourati 01 SIM\"\n                        }\n                    ],\n                    \"logoPath\": \"/upload/logos/9999.jpg\",\n                    \"nomCreancier\": \"FATOURATI\",\n                    \"params\": [\n                        {\n                            \"nomChamp\": \"publicDomain\",\n                            \"valChamp\": \"https://www.fatourati.ma\"\n                        },\n                        {\n                            \"nomChamp\": \"categorieCode\",\n                            \"valChamp\": \"108\"\n                        }\n                    ],\n                    \"siteWeb\": \"http://www.cmi.co.ma\"\n                },\n                {\n                    \"codeCreancier\": \"1147\",\n                    \"descriptionCreancier\": \"Orange\",\n                    \"listeCreances\": [\n                        {\n                            \"codeCreance\": \"01\",\n                            \"nomCreance\": \"Paiement service\"\n                        }\n                    ],\n                    \"logoPath\": \"/upload/logos/logo_meditel.png\",\n                    \"nomCreancier\": \"Orange eBoutique\",\n                    \"params\": [\n                        {\n                            \"nomChamp\": \"publicDomain\",\n                            \"valChamp\": \"https://www.fatourati.ma\"\n                        },\n                        {\n                            \"nomChamp\": \"categorieCode\",\n                            \"valChamp\": \"108\"\n                        }\n                    ],\n                    \"siteWeb\": \"http://\"\n                }\n            ]\n        }\n    ]\n}"
+            }
+          ]
+        },
+        {
+          "name": "Creance",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": ""
+            },
+            "url": {
+              "raw": "{{host}}/api/bills/creances?creancierId=1001",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "api",
+                "bills",
+                "creances"
+              ],
+              "query": [
+                {
+                  "key": "creancierId",
+                  "value": "1001"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Creance",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": ""
+                },
+                "url": {
+                  "raw": "{{host}}/api/bills/creances?creancierId=1002",
+                  "host": [
+                    "{{host}}"
+                  ],
+                  "path": [
+                    "api",
+                    "bills",
+                    "creances"
+                  ],
+                  "query": [
+                    {
+                      "key": "creancierId",
+                      "value": "1002"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": ":status",
+                  "value": 200
+                },
+                {
+                  "key": "date",
+                  "value": "Wed, 29 Jul 2026 19:09:22 GMT"
+                },
+                {
+                  "key": "content-type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "x-content-type-options",
+                  "value": "nosniff"
+                },
+                {
+                  "key": "x-frame-options",
+                  "value": "DENY"
+                },
+                {
+                  "key": "strict-transport-security",
+                  "value": "max-age=31536000; includeSubDomains"
+                },
+                {
+                  "key": "content-security-policy",
+                  "value": "default-src 'none'; frame-ancestors 'none'"
+                },
+                {
+                  "key": "permissions-policy",
+                  "value": "accelerometer=(), camera=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()"
+                },
+                {
+                  "key": "referrer-policy",
+                  "value": "strict-origin-when-cross-origin"
+                },
+                {
+                  "key": "x-permitted-cross-domain-policies",
+                  "value": "none"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"data\": {\n        \"collection\": [\n            {\n                \"codeCreance\": \"03\",\n                \"nomCreance\": \"Produit Internet Sim\"\n            },\n            {\n                \"codeCreance\": \"01\",\n                \"nomCreance\": \"Produit Fixe Sim\"\n            },\n            {\n                \"codeCreance\": \"02\",\n                \"nomCreance\": \"Produit Mobile Sim\"\n            },\n            {\n                \"codeCreance\": \"04\",\n                \"nomCreance\": \"Payer une avance\"\n            }\n        ],\n        \"count\": 4\n    }\n}"
+            }
+          ]
+        },
+        {
+          "name": "form",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": ""
+            },
+            "url": {
+              "raw": "{{host}}/api/bills/form?creancierId=1003&creanceId=01",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "api",
+                "bills",
+                "form"
+              ],
+              "query": [
+                {
+                  "key": "creancierId",
+                  "value": "1003"
+                },
+                {
+                  "key": "creanceId",
+                  "value": "01"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "form",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "https://sandbox.charimoney.com/api/fatourati/form?creancierId=1002&creanceId=03",
+                  "protocol": "https",
+                  "host": [
+                    "sandbox",
+                    "charimoney",
+                    "com"
+                  ],
+                  "path": [
+                    "api",
+                    "fatourati",
+                    "form"
+                  ],
+                  "query": [
+                    {
+                      "key": "creancierId",
+                      "value": "1002"
+                    },
+                    {
+                      "key": "creanceId",
+                      "value": "03"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "Text",
+              "header": [
+                {
+                  "key": "Date",
+                  "value": "Mon, 24 Nov 2025 08:48:13 GMT"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Transfer-Encoding",
+                  "value": "chunked"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Server",
+                  "value": "Kestrel"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"data\": {\n        \"collection\": [\n            {\n                \"contrainte\": \"1\",\n                \"formatChamp\": \"2\",\n                \"libelle\": \"Identifiant de paiement\",\n                \"listVals\": [],\n                \"nomChamp\": \"ND\",\n                \"tailleMax\": 100,\n                \"tailleMin\": 1,\n                \"typeChamp\": \"text\"\n            }\n        ],\n        \"count\": 1\n    }\n}"
+            },
+            {
+              "name": "form",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": ""
+                },
+                "url": {
+                  "raw": "{{host}}/api/bills/form?creancierId=1002&creanceId=01",
+                  "host": [
+                    "{{host}}"
+                  ],
+                  "path": [
+                    "api",
+                    "bills",
+                    "form"
+                  ],
+                  "query": [
+                    {
+                      "key": "creancierId",
+                      "value": "1002"
+                    },
+                    {
+                      "key": "creanceId",
+                      "value": "01"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": ":status",
+                  "value": 200
+                },
+                {
+                  "key": "date",
+                  "value": "Wed, 29 Jul 2026 19:10:29 GMT"
+                },
+                {
+                  "key": "content-type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "x-content-type-options",
+                  "value": "nosniff"
+                },
+                {
+                  "key": "x-frame-options",
+                  "value": "DENY"
+                },
+                {
+                  "key": "strict-transport-security",
+                  "value": "max-age=31536000; includeSubDomains"
+                },
+                {
+                  "key": "content-security-policy",
+                  "value": "default-src 'none'; frame-ancestors 'none'"
+                },
+                {
+                  "key": "permissions-policy",
+                  "value": "accelerometer=(), camera=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()"
+                },
+                {
+                  "key": "referrer-policy",
+                  "value": "strict-origin-when-cross-origin"
+                },
+                {
+                  "key": "x-permitted-cross-domain-policies",
+                  "value": "none"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"data\": {\n        \"collection\": [\n            {\n                \"contrainte\": \"1\",\n                \"formatChamp\": \"2\",\n                \"libelle\": \"Numéro de téléphone fixe\",\n                \"listVals\": [],\n                \"nomChamp\": \"ND\",\n                \"tailleMax\": 100,\n                \"tailleMin\": 1,\n                \"typeChamp\": \"text\"\n            },\n            {\n                \"contrainte\": \"1\",\n                \"formatChamp\": \"1\",\n                \"libelle\": \"Code confidentiel\",\n                \"listVals\": [],\n                \"nomChamp\": \"Fidelio\",\n                \"tailleMax\": 4,\n                \"tailleMin\": 4,\n                \"typeChamp\": \"text\"\n            }\n        ],\n        \"count\": 2\n    }\n}"
+            },
+            {
+              "name": "form",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": ""
+                },
+                "url": {
+                  "raw": "{{host}}/api/bills/form?creancierId=1001&creanceId=01",
+                  "host": [
+                    "{{host}}"
+                  ],
+                  "path": [
+                    "api",
+                    "bills",
+                    "form"
+                  ],
+                  "query": [
+                    {
+                      "key": "creancierId",
+                      "value": "1001"
+                    },
+                    {
+                      "key": "creanceId",
+                      "value": "01"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": ":status",
+                  "value": 200
+                },
+                {
+                  "key": "date",
+                  "value": "Wed, 29 Jul 2026 19:11:43 GMT"
+                },
+                {
+                  "key": "content-type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "x-content-type-options",
+                  "value": "nosniff"
+                },
+                {
+                  "key": "x-frame-options",
+                  "value": "DENY"
+                },
+                {
+                  "key": "strict-transport-security",
+                  "value": "max-age=31536000; includeSubDomains"
+                },
+                {
+                  "key": "content-security-policy",
+                  "value": "default-src 'none'; frame-ancestors 'none'"
+                },
+                {
+                  "key": "permissions-policy",
+                  "value": "accelerometer=(), camera=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()"
+                },
+                {
+                  "key": "referrer-policy",
+                  "value": "strict-origin-when-cross-origin"
+                },
+                {
+                  "key": "x-permitted-cross-domain-policies",
+                  "value": "none"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"data\": {\n        \"collection\": [\n            {\n                \"contrainte\": \"1\",\n                \"formatChamp\": \"2\",\n                \"libelle\": \"Numéro de téléphone\",\n                \"listVals\": [],\n                \"nomChamp\": \"ND\",\n                \"tailleMax\": 10,\n                \"tailleMin\": 10,\n                \"typeChamp\": \"text\"\n            },\n            {\n                \"contrainte\": \"1\",\n                \"formatChamp\": \"1\",\n                \"libelle\": \"Montant\",\n                \"listVals\": [\n                    \"10\",\n                    \"20\",\n                    \"30\",\n                    \"50\",\n                    \"100\",\n                    \"200\",\n                    \"300\"\n                ],\n                \"nomChamp\": \"montant\",\n                \"tailleMax\": 10,\n                \"tailleMin\": 0,\n                \"typeChamp\": \"select\"\n            }\n        ],\n        \"count\": 2\n    }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Impayes",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "// {\r\n//     \"qrcodecontent\": \"ZI3qynFphbr00HgLL164D+opiMtTapDYaACl1dP2sGx\\/+s6GOT35vj9IkOsUvifPHMbeI87uRsHBeJXjRx1SlSbDoB8frAZLTgMOg0I3a0g8gdRGHWRp6cShYpSJXlMF\"\r\n// }\r\n\r\n// creancierId=1001&creanceId=01\r\n\r\n{\r\n    \"Alias\": \"Hamz\",\r\n    \"AddToFavorites\": true,\r\n    \"creancierVals\": [\r\n        {\r\n            \"nomChamp\": \"ND\",\r\n            \"valChamp\": \"0669440735\"\r\n        },\r\n          {\r\n            \"nomChamp\": \"montant\",\r\n            \"valChamp\": \"20\"\r\n        }\r\n    ]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{host}}/api/bills/impayes?creancierId=1003&creanceId=01&phoneNumber=+212669440735",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "api",
+                "bills",
+                "impayes"
+              ],
+              "query": [
+                {
+                  "key": "creancierId",
+                  "value": "1003"
+                },
+                {
+                  "key": "creanceId",
+                  "value": "01"
+                },
+                {
+                  "key": "phoneNumber",
+                  "value": "+212669440735"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Impayes",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"CreancierVals\" : \r\n        [\r\n            {\r\n                \"nomChamp\" : \"ND\",\r\n                \"valChamp\" : \"15527438\"\r\n            }\r\n        ]\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "https://sandbox.charimoney.com/api/fatourati/impayes?creancierId=1002&creanceId=03",
+                  "protocol": "https",
+                  "host": [
+                    "sandbox",
+                    "charimoney",
+                    "com"
+                  ],
+                  "path": [
+                    "api",
+                    "fatourati",
+                    "impayes"
+                  ],
+                  "query": [
+                    {
+                      "key": "creancierId",
+                      "value": "1002"
+                    },
+                    {
+                      "key": "creanceId",
+                      "value": "03"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "Text",
+              "header": [
+                {
+                  "key": "Date",
+                  "value": "Mon, 24 Nov 2025 09:03:13 GMT"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Transfer-Encoding",
+                  "value": "chunked"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Server",
+                  "value": "Kestrel"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"data\": {\n        \"globalParams\": [\n            {\n                \"libelle\": \"NUMERO DE TELEPHONE\",\n                \"nomChamp\": \"ND\",\n                \"valeurChamp\": \"15527438\"\n            }\n        ],\n        \"impayesParams\": [\n            {\n                \"dateFacture\": \"01/04/2009\",\n                \"description\": \"0001198391052009\",\n                \"extraArticleParams\": null,\n                \"idArticle\": \"0001198391052009\",\n                \"prixTTC\": \"168.00\",\n                \"typeArticle\": 0\n            },\n            {\n                \"dateFacture\": \"01/03/2009\",\n                \"description\": \"0000682190042009\",\n                \"extraArticleParams\": null,\n                \"idArticle\": \"0000682190042009\",\n                \"prixTTC\": \"168.00\",\n                \"typeArticle\": 0\n            },\n            {\n                \"dateFacture\": \"01/02/2009\",\n                \"description\": \"0000829302032009\",\n                \"extraArticleParams\": null,\n                \"idArticle\": \"0000829302032009\",\n                \"prixTTC\": \"168.00\",\n                \"typeArticle\": 0\n            }\n        ],\n        \"montantTotalTTCField\": \"504.00\",\n        \"nbreCreances\": 3,\n        \"refTxFatourati\": \"100003282286\",\n        \"seuilMinimal\": null,\n        \"typeFrais\": null,\n        \"valeurFrais\": null\n    }\n}"
+            },
+            {
+              "name": "Impayes",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"Alias\": \"Test 2\",\r\n    //\"AddToFavorites\": true,\r\n    \"creancierVals\": [\r\n        {\r\n            \"nomChamp\": \"matricule\",\r\n            \"valChamp\": \"63467A26\"\r\n        },\r\n        {\r\n            \"nomChamp\": \"puissance_fiscale\",\r\n            \"valChamp\": \"6\"\r\n        },\r\n        {\r\n            \"nomChamp\": \"carburant_type\",\r\n            \"valChamp\": \"DIESEL\"\r\n        },\r\n        {\r\n            \"nomChamp\": \"periode_annee\",\r\n            \"valChamp\": \"2018\"\r\n        }\r\n    ]\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{host}}/api/fatourati/impayes?creancierId=1022&creanceId=01&phoneNumber=+212670770743",
+                  "host": [
+                    "{{host}}"
+                  ],
+                  "path": [
+                    "api",
+                    "fatourati",
+                    "impayes"
+                  ],
+                  "query": [
+                    {
+                      "key": "creancierId",
+                      "value": "1022"
+                    },
+                    {
+                      "key": "creanceId",
+                      "value": "01"
+                    },
+                    {
+                      "key": "phoneNumber",
+                      "value": "+212670770743"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "Text",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Date",
+                  "value": "Sat, 09 May 2026 14:17:43 GMT"
+                },
+                {
+                  "key": "Transfer-Encoding",
+                  "value": "chunked"
+                },
+                {
+                  "key": "X-Content-Type-Options",
+                  "value": "nosniff"
+                },
+                {
+                  "key": "X-Frame-Options",
+                  "value": "DENY"
+                },
+                {
+                  "key": "Strict-Transport-Security",
+                  "value": "max-age=31536000; includeSubDomains"
+                },
+                {
+                  "key": "Content-Security-Policy",
+                  "value": "default-src 'none'; frame-ancestors 'none'"
+                },
+                {
+                  "key": "Permissions-Policy",
+                  "value": "accelerometer=(), camera=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()"
+                },
+                {
+                  "key": "Referrer-Policy",
+                  "value": "strict-origin-when-cross-origin"
+                },
+                {
+                  "key": "X-Permitted-Cross-Domain-Policies",
+                  "value": "none"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"data\": {\n        \"globalParams\": [\n            {\n                \"libelle\": \"Véhicule\",\n                \"nomChamp\": \"marque\",\n                \"valeurChamp\": \"PEUGEOT\"\n            },\n            {\n                \"libelle\": \"Immatriculation\",\n                \"nomChamp\": \"matricule\",\n                \"valeurChamp\": \"63467A26\"\n            },\n            {\n                \"libelle\": \"Puissance fiscale\",\n                \"nomChamp\": \"puissance_fiscale\",\n                \"valeurChamp\": \"6\"\n            },\n            {\n                \"libelle\": \"Type carburant\",\n                \"nomChamp\": \"carburant_type\",\n                \"valeurChamp\": \"DIESEL\"\n            },\n            {\n                \"libelle\": \"Année\",\n                \"nomChamp\": \"periode_annee\",\n                \"valeurChamp\": \"2018\"\n            }\n        ],\n        \"impayesParams\": [\n            {\n                \"dateFacture\": \"2018\",\n                \"description\": \"Montant principal : 700.00 <br/> Pénalités : 0 <br/>  Majoration de retard : 100\",\n                \"extraArticleParams\": null,\n                \"idArticle\": \"63467A26\",\n                \"prixTTC\": \"800.00\",\n                \"typeArticle\": 0\n            }\n        ],\n        \"montantTotalTTCField\": \"800.00\",\n        \"nbreCreances\": 1,\n        \"refTxFatourati\": \"100003583315\",\n        \"seuilMinimal\": null,\n        \"typeFrais\": null,\n        \"valeurFrais\": null\n    }\n}"
+            },
+            {
+              "name": "Impayes",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "// {\r\n//     \"qrcodecontent\": \"ZI3qynFphbr00HgLL164D+opiMtTapDYaACl1dP2sGx\\/+s6GOT35vj9IkOsUvifPHMbeI87uRsHBeJXjRx1SlSbDoB8frAZLTgMOg0I3a0g8gdRGHWRp6cShYpSJXlMF\"\r\n// }\r\n\r\n// creancierId=1001&creanceId=01\r\n\r\n{\r\n    \"Alias\": \"Hamz\",\r\n    \"AddToFavorites\": true,\r\n    \"creancierVals\": [\r\n        {\r\n            \"nomChamp\": \"ND\",\r\n            \"valChamp\": \"0669440735\"\r\n        },\r\n          {\r\n            \"nomChamp\": \"montant\",\r\n            \"valChamp\": \"10\"\r\n        }\r\n    ]\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{host}}/api/bills/impayes?creancierId=1001&creanceId=01&phoneNumber=+212669440735",
+                  "host": [
+                    "{{host}}"
+                  ],
+                  "path": [
+                    "api",
+                    "bills",
+                    "impayes"
+                  ],
+                  "query": [
+                    {
+                      "key": "creancierId",
+                      "value": "1001"
+                    },
+                    {
+                      "key": "creanceId",
+                      "value": "01"
+                    },
+                    {
+                      "key": "phoneNumber",
+                      "value": "+212669440735"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": ":status",
+                  "value": 200
+                },
+                {
+                  "key": "date",
+                  "value": "Wed, 29 Jul 2026 19:21:40 GMT"
+                },
+                {
+                  "key": "content-type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "x-content-type-options",
+                  "value": "nosniff"
+                },
+                {
+                  "key": "x-frame-options",
+                  "value": "DENY"
+                },
+                {
+                  "key": "strict-transport-security",
+                  "value": "max-age=31536000; includeSubDomains"
+                },
+                {
+                  "key": "content-security-policy",
+                  "value": "default-src 'none'; frame-ancestors 'none'"
+                },
+                {
+                  "key": "permissions-policy",
+                  "value": "accelerometer=(), camera=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()"
+                },
+                {
+                  "key": "referrer-policy",
+                  "value": "strict-origin-when-cross-origin"
+                },
+                {
+                  "key": "x-permitted-cross-domain-policies",
+                  "value": "none"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"data\": {\n        \"globalParams\": [\n            {\n                \"libelle\": \"Numéro de ligne à  recharger\",\n                \"nomChamp\": \"ND\",\n                \"valeurChamp\": \"0669440735\"\n            },\n            {\n                \"libelle\": \"\",\n                \"nomChamp\": \"colAffiche\",\n                \"valeurChamp\": \"3,4\"\n            },\n            {\n                \"libelle\": \"\",\n                \"nomChamp\": \"contrPaiement\",\n                \"valeurChamp\": \"3\"\n            }\n        ],\n        \"impayesParams\": [\n            {\n                \"dateFacture\": null,\n                \"description\": \"RECHARGE NORMALE\",\n                \"extraArticleParams\": null,\n                \"idArticle\": \"1\",\n                \"prixTTC\": \"10\",\n                \"typeArticle\": 0\n            },\n            {\n                \"dateFacture\": null,\n                \"description\": \"Pass SMS *1\",\n                \"extraArticleParams\": null,\n                \"idArticle\": \"2\",\n                \"prixTTC\": \"10\",\n                \"typeArticle\": 0\n            },\n            {\n                \"dateFacture\": null,\n                \"description\": \"Pass National et Internet *2\",\n                \"extraArticleParams\": null,\n                \"idArticle\": \"3\",\n                \"prixTTC\": \"10\",\n                \"typeArticle\": 0\n            },\n            {\n                \"dateFacture\": null,\n                \"description\": \"Pass Internet *3\",\n                \"extraArticleParams\": null,\n                \"idArticle\": \"4\",\n                \"prixTTC\": \"10\",\n                \"typeArticle\": 0\n            },\n            {\n                \"dateFacture\": null,\n                \"description\": \"Pass Reseaux Sociaux *6\",\n                \"extraArticleParams\": null,\n                \"idArticle\": \"5\",\n                \"prixTTC\": \"10\",\n                \"typeArticle\": 0\n            },\n            {\n                \"dateFacture\": null,\n                \"description\": \"Pass Premium *9\",\n                \"extraArticleParams\": null,\n                \"idArticle\": \"6\",\n                \"prixTTC\": \"10\",\n                \"typeArticle\": 0\n            },\n            {\n                \"dateFacture\": null,\n                \"description\": \"Pass Premium *9\",\n                \"extraArticleParams\": null,\n                \"idArticle\": \"6\",\n                \"prixTTC\": \"10\",\n                \"typeArticle\": 0\n            }\n        ],\n        \"montantTotalTTCField\": \"70.00\",\n        \"nbreCreances\": 7,\n        \"refTxFatourati\": \"100003754533\",\n        \"seuilMinimal\": null,\n        \"typeFrais\": null,\n        \"valeurFrais\": null\n    }\n}"
+            },
+            {
+              "name": "Impayes",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "// {\r\n//     \"qrcodecontent\": \"ZI3qynFphbr00HgLL164D+opiMtTapDYaACl1dP2sGx\\/+s6GOT35vj9IkOsUvifPHMbeI87uRsHBeJXjRx1SlSbDoB8frAZLTgMOg0I3a0g8gdRGHWRp6cShYpSJXlMF\"\r\n// }\r\n\r\n// creancierId=1001&creanceId=01\r\n\r\n{\r\n    \"Alias\": \"Hamz\",\r\n    \"AddToFavorites\": true,\r\n    \"creancierVals\": [\r\n        {\r\n            \"nomChamp\": \"ND\",\r\n            \"valChamp\": \"0669440735\"\r\n        },\r\n          {\r\n            \"nomChamp\": \"montant\",\r\n            \"valChamp\": \"20\"\r\n        }\r\n    ]\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{host}}/api/bills/impayes?creancierId=1003&creanceId=01&phoneNumber=+212669440735",
+                  "host": [
+                    "{{host}}"
+                  ],
+                  "path": [
+                    "api",
+                    "bills",
+                    "impayes"
+                  ],
+                  "query": [
+                    {
+                      "key": "creancierId",
+                      "value": "1003"
+                    },
+                    {
+                      "key": "creanceId",
+                      "value": "01"
+                    },
+                    {
+                      "key": "phoneNumber",
+                      "value": "+212669440735"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": ":status",
+                  "value": 200
+                },
+                {
+                  "key": "date",
+                  "value": "Wed, 29 Jul 2026 19:34:18 GMT"
+                },
+                {
+                  "key": "content-type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "x-content-type-options",
+                  "value": "nosniff"
+                },
+                {
+                  "key": "x-frame-options",
+                  "value": "DENY"
+                },
+                {
+                  "key": "strict-transport-security",
+                  "value": "max-age=31536000; includeSubDomains"
+                },
+                {
+                  "key": "content-security-policy",
+                  "value": "default-src 'none'; frame-ancestors 'none'"
+                },
+                {
+                  "key": "permissions-policy",
+                  "value": "accelerometer=(), camera=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()"
+                },
+                {
+                  "key": "referrer-policy",
+                  "value": "strict-origin-when-cross-origin"
+                },
+                {
+                  "key": "x-permitted-cross-domain-policies",
+                  "value": "none"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"data\": {\n        \"globalParams\": [\n            {\n                \"libelle\": \"Numéro de ligne à  recharger\",\n                \"nomChamp\": \"ND\",\n                \"valeurChamp\": \"0669440735\"\n            },\n            {\n                \"libelle\": \"\",\n                \"nomChamp\": \"colAffiche\",\n                \"valeurChamp\": \"3,4\"\n            },\n            {\n                \"libelle\": \"\",\n                \"nomChamp\": \"contrPaiement\",\n                \"valeurChamp\": \"3\"\n            }\n        ],\n        \"impayesParams\": [\n            {\n                \"dateFacture\": null,\n                \"description\": \"Recharge classique\",\n                \"extraArticleParams\": null,\n                \"idArticle\": \"0:0\",\n                \"prixTTC\": \"20\",\n                \"typeArticle\": 0\n            }\n        ],\n        \"montantTotalTTCField\": \"20.00\",\n        \"nbreCreances\": 1,\n        \"refTxFatourati\": \"100003754540\",\n        \"seuilMinimal\": null,\n        \"typeFrais\": null,\n        \"valeurFrais\": null\n    }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Confirm",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"creancierId\": \"1003\",\r\n    \"creanceId\": \"01\",\r\n    \"refTxFatourati\": \"100003754540\",\r\n    \"globalParams\": [\r\n        \r\n              {\r\n                \"libelle\": \"Numéro de ligne à  recharger\",\r\n                \"nomChamp\": \"ND\",\r\n                \"valeurChamp\": \"0669440735\"\r\n            },\r\n            {\r\n                \"libelle\": \"\",\r\n                \"nomChamp\": \"colAffiche\",\r\n                \"valeurChamp\": \"3,4\"\r\n            },\r\n            {\r\n                \"libelle\": \"\",\r\n                \"nomChamp\": \"contrPaiement\",\r\n                \"valeurChamp\": \"3\"\r\n            }\r\n    ],\r\n    \"ListeArticleSelectionnes\": [\r\n          {\r\n                \"dateFacture\": null,\r\n                \"description\": \"Recharge classique\",\r\n                \"extraArticleParams\": null,\r\n                \"idArticle\": \"0:0\",\r\n                \"prixTTC\": \"20\",\r\n                \"typeArticle\": 0\r\n            }\r\n    ]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{host}}/api/bills/confirm?phoneNumber=+212669440735",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "api",
+                "bills",
+                "confirm"
+              ],
+              "query": [
+                {
+                  "key": "creanceId",
+                  "value": "02",
+                  "disabled": true
+                },
+                {
+                  "key": "refTxFatourati",
+                  "value": "100003133700",
+                  "disabled": true
+                },
+                {
+                  "key": "phoneNumber",
+                  "value": "+212669440735"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Confirm",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"creancierId\": \"1002\",\r\n    \"creanceId\": \"03\",\r\n    \"refTxFatourati\": \"100003283069\",\r\n    \"CreancierVals\": [\r\n        {\r\n            \"libelle\": \"Nom\",\r\n            \"nomChamp\": \"AMTAN_CLI_PNOM\",\r\n            \"valeurChamp\": \"ALERGE DE LAREDO \"\r\n        },\r\n        {\r\n            \"libelle\": \"Adresse\",\r\n            \"nomChamp\": \"AMTAN_CLI_ADRESSE\",\r\n            \"valeurChamp\": \"N 15 AV PRINCE MY ADBELLAH. TANGER\"\r\n        }\r\n    ],\r\n    \"ListeArticleSelectionnes\": [\r\n        {\r\n            \"dateFacture\": \"01/04/2009\",\r\n            \"description\": \"0001198391052009\",\r\n            \"extraArticleParams\": null,\r\n            \"idArticle\": \"0001198391052009\",\r\n            \"prixTTC\": \"168.00\",\r\n            \"typeArticle\": 0\r\n        },\r\n        {\r\n            \"dateFacture\": \"01/03/2009\",\r\n            \"description\": \"0000682190042009\",\r\n            \"extraArticleParams\": null,\r\n            \"idArticle\": \"0000682190042009\",\r\n            \"prixTTC\": \"168.00\",\r\n            \"typeArticle\": 0\r\n        },\r\n        {\r\n            \"dateFacture\": \"01/02/2009\",\r\n            \"description\": \"0000829302032009\",\r\n            \"extraArticleParams\": null,\r\n            \"idArticle\": \"0000829302032009\",\r\n            \"prixTTC\": \"168.00\",\r\n            \"typeArticle\": 0\r\n        }\r\n    ]\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{host}}/api/fatourati/confirm?phoneNumber=+212670770743",
+                  "host": [
+                    "{{host}}"
+                  ],
+                  "path": [
+                    "api",
+                    "fatourati",
+                    "confirm"
+                  ],
+                  "query": [
+                    {
+                      "key": "phoneNumber",
+                      "value": "+212670770743"
+                    },
+                    {
+                      "key": "creanceId",
+                      "value": "02",
+                      "disabled": true
+                    },
+                    {
+                      "key": "refTxFatourati",
+                      "value": "100003133700",
+                      "disabled": true
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "Text",
+              "header": [
+                {
+                  "key": "Date",
+                  "value": "Mon, 24 Nov 2025 09:37:38 GMT"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Transfer-Encoding",
+                  "value": "chunked"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Server",
+                  "value": "Kestrel"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"data\": {\n        \"mac\": \"guSbdbjX9GNpS0lOkAiPoQ==\",\n        \"codeAutorisation\": \"9633eb891053\",\n        \"codeDevise\": \"504\",\n        \"codeReconciliation\": \"20251124\",\n        \"codeRetour\": \"000\",\n        \"dateServeur\": \"20251124103737\",\n        \"montantTotalTTC\": \"504.00\",\n        \"msg\": \"succesful\",\n        \"params\": [\n            {\n                \"nomChamp\": \"numCRC\",\n                \"valChamp\": \"115\"\n            },\n            {\n                \"nomChamp\": \"texteCRC\",\n                \"valChamp\": \"En cas de problème, merci de contacter le num 115 en indiquant le num d'autorisation\"\n            },\n            {\n                \"nomChamp\": \"msgGlobal\",\n                \"valChamp\": \"\"\n            }\n        ],\n        \"refReglement\": \"XH4195\",\n        \"refTxSysPmt\": \"827\"\n    }\n}"
+            },
+            {
+              "name": "Confirm",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"creancierId\": \"1003\",\r\n    \"creanceId\": \"01\",\r\n    \"refTxFatourati\": \"100003754540\",\r\n    \"globalParams\": [\r\n        \r\n              {\r\n                \"libelle\": \"Numéro de ligne à  recharger\",\r\n                \"nomChamp\": \"ND\",\r\n                \"valeurChamp\": \"0669440735\"\r\n            },\r\n            {\r\n                \"libelle\": \"\",\r\n                \"nomChamp\": \"colAffiche\",\r\n                \"valeurChamp\": \"3,4\"\r\n            },\r\n            {\r\n                \"libelle\": \"\",\r\n                \"nomChamp\": \"contrPaiement\",\r\n                \"valeurChamp\": \"3\"\r\n            }\r\n    ],\r\n    \"ListeArticleSelectionnes\": [\r\n          {\r\n                \"dateFacture\": null,\r\n                \"description\": \"Recharge classique\",\r\n                \"extraArticleParams\": null,\r\n                \"idArticle\": \"0:0\",\r\n                \"prixTTC\": \"20\",\r\n                \"typeArticle\": 0\r\n            }\r\n    ]\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{host}}/api/bills/confirm?phoneNumber=+212669440735",
+                  "host": [
+                    "{{host}}"
+                  ],
+                  "path": [
+                    "api",
+                    "bills",
+                    "confirm"
+                  ],
+                  "query": [
+                    {
+                      "key": "creanceId",
+                      "value": "02",
+                      "disabled": true
+                    },
+                    {
+                      "key": "refTxFatourati",
+                      "value": "100003133700",
+                      "disabled": true
+                    },
+                    {
+                      "key": "phoneNumber",
+                      "value": "+212669440735"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": ":status",
+                  "value": 200
+                },
+                {
+                  "key": "date",
+                  "value": "Wed, 29 Jul 2026 19:35:31 GMT"
+                },
+                {
+                  "key": "content-type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "x-content-type-options",
+                  "value": "nosniff"
+                },
+                {
+                  "key": "x-frame-options",
+                  "value": "DENY"
+                },
+                {
+                  "key": "strict-transport-security",
+                  "value": "max-age=31536000; includeSubDomains"
+                },
+                {
+                  "key": "content-security-policy",
+                  "value": "default-src 'none'; frame-ancestors 'none'"
+                },
+                {
+                  "key": "permissions-policy",
+                  "value": "accelerometer=(), camera=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()"
+                },
+                {
+                  "key": "referrer-policy",
+                  "value": "strict-origin-when-cross-origin"
+                },
+                {
+                  "key": "x-permitted-cross-domain-policies",
+                  "value": "none"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"data\": {\n        \"operationType\": 25,\n        \"operationId\": 14326,\n        \"amount\": 20,\n        \"feesAmount\": 1,\n        \"totalAmount\": 20,\n        \"reason\": null,\n        \"checkedAt\": \"2026-07-29T19:35:31.4244498Z\",\n        \"creditor\": \"Orange Recharges et Catalogue Pass\",\n        \"debt\": \"Orange recharge Sim\",\n        \"categoryCode\": \"101\",\n        \"category\": \"Téléphone et Internet\",\n        \"authorizationCode\": \"d55994\",\n        \"fatouratiErrorCode\": \"000\"\n    }\n}"
+            }
+          ]
+        },
+        {
+          "name": "invoice",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"creancierId\": \"1003\",\r\n    \"creanceId\": \"01\",\r\n    \"refTxFatourati\": \"100003754540\",\r\n    \"CreancierVals\": [\r\n        \r\n              {\r\n                \"libelle\": \"Numéro de ligne à  recharger\",\r\n                \"nomChamp\": \"ND\",\r\n                \"valeurChamp\": \"0669440735\"\r\n            },\r\n            {\r\n                \"libelle\": \"\",\r\n                \"nomChamp\": \"colAffiche\",\r\n                \"valeurChamp\": \"3,4\"\r\n            },\r\n            {\r\n                \"libelle\": \"\",\r\n                \"nomChamp\": \"contrPaiement\",\r\n                \"valeurChamp\": \"3\"\r\n            }\r\n    ],\r\n    \"ListeArticleSelectionnes\": [\r\n          {\r\n                \"dateFacture\": null,\r\n                \"description\": \"Recharge classique\",\r\n                \"extraArticleParams\": null,\r\n                \"idArticle\": \"0:0\",\r\n                \"prixTTC\": \"20\",\r\n                \"typeArticle\": 0\r\n            }\r\n    ]\r\n\r\n}\r\n\r\n",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{host}}/api/bills/bill-receipt/6708?phoneNumber=+212669440735",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "api",
+                "bills",
+                "bill-receipt",
+                "6708"
+              ],
+              "query": [
+                {
+                  "key": "creanceId",
+                  "value": "02",
+                  "disabled": true
+                },
+                {
+                  "key": "phoneNumber",
+                  "value": "+212669440735"
+                },
+                {
+                  "key": "refTxFatourati",
+                  "value": "100003754540",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Confirm",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"creancierId\": \"1002\",\r\n    \"creanceId\": \"03\",\r\n    \"refTxFatourati\": \"100003283069\",\r\n    \"CreancierVals\": [\r\n        {\r\n            \"libelle\": \"Nom\",\r\n            \"nomChamp\": \"AMTAN_CLI_PNOM\",\r\n            \"valeurChamp\": \"ALERGE DE LAREDO \"\r\n        },\r\n        {\r\n            \"libelle\": \"Adresse\",\r\n            \"nomChamp\": \"AMTAN_CLI_ADRESSE\",\r\n            \"valeurChamp\": \"N 15 AV PRINCE MY ADBELLAH. TANGER\"\r\n        }\r\n    ],\r\n    \"ListeArticleSelectionnes\": [\r\n        {\r\n            \"dateFacture\": \"01/04/2009\",\r\n            \"description\": \"0001198391052009\",\r\n            \"extraArticleParams\": null,\r\n            \"idArticle\": \"0001198391052009\",\r\n            \"prixTTC\": \"168.00\",\r\n            \"typeArticle\": 0\r\n        },\r\n        {\r\n            \"dateFacture\": \"01/03/2009\",\r\n            \"description\": \"0000682190042009\",\r\n            \"extraArticleParams\": null,\r\n            \"idArticle\": \"0000682190042009\",\r\n            \"prixTTC\": \"168.00\",\r\n            \"typeArticle\": 0\r\n        },\r\n        {\r\n            \"dateFacture\": \"01/02/2009\",\r\n            \"description\": \"0000829302032009\",\r\n            \"extraArticleParams\": null,\r\n            \"idArticle\": \"0000829302032009\",\r\n            \"prixTTC\": \"168.00\",\r\n            \"typeArticle\": 0\r\n        }\r\n    ]\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{host}}/api/fatourati/confirm?phoneNumber=+212670770743",
+                  "host": [
+                    "{{host}}"
+                  ],
+                  "path": [
+                    "api",
+                    "fatourati",
+                    "confirm"
+                  ],
+                  "query": [
+                    {
+                      "key": "phoneNumber",
+                      "value": "+212670770743"
+                    },
+                    {
+                      "key": "creanceId",
+                      "value": "02",
+                      "disabled": true
+                    },
+                    {
+                      "key": "refTxFatourati",
+                      "value": "100003133700",
+                      "disabled": true
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "Text",
+              "header": [
+                {
+                  "key": "Date",
+                  "value": "Mon, 24 Nov 2025 09:37:38 GMT"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Transfer-Encoding",
+                  "value": "chunked"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Server",
+                  "value": "Kestrel"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"data\": {\n        \"mac\": \"guSbdbjX9GNpS0lOkAiPoQ==\",\n        \"codeAutorisation\": \"9633eb891053\",\n        \"codeDevise\": \"504\",\n        \"codeReconciliation\": \"20251124\",\n        \"codeRetour\": \"000\",\n        \"dateServeur\": \"20251124103737\",\n        \"montantTotalTTC\": \"504.00\",\n        \"msg\": \"succesful\",\n        \"params\": [\n            {\n                \"nomChamp\": \"numCRC\",\n                \"valChamp\": \"115\"\n            },\n            {\n                \"nomChamp\": \"texteCRC\",\n                \"valChamp\": \"En cas de problème, merci de contacter le num 115 en indiquant le num d'autorisation\"\n            },\n            {\n                \"nomChamp\": \"msgGlobal\",\n                \"valChamp\": \"\"\n            }\n        ],\n        \"refReglement\": \"XH4195\",\n        \"refTxSysPmt\": \"827\"\n    }\n}"
+            }
+          ]
+        }
+      ],
+      "auth": {
+        "type": "apikey",
+        "apikey": [
+          {
+            "key": "value",
+            "value": "{{apikey}}",
+            "type": "string"
+          },
+          {
+            "key": "key",
+            "value": "Chari-Api-Key",
+            "type": "string"
+          }
+        ]
+      },
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {},
+            "exec": [
+              ""
+            ]
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {},
+            "exec": [
+              ""
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

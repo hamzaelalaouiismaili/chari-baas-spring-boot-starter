@@ -197,58 +197,64 @@ Catalog methods include `getVoucherArticles`, `getVoucherBrands`, `getVoucherBra
 
 ### Bill Payment (Fatourati)
 
-The client follows the required single-creditor, five-step flow:
+The client follows the guided single-creditor flow (full guide: [BILL_PAYMENT_GUIDE.md](BILL_PAYMENT_GUIDE.md)):
 
 ```java
-// 1. Creditors; safe to cache in your application for several hours.
+// 1. Creditors, grouped by category; each already embeds its receivables.
+//    Safe to cache in your application for several hours.
 ChariBillCreditorsResponse creditors = chari.getBillCreditors();
 
-// 2. Services exposed by the selected creditor.
-ChariBillReceivablesResponse services = chari.getBillReceivables("1008");
+// 2. Refresh the services exposed by the selected creditor when needed.
+ChariBillReceivablesResponse services = chari.getBillReceivables("1001");
 
 // 3. Build your UI dynamically. Never submit fields where shouldSubmit() is false.
-ChariBillFormResponse form = chari.getBillIdentificationForm("1008", "01");
+ChariBillFormResponse form = chari.getBillIdentificationForm("1001", "01");
 
 List<ChariBillFieldValue> identification = List.of(
-        ChariBillFieldValue.builder()
-                .nomChamp("numeroProduit")
-                .valeurChamp("16422270229")
-                .build());
+        ChariBillFieldValue.of("ND", "0669440735"),
+        ChariBillFieldValue.of("montant", "10"));
+
+// Validate the answers locally against the form before any network call.
+ChariBillFormValidator.validate(form, identification);
 
 // 4. Opens an EN_ATTENTE transaction valid for seven calendar days.
+//    Optionally save the bill to the customer's favorites with alias/addToFavorites.
 ChariBillUnpaidItemsResponse unpaid = chari.getBillUnpaidItems(
-        "1008",
+        "1001",
         "01",
-        ChariBillUnpaidItemsPayload.builder()
-                .creditorValues(identification)
-                .build());
+        ChariBillUnpaidItemsPayload.forFields(identification),
+        "0669440735");
+
+// Or look the bill up from a scanned QR code, without filling the form:
+// ChariBillUnpaidItemsResponse unpaid = chari.getBillUnpaidItemsByQrCode(
+//         "9999", "01", qrCodeContent, "0669440735");
 
 // Select one or more articles; selecting a subset performs a partial payment.
-List<ChariBillArticle> selected = List.of(unpaid.getImpayesParams().getFirst());
+List<ChariBillArticle> selected = List.of(unpaid.getArticles().getFirst());
 
-// 5. Confirm using the same creditor/service and the transaction reference.
+// 5. Confirm. fromUnpaidItems echoes the transaction reference and ALL
+//    global parameters (including technical ones) back to Fatourati.
 ChariBillPaymentResponse payment = chari.confirmBillPayment(
-        "0670770743",
-        ChariBillPaymentPayload.builder()
-                .creancierId("1008")
-                .creanceId("01")
-                .refTxFatourati(unpaid.getRefTxFatourati())
-                .creditorValues(identification)
-                .selectedArticles(selected)
-                .build());
+        "0669440735",
+        ChariBillPaymentPayload.fromUnpaidItems("1001", "01", unpaid, selected));
+
+// 6. Download the receipt of the settled operation.
+ChariBillReceiptResponse receipt = chari.getBillReceipt(
+        payment.getOperationId(), "0669440735");
 ```
 
 Always inspect the Fatourati business result, even when HTTP succeeds:
 
 ```java
 if (payment.isReceiptAvailable()) {       // 000 or already processed 301
-    String receiptReference = payment.getRefReglement();
+    Long operationId = payment.getOperationId();
+    String authorization = payment.getAuthorizationCode();
 } else if (payment.isAwaitingWebhookResolution()) { // 908, 909, or 910
     // Do not report a definitive failure; wait for the payment webhook.
 }
 ```
 
-`form.getCreancierParams()` exposes dynamic field type, requiredness, length, and select values. `unpaid.getDisplayableGlobalParams()` removes technical parameters with empty labels. Article prices and totals are mapped to `BigDecimal`; `getTypedArticleType()` maps article codes 0–3.
+`form.getFields()` exposes dynamic field type, requiredness, length, and select values, and `ChariBillFormValidator.check(form, values)` returns every input problem for your UI. `unpaid.getDisplayableGlobalParams()` removes technical parameters with empty labels. Article prices and totals are mapped to `BigDecimal`; `getTypedArticleType()` maps article codes 0–3.
 
 ### Error Handling
 

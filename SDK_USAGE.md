@@ -138,6 +138,8 @@ chari.unregisterCustomer("+2126xxxxxxxx", ChariClosureReason.CLIENT_CONTRACT_CLO
 
 ## KYC
 
+For the full personal wallet and merchant wallet KYC/KYB integration flow, including ShareID handoff, document upload, status tracking, and app/backend responsibilities, see [KYC_UPGRADE_GUIDE.md](KYC_UPGRADE_GUIDE.md).
+
 ShareID authentication:
 
 ```java
@@ -576,5 +578,5 @@ Prefer these enums over hard-coded integer codes where builder overloads or resp
 | Operation history | `getOperationsByCustomer`, `getAllOperationsByPartner`, `getOperationById` |
 | Telco top-up | `getSupportedTelcoOperators`, `getTelcoCatalog`, `rechargeTelco` |
 | Vouchers | `getVoucherArticles`, `getVoucherBrands`, `getVoucherBrand`, `getVouchersByBrand`, `previewVoucherPurchase`, `confirmVoucherPurchase` |
-| Bill payment | `getBillCreditors`, `getBillReceivables`, `getBillIdentificationForm`, `getBillUnpaidItems`, `confirmBillPayment` |
+| Bill payment | `getBillCreditors`, `getBillReceivables`, `getBillIdentificationForm`, `getBillUnpaidItems`, `getBillUnpaidItemsByQrCode`, `confirmBillPayment`, `getBillReceipt` |
 | Card management | `getCardPrograms`, `addCardApplication`, `getCardApplications`, `getCardApplicationsByCustomer`, `validateCardApplication`, `rejectCardApplication`, `getManagedCards`, `getManagedCard`, `manageCard`, `updateCardUsageControl`, `getCardTransactions` |

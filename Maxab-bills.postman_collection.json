@@ -1,0 +1,612 @@
+{
+  "info": {
+    "_postman_id": "efbf79ab-d871-489e-82a5-869bd85ce106",
+    "name": "Maxab-bills",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "20296466",
+    "_collection_link": "https://go.postman.co/collection/20296466-efbf79ab-d871-489e-82a5-869bd85ce106?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Bills",
+      "item": [
+        {
+          "name": "Creancier",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{host}}/api/bills/creanciers",
+              "host": ["{{host}}"],
+              "path": ["api", "bills", "creanciers"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Creance",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": ""
+            },
+            "url": {
+              "raw": "{{host}}/api/bills/creances?creancierId=1001",
+              "host": ["{{host}}"],
+              "path": ["api", "bills", "creances"],
+              "query": [
+                {
+                  "key": "creancierId",
+                  "value": "1001"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Creance",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": ""
+                },
+                "url": {
+                  "raw": "{{host}}/api/bills/creances?creancierId=1002",
+                  "host": ["{{host}}"],
+                  "path": ["api", "fatourati", "creances"],
+                  "query": [
+                    {
+                      "key": "creancierId",
+                      "value": "1002"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "Date",
+                  "value": "Mon, 24 Nov 2025 08:56:22 GMT"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Transfer-Encoding",
+                  "value": "chunked"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Server",
+                  "value": "Kestrel"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"data\": {\n        \"collection\": [\n            {\n                \"codeCreance\": \"03\",\n                \"nomCreance\": \"Produit Internet Sim\"\n            },\n            {\n                \"codeCreance\": \"01\",\n                \"nomCreance\": \"Produit Fixe Sim\"\n            },\n            {\n                \"codeCreance\": \"02\",\n                \"nomCreance\": \"Produit Mobile Sim\"\n            },\n            {\n                \"codeCreance\": \"04\",\n                \"nomCreance\": \"Payer une avance\"\n            }\n        ],\n        \"count\": 4\n    }\n}"
+            }
+          ]
+        },
+        {
+          "name": "form",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": ""
+            },
+            "url": {
+              "raw": "{{host}}/api/bills/form?creancierId=1001&creanceId=01",
+              "host": ["{{host}}"],
+              "path": ["api", "bills", "form"],
+              "query": [
+                {
+                  "key": "creancierId",
+                  "value": "1001"
+                },
+                {
+                  "key": "creanceId",
+                  "value": "01"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "form",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": ""
+                },
+                "url": {
+                  "raw": "https://sandbox.charimoney.com/api/bills/form?creancierId=1002&creanceId=03",
+                  "protocol": "https",
+                  "host": ["sandbox", "charimoney", "com"],
+                  "path": ["api", "fatourati", "form"],
+                  "query": [
+                    {
+                      "key": "creancierId",
+                      "value": "1002"
+                    },
+                    {
+                      "key": "creanceId",
+                      "value": "03"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "Date",
+                  "value": "Mon, 24 Nov 2025 08:48:13 GMT"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Transfer-Encoding",
+                  "value": "chunked"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Server",
+                  "value": "Kestrel"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"data\": {\n        \"collection\": [\n            {\n                \"contrainte\": \"1\",\n                \"formatChamp\": \"2\",\n                \"libelle\": \"Identifiant de paiement\",\n                \"listVals\": [],\n                \"nomChamp\": \"ND\",\n                \"tailleMax\": 100,\n                \"tailleMin\": 1,\n                \"typeChamp\": \"text\"\n            }\n        ],\n        \"count\": 1\n    }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Impayes",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"qrcodecontent\": \"ZI3qynFphbr00HgLL164D+opiMtTapDYaACl1dP2sGx\\/+s6GOT35vj9IkOsUvifPHMbeI87uRsHBeJXjRx1SlSbDoB8frAZLTgMOg0I3a0g8gdRGHWRp6cShYpSJXlMF\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{host}}/api/bills/impayes?creancierId=9999&creanceId=01&phoneNumber=+212670770743",
+              "host": ["{{host}}"],
+              "path": ["api", "bills", "impayes"],
+              "query": [
+                {
+                  "key": "creancierId",
+                  "value": "9999"
+                },
+                {
+                  "key": "creanceId",
+                  "value": "01"
+                },
+                {
+                  "key": "phoneNumber",
+                  "value": "+212670770743"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Impayes",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"CreancierVals\" : \r\n        [\r\n            {\r\n                \"nomChamp\" : \"ND\",\r\n                \"valChamp\" : \"15527438\"\r\n            }\r\n        ]\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "https://sandbox.charimoney.com/api/bills/impayes?creancierId=1002&creanceId=03",
+                  "protocol": "https",
+                  "host": ["sandbox", "charimoney", "com"],
+                  "path": ["api", "fatourati", "impayes"],
+                  "query": [
+                    {
+                      "key": "creancierId",
+                      "value": "1002"
+                    },
+                    {
+                      "key": "creanceId",
+                      "value": "03"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "Date",
+                  "value": "Mon, 24 Nov 2025 09:03:13 GMT"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Transfer-Encoding",
+                  "value": "chunked"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Server",
+                  "value": "Kestrel"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"data\": {\n        \"globalParams\": [\n            {\n                \"libelle\": \"NUMERO DE TELEPHONE\",\n                \"nomChamp\": \"ND\",\n                \"valeurChamp\": \"15527438\"\n            }\n        ],\n        \"impayesParams\": [\n            {\n                \"dateFacture\": \"01/04/2009\",\n                \"description\": \"0001198391052009\",\n                \"extraArticleParams\": null,\n                \"idArticle\": \"0001198391052009\",\n                \"prixTTC\": \"168.00\",\n                \"typeArticle\": 0\n            },\n            {\n                \"dateFacture\": \"01/03/2009\",\n                \"description\": \"0000682190042009\",\n                \"extraArticleParams\": null,\n                \"idArticle\": \"0000682190042009\",\n                \"prixTTC\": \"168.00\",\n                \"typeArticle\": 0\n            },\n            {\n                \"dateFacture\": \"01/02/2009\",\n                \"description\": \"0000829302032009\",\n                \"extraArticleParams\": null,\n                \"idArticle\": \"0000829302032009\",\n                \"prixTTC\": \"168.00\",\n                \"typeArticle\": 0\n            }\n        ],\n        \"montantTotalTTCField\": \"504.00\",\n        \"nbreCreances\": 3,\n        \"refTxFatourati\": \"100003282286\",\n        \"seuilMinimal\": null,\n        \"typeFrais\": null,\n        \"valeurFrais\": null\n    }\n}"
+            },
+            {
+              "name": "Impayes",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"Alias\": \"Test 2\",\r\n    //\"AddToFavorites\": true,\r\n    \"creancierVals\": [\r\n        {\r\n            \"nomChamp\": \"matricule\",\r\n            \"valChamp\": \"63467A26\"\r\n        },\r\n        {\r\n            \"nomChamp\": \"puissance_fiscale\",\r\n            \"valChamp\": \"6\"\r\n        },\r\n        {\r\n            \"nomChamp\": \"carburant_type\",\r\n            \"valChamp\": \"DIESEL\"\r\n        },\r\n        {\r\n            \"nomChamp\": \"periode_annee\",\r\n            \"valChamp\": \"2018\"\r\n        }\r\n    ]\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{host}}/api/bills/impayes?creancierId=1022&creanceId=01&phoneNumber=+212670770743",
+                  "host": ["{{host}}"],
+                  "path": ["api", "fatourati", "impayes"],
+                  "query": [
+                    {
+                      "key": "creancierId",
+                      "value": "1022"
+                    },
+                    {
+                      "key": "creanceId",
+                      "value": "01"
+                    },
+                    {
+                      "key": "phoneNumber",
+                      "value": "+212670770743"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Date",
+                  "value": "Sat, 09 May 2026 14:17:43 GMT"
+                },
+                {
+                  "key": "Transfer-Encoding",
+                  "value": "chunked"
+                },
+                {
+                  "key": "X-Content-Type-Options",
+                  "value": "nosniff"
+                },
+                {
+                  "key": "X-Frame-Options",
+                  "value": "DENY"
+                },
+                {
+                  "key": "Strict-Transport-Security",
+                  "value": "max-age=31536000; includeSubDomains"
+                },
+                {
+                  "key": "Content-Security-Policy",
+                  "value": "default-src 'none'; frame-ancestors 'none'"
+                },
+                {
+                  "key": "Permissions-Policy",
+                  "value": "accelerometer=(), camera=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()"
+                },
+                {
+                  "key": "Referrer-Policy",
+                  "value": "strict-origin-when-cross-origin"
+                },
+                {
+                  "key": "X-Permitted-Cross-Domain-Policies",
+                  "value": "none"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"data\": {\n        \"globalParams\": [\n            {\n                \"libelle\": \"Véhicule\",\n                \"nomChamp\": \"marque\",\n                \"valeurChamp\": \"PEUGEOT\"\n            },\n            {\n                \"libelle\": \"Immatriculation\",\n                \"nomChamp\": \"matricule\",\n                \"valeurChamp\": \"63467A26\"\n            },\n            {\n                \"libelle\": \"Puissance fiscale\",\n                \"nomChamp\": \"puissance_fiscale\",\n                \"valeurChamp\": \"6\"\n            },\n            {\n                \"libelle\": \"Type carburant\",\n                \"nomChamp\": \"carburant_type\",\n                \"valeurChamp\": \"DIESEL\"\n            },\n            {\n                \"libelle\": \"Année\",\n                \"nomChamp\": \"periode_annee\",\n                \"valeurChamp\": \"2018\"\n            }\n        ],\n        \"impayesParams\": [\n            {\n                \"dateFacture\": \"2018\",\n                \"description\": \"Montant principal : 700.00 <br/> Pénalités : 0 <br/>  Majoration de retard : 100\",\n                \"extraArticleParams\": null,\n                \"idArticle\": \"63467A26\",\n                \"prixTTC\": \"800.00\",\n                \"typeArticle\": 0\n            }\n        ],\n        \"montantTotalTTCField\": \"800.00\",\n        \"nbreCreances\": 1,\n        \"refTxFatourati\": \"100003583315\",\n        \"seuilMinimal\": null,\n        \"typeFrais\": null,\n        \"valeurFrais\": null\n    }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Confirm",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"creancierId\": \"1001\",\r\n    \"creanceId\": \"01\",\r\n    \"refTxFatourati\": \"100003583326\",\r\n    \"globalParams\": [\r\n        {\r\n            \"libelle\": \"Nom\",\r\n            \"nomChamp\": \"nomClient\",\r\n            \"valeurChamp\": \"BOUZAGH** *****               \"\r\n        },\r\n        {\r\n            \"libelle\": \"Adresse\",\r\n            \"nomChamp\": \"adresse\",\r\n            \"valeurChamp\": \"13 RUE 2  E**** ** **** *** ****** *********\"\r\n        }\r\n    ],\r\n    \"ListeArticleSelectionnes\": [\r\n        {\r\n            \"dateFacture\": null,\r\n            \"description\": \"RECHARGE NORMALE\",\r\n            \"extraArticleParams\": null,\r\n            \"idArticle\": \"1\",\r\n            \"prixTTC\": \"20\",\r\n            \"typeArticle\": 0\r\n        }\r\n    ]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{local}}/api/bills/confirm?phoneNumber=+212670770743",
+              "host": ["{{local}}"],
+              "path": ["api", "fatourati", "confirm"],
+              "query": [
+                {
+                  "key": "phoneNumber",
+                  "value": "+212670770743"
+                },
+                {
+                  "key": "creanceId",
+                  "value": "02",
+                  "disabled": true
+                },
+                {
+                  "key": "refTxFatourati",
+                  "value": "100003133700",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Confirm",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"creancierId\": \"1002\",\r\n    \"creanceId\": \"03\",\r\n    \"refTxFatourati\": \"100003283069\",\r\n    \"CreancierVals\": [\r\n        {\r\n            \"libelle\": \"Nom\",\r\n            \"nomChamp\": \"AMTAN_CLI_PNOM\",\r\n            \"valeurChamp\": \"ALERGE DE LAREDO \"\r\n        },\r\n        {\r\n            \"libelle\": \"Adresse\",\r\n            \"nomChamp\": \"AMTAN_CLI_ADRESSE\",\r\n            \"valeurChamp\": \"N 15 AV PRINCE MY ADBELLAH. TANGER\"\r\n        }\r\n    ],\r\n    \"ListeArticleSelectionnes\": [\r\n        {\r\n            \"dateFacture\": \"01/04/2009\",\r\n            \"description\": \"0001198391052009\",\r\n            \"extraArticleParams\": null,\r\n            \"idArticle\": \"0001198391052009\",\r\n            \"prixTTC\": \"168.00\",\r\n            \"typeArticle\": 0\r\n        },\r\n        {\r\n            \"dateFacture\": \"01/03/2009\",\r\n            \"description\": \"0000682190042009\",\r\n            \"extraArticleParams\": null,\r\n            \"idArticle\": \"0000682190042009\",\r\n            \"prixTTC\": \"168.00\",\r\n            \"typeArticle\": 0\r\n        },\r\n        {\r\n            \"dateFacture\": \"01/02/2009\",\r\n            \"description\": \"0000829302032009\",\r\n            \"extraArticleParams\": null,\r\n            \"idArticle\": \"0000829302032009\",\r\n            \"prixTTC\": \"168.00\",\r\n            \"typeArticle\": 0\r\n        }\r\n    ]\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{host}}/api/bills/confirm?phoneNumber=+212670770743",
+                  "host": ["{{host}}"],
+                  "path": ["api", "fatourati", "confirm"],
+                  "query": [
+                    {
+                      "key": "phoneNumber",
+                      "value": "+212670770743"
+                    },
+                    {
+                      "key": "creanceId",
+                      "value": "02",
+                      "disabled": true
+                    },
+                    {
+                      "key": "refTxFatourati",
+                      "value": "100003133700",
+                      "disabled": true
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "Date",
+                  "value": "Mon, 24 Nov 2025 09:37:38 GMT"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Transfer-Encoding",
+                  "value": "chunked"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Server",
+                  "value": "Kestrel"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"data\": {\n        \"mac\": \"guSbdbjX9GNpS0lOkAiPoQ==\",\n        \"codeAutorisation\": \"9633eb891053\",\n        \"codeDevise\": \"504\",\n        \"codeReconciliation\": \"20251124\",\n        \"codeRetour\": \"000\",\n        \"dateServeur\": \"20251124103737\",\n        \"montantTotalTTC\": \"504.00\",\n        \"msg\": \"succesful\",\n        \"params\": [\n            {\n                \"nomChamp\": \"numCRC\",\n                \"valChamp\": \"115\"\n            },\n            {\n                \"nomChamp\": \"texteCRC\",\n                \"valChamp\": \"En cas de problème, merci de contacter le num 115 en indiquant le num d'autorisation\"\n            },\n            {\n                \"nomChamp\": \"msgGlobal\",\n                \"valChamp\": \"\"\n            }\n        ],\n        \"refReglement\": \"XH4195\",\n        \"refTxSysPmt\": \"827\"\n    }\n}"
+            }
+          ]
+        },
+        {
+          "name": "invoice",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"creancierId\": \"1002\",\r\n    \"creanceId\": \"03\",\r\n    \"refTxFatourati\": \"100003282286\",\r\n    \"CreancierVals\": [\r\n        {\r\n            \"libelle\": \"Nom\",\r\n            \"nomChamp\": \"AMTAN_CLI_PNOM\",\r\n            \"valeurChamp\": \"ALERGE DE LAREDO \"\r\n        },\r\n        {\r\n            \"libelle\": \"Adresse\",\r\n            \"nomChamp\": \"AMTAN_CLI_ADRESSE\",\r\n            \"valeurChamp\": \"N 15 AV PRINCE MY ADBELLAH. TANGER\"\r\n        }\r\n    ],\r\n    \"ListeArticleSelectionnes\": [\r\n        {\r\n            \"dateFacture\": \"01/04/2009\",\r\n            \"description\": \"0001198391052009\",\r\n            \"extraArticleParams\": null,\r\n            \"idArticle\": \"0001198391052009\",\r\n            \"prixTTC\": \"168.00\",\r\n            \"typeArticle\": 0\r\n        },\r\n        {\r\n            \"dateFacture\": \"01/03/2009\",\r\n            \"description\": \"0000682190042009\",\r\n            \"extraArticleParams\": null,\r\n            \"idArticle\": \"0000682190042009\",\r\n            \"prixTTC\": \"168.00\",\r\n            \"typeArticle\": 0\r\n        },\r\n        {\r\n            \"dateFacture\": \"01/02/2009\",\r\n            \"description\": \"0000829302032009\",\r\n            \"extraArticleParams\": null,\r\n            \"idArticle\": \"0000829302032009\",\r\n            \"prixTTC\": \"168.00\",\r\n            \"typeArticle\": 0\r\n        }\r\n    ]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{host}}/api/bills/bill-receipt/6708?phoneNumber=+212670770743",
+              "host": ["{{host}}"],
+              "path": ["api", "fatourati", "bill-receipt", "6708"],
+              "query": [
+                {
+                  "key": "phoneNumber",
+                  "value": "+212670770743"
+                },
+                {
+                  "key": "creanceId",
+                  "value": "02",
+                  "disabled": true
+                },
+                {
+                  "key": "refTxFatourati",
+                  "value": "100003133700",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Confirm",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"creancierId\": \"1002\",\r\n    \"creanceId\": \"03\",\r\n    \"refTxFatourati\": \"100003283069\",\r\n    \"CreancierVals\": [\r\n        {\r\n            \"libelle\": \"Nom\",\r\n            \"nomChamp\": \"AMTAN_CLI_PNOM\",\r\n            \"valeurChamp\": \"ALERGE DE LAREDO \"\r\n        },\r\n        {\r\n            \"libelle\": \"Adresse\",\r\n            \"nomChamp\": \"AMTAN_CLI_ADRESSE\",\r\n            \"valeurChamp\": \"N 15 AV PRINCE MY ADBELLAH. TANGER\"\r\n        }\r\n    ],\r\n    \"ListeArticleSelectionnes\": [\r\n        {\r\n            \"dateFacture\": \"01/04/2009\",\r\n            \"description\": \"0001198391052009\",\r\n            \"extraArticleParams\": null,\r\n            \"idArticle\": \"0001198391052009\",\r\n            \"prixTTC\": \"168.00\",\r\n            \"typeArticle\": 0\r\n        },\r\n        {\r\n            \"dateFacture\": \"01/03/2009\",\r\n            \"description\": \"0000682190042009\",\r\n            \"extraArticleParams\": null,\r\n            \"idArticle\": \"0000682190042009\",\r\n            \"prixTTC\": \"168.00\",\r\n            \"typeArticle\": 0\r\n        },\r\n        {\r\n            \"dateFacture\": \"01/02/2009\",\r\n            \"description\": \"0000829302032009\",\r\n            \"extraArticleParams\": null,\r\n            \"idArticle\": \"0000829302032009\",\r\n            \"prixTTC\": \"168.00\",\r\n            \"typeArticle\": 0\r\n        }\r\n    ]\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{host}}/api/bills/confirm?phoneNumber=+212670770743",
+                  "host": ["{{host}}"],
+                  "path": ["api", "fatourati", "confirm"],
+                  "query": [
+                    {
+                      "key": "phoneNumber",
+                      "value": "+212670770743"
+                    },
+                    {
+                      "key": "creanceId",
+                      "value": "02",
+                      "disabled": true
+                    },
+                    {
+                      "key": "refTxFatourati",
+                      "value": "100003133700",
+                      "disabled": true
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "Date",
+                  "value": "Mon, 24 Nov 2025 09:37:38 GMT"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Transfer-Encoding",
+                  "value": "chunked"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Server",
+                  "value": "Kestrel"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"data\": {\n        \"mac\": \"guSbdbjX9GNpS0lOkAiPoQ==\",\n        \"codeAutorisation\": \"9633eb891053\",\n        \"codeDevise\": \"504\",\n        \"codeReconciliation\": \"20251124\",\n        \"codeRetour\": \"000\",\n        \"dateServeur\": \"20251124103737\",\n        \"montantTotalTTC\": \"504.00\",\n        \"msg\": \"succesful\",\n        \"params\": [\n            {\n                \"nomChamp\": \"numCRC\",\n                \"valChamp\": \"115\"\n            },\n            {\n                \"nomChamp\": \"texteCRC\",\n                \"valChamp\": \"En cas de problème, merci de contacter le num 115 en indiquant le num d'autorisation\"\n            },\n            {\n                \"nomChamp\": \"msgGlobal\",\n                \"valChamp\": \"\"\n            }\n        ],\n        \"refReglement\": \"XH4195\",\n        \"refTxSysPmt\": \"827\"\n    }\n}"
+            }
+          ]
+        }
+      ],
+      "auth": {
+        "type": "apikey",
+        "apikey": [
+          {
+            "key": "value",
+            "value": "{{apikey}}",
+            "type": "string"
+          },
+          {
+            "key": "key",
+            "value": "Chari-Api-Key",
+            "type": "string"
+          }
+        ]
+      },
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {},
+            "exec": [""]
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {},
+            "exec": [""]
+          }
+        }
+      ]
+    }
+  ]
+}

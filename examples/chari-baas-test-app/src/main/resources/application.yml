@@ -4,8 +4,8 @@ server:
 chari:
   baas:
     base-url: ${CHARI_BASE_URL:https://sandbox.charimoney.com}
-    api-key: ${CHARI_API_KEY:chari_api_key}
-    principal-agent-id: ${CHARI_PRINCIPAL_AGENT_ID:}
+    api-key: ${CHARI_API_KEY:7ba0c.3M+dfiRv+jgSifrjXxJekMlA00+W39kCXyjkfqLAOZw4}
+    principal-agent-id: ${CHARI_PRINCIPAL_AGENT_ID:1710301}
     webhook-secret: ${CHARI_WEBHOOK_SECRET:}
     timeout-ms: 10000
     card-funding:
