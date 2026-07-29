@@ -122,8 +122,8 @@ class ChariBillPaymentClientTest {
                                 .andExpect(method(HttpMethod.POST))
                                 .andExpect(content().json("""
                                                 {"Alias":"Hamz","AddToFavorites":true,
-                                                 "CreancierVals":[{"nomChamp":"ND","valeurChamp":"0669440735"},
-                                                 {"nomChamp":"montant","valeurChamp":"10"}]}
+                                                 "CreancierVals":[{"nomChamp":"ND","valChamp":"0669440735","valeurChamp":"0669440735"},
+                                                 {"nomChamp":"montant","valChamp":"10","valeurChamp":"10"}]}
                                                 """))
                                 .andRespond(withSuccess(
                                                 """
@@ -219,7 +219,7 @@ class ChariBillPaymentClientTest {
                                                                   {"libelle":"Numéro de ligne à recharger","nomChamp":"ND","valeurChamp":"0669440735"},
                                                                   {"libelle":"","nomChamp":"contrPaiement","valeurChamp":"3"}],
                                                                  "ListeArticleSelectionnes":[{"idArticle":"0:0",
-                                                                 "description":"Recharge classique","prixTTC":20,"typeArticle":0}]}
+                                                                 "description":"Recharge classique","prixTTC":"20","typeArticle":0}]}
                                                                 """))
                                 .andRespond(withSuccess(
                                                 """

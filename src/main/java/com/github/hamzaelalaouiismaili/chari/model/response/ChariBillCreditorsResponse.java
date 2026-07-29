@@ -1,6 +1,7 @@
 package com.github.hamzaelalaouiismaili.chari.model.response;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.github.hamzaelalaouiismaili.chari.model.bill.ChariBillFieldValue;
 import java.util.ArrayList;
@@ -19,6 +20,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class ChariBillCreditorsResponse {
 
     /** Categories in display order, as sent under the {@code data} envelope. */
@@ -54,6 +56,7 @@ public class ChariBillCreditorsResponse {
     @Data
     @NoArgsConstructor
     @AllArgsConstructor
+    @JsonIgnoreProperties(ignoreUnknown = true)
     public static class CreditorCategory {
         private String categoryCode;
         private String categoryName;
@@ -67,6 +70,7 @@ public class ChariBillCreditorsResponse {
     @Data
     @NoArgsConstructor
     @AllArgsConstructor
+    @JsonIgnoreProperties(ignoreUnknown = true)
     public static class Creditor {
         private String codeCreancier;
         private String nomCreancier;
