@@ -103,8 +103,13 @@ Moroccan local mobile numbers such as `0661231234` are normalized to `+212661231
 | Vouchers | `getVoucherBrands(...)` | List voucher brands |
 | Vouchers | `getVoucherBrand(...)` | Retrieve one brand |
 | Vouchers | `getVouchersByBrand(...)` | Call the vouchers-by-brand endpoint |
+| Vouchers | `getVoucherProducts(...)` | List the Click Apporter / Blackhawk product catalog |
+| Vouchers | `getVoucherProductDetail(...)` | Retrieve detailed product info by config ID |
+| Vouchers | `getLocalVouchers(...)` | List local vouchers for a phone number |
 | Vouchers | `previewVoucherPurchase(...)` | Validate a purchase and calculate fees |
 | Vouchers | `confirmVoucherPurchase(...)` | Buy the voucher and receive its code |
+| Vouchers | `previewServiceVoucherPurchase(...)` | Preview via the service endpoint variant |
+| Vouchers | `purchaseServiceVoucher(...)` | Purchase via the service endpoint variant |
 | Bill payment | `getBillCreditors()` | List available Fatourati creditors |
 | Bill payment | `getBillReceivables(...)` | List a creditor's services |
 | Bill payment | `getBillIdentificationForm(...)` | Retrieve the dynamic customer form |
@@ -275,15 +280,29 @@ ChariVoucherBrandsResponse brands = chari.getVoucherBrands(query);
 | Query field | Java type | Required | Description |
 |---|---|---:|---|
 | `phoneNumber` | `String` | Yes | Customer mobile number |
-| `brandId` | `Integer` | Yes | Positive brand ID |
+| `brandId` | `Integer` | Yes* | Positive brand ID (*required for `getVoucherArticles`/`getVoucherBrands`; optional for `getLocalVouchers`) |
 | `page` | `Integer` | No | Page number, starting at 1 |
 | `take` | `Integer` | No | Positive page size |
+| `keyword` | `String` | No | Free-text search filter |
 
 Additional catalog calls:
 
 ```java
 ChariVoucherBrandResponse brand = chari.getVoucherBrand(25, "0661231234");
 ChariVoucherBrandResponse brandArticles = chari.getVouchersByBrand(25, "0661231234");
+
+// Click Apporter / Blackhawk product catalog (paginated, no phone number required)
+ChariVoucherArticlesResponse products = chari.getVoucherProducts(1, 20);
+
+// Detailed product information by config ID
+ChariVoucherProductResponse detail = chari.getVoucherProductDetail("NPAPCWWCJXWG61A9579JY2XC6C");
+
+// Local vouchers for a phone number (brandId/keyword optional)
+ChariVoucherArticlesResponse local = chari.getLocalVouchers(
+        ChariVoucherCatalogQuery.builder()
+                .phoneNumber("0661231234")
+                .keyword("pubg")
+                .build());
 ```
 
 The current upstream contract maps `getVouchersByBrand(...)` to a `ChariVoucherBrandResponse`.
@@ -294,13 +313,20 @@ Each `ChariVoucherArticlesResponse.VoucherArticle` exposes:
 
 | Getter | Description |
 |---|---|
-| `getProviderSkuId()` | Provider article identifier used for purchase |
+| `getSkuId()` | Voucher SKU identifier used for purchase |
+| `getProviderSkuId()` | Optional provider article identifier |
 | `getProductName()` | Display name |
 | `getImageUrl()` | Optional image URL |
 | `getPrice()` | Price as `BigDecimal` |
 | `getDescription()` | Optional description |
 | `getProviderId()` | Provider ID used for purchase |
 | `getBrandId()` | Brand ID |
+| `getPricing()` | Optional `VoucherPricing` (`getMaxValueAmount()`, `getBaseValueAmount()`, `getIsVariableValue()`, `getMultiplicateur()`); may be `null` |
+
+`getVoucherProductDetail(...)` returns a richer `ChariVoucherProductResponse` whose
+`getData()` exposes `getCapProductId()`, `getName()`, `getPriceUsd()`,
+`getPriceMadCurrent()`, `getProductImages()`, `getActivationCharacteristics()`,
+`getRedemptionCharacteristics()`, and `getTermsAndConditions()`.
 
 ### Preview and confirm a purchase
 
@@ -315,7 +341,9 @@ ChariVoucherPurchasePayload purchase = ChariVoucherPurchasePayload.builder()
         .customerPhoneNumber("0661231234")
         .destinationPhoneNumber("0662345678")
         .beneficiaryName("Abdennour")
-        .providerSkuId(article.getProviderSkuId())
+        .skuId(article.getSkuId())
+        .providerSkuId(article.getProviderSkuId()) // optional
+        .price(article.getPrice())                 // optional
         .providerId(article.getProviderId())
         .build();
 
@@ -327,8 +355,15 @@ BigDecimal total = preview.getData().getTotalAmount();
 // Ask the customer to accept the displayed total before confirming.
 ChariVoucherPurchaseResponse confirmed = chari.confirmVoucherPurchase(purchase);
 
-String voucherCode = confirmed.getData().getOperation().getCode();
-String activationUrl = confirmed.getData().getOperation().getUrlActivateCard();
+String voucherCode = confirmed.getData().getCode();
+String activationUrl = confirmed.getData().getUrlActivateCard();
+```
+
+The `service` endpoint variants take the same payload:
+
+```java
+ChariVoucherPreviewResponse servicePreview = chari.previewServiceVoucherPurchase(purchase);
+ChariVoucherPurchaseResponse serviceConfirmed = chari.purchaseServiceVoucher(purchase);
 ```
 
 ### Purchase payload
@@ -338,7 +373,10 @@ String activationUrl = confirmed.getData().getOperation().getUrlActivateCard();
 | `customerPhoneNumber` | `String` | Yes | Chari customer who pays |
 | `destinationPhoneNumber` | `String` | Yes | Voucher recipient |
 | `beneficiaryName` | `String` | Yes | Recipient display name |
-| `providerSkuId` | `String` | Yes | SKU from the selected article |
+| `skuId` | `Integer` | Yes | Positive SKU from the selected article — the purchase identifier |
+| `amount` | `BigDecimal` | No | Face value for variable-value vouchers |
+| `providerSkuId` | `String` | No | Optional provider SKU (nullable) |
+| `price` | `BigDecimal` | No | Displayed price from the selected article |
 | `providerId` | `Integer` | Yes | Provider ID from the selected article |
 
 ### Preview response
@@ -354,16 +392,19 @@ String activationUrl = confirmed.getData().getOperation().getUrlActivateCard();
 
 ### Confirmation response
 
-The redeemable value is under `confirmed.getData().getOperation()`.
+The provider flattened the confirm response: the redeemable value is now read
+directly from `confirmed.getData()` (no nested `getOperation()`).
 
-| Getter | Description |
+| Getter from `confirmed.getData()` | Description |
 |---|---|
+| `getTypedOperationType()` | `ChariOperationType.VOUCHER` (from `operationType`) |
 | `getVoucherName()` | Purchased voucher name |
 | `getCode()` | Voucher code to deliver securely |
 | `getDescription()` | Voucher description |
 | `getAmount()` | Voucher amount |
 | `getCashBack()` | Optional cashback |
 | `getTotalAmount()` | Operation total |
+| `getRecipientPhoneNumber()` | Recipient number |
 | `getDestinationPhoneNumber()` | Recipient number |
 | `getBeneficiaryName()` | Recipient name |
 | `getUrlActivateCard()` | Optional activation URL |
