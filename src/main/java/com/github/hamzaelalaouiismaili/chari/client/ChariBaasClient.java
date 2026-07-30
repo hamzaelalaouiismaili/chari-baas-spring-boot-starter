@@ -955,6 +955,30 @@ public class ChariBaasClient {
         return voucherClient.getVouchersByBrand(id, phoneNumber);
     }
 
+    /** Retrieves the paginated Click Apporter / Blackhawk product catalog. */
+    public ChariVoucherArticlesResponse getVoucherProducts(Integer page, Integer take) {
+        return voucherClient.getProducts(page, take);
+    }
+
+    /** Retrieves detailed Blackhawk product information by config ID. */
+    public ChariVoucherProductResponse getVoucherProductDetail(String configId) {
+        return voucherClient.getProductDetail(configId);
+    }
+
+    /** Lists local vouchers for a phone number (optional brandId/keyword filters). */
+    public ChariVoucherArticlesResponse getLocalVouchers(ChariVoucherCatalogQuery query) {
+        return voucherClient.getLocalVouchers(query);
+    }
+
+    /** Lists the first ten local vouchers for a phone number. */
+    public ChariVoucherArticlesResponse getLocalVouchers(String phoneNumber) {
+        return getLocalVouchers(ChariVoucherCatalogQuery.builder()
+                .phoneNumber(phoneNumber)
+                .page(1)
+                .take(10)
+                .build());
+    }
+
     /** Previews voucher pricing and fees without purchasing it. */
     public ChariVoucherPreviewResponse previewVoucherPurchase(ChariVoucherPurchasePayload payload) {
         return voucherClient.previewPurchase(payload);
@@ -963,6 +987,16 @@ public class ChariBaasClient {
     /** Confirms the purchase and returns the redeemable voucher code. */
     public ChariVoucherPurchaseResponse confirmVoucherPurchase(ChariVoucherPurchasePayload payload) {
         return voucherClient.confirmPurchase(payload);
+    }
+
+    /** Previews a service voucher purchase (service endpoint variant). */
+    public ChariVoucherPreviewResponse previewServiceVoucherPurchase(ChariVoucherPurchasePayload payload) {
+        return voucherClient.previewServicePurchase(payload);
+    }
+
+    /** Purchases a service voucher (service endpoint variant). */
+    public ChariVoucherPurchaseResponse purchaseServiceVoucher(ChariVoucherPurchasePayload payload) {
+        return voucherClient.purchaseServiceVoucher(payload);
     }
 
     private ChariVoucherCatalogQuery voucherCatalogQuery(

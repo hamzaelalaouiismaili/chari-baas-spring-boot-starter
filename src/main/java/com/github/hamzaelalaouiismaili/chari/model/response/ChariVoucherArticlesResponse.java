@@ -32,6 +32,7 @@ public class ChariVoucherArticlesResponse {
     @AllArgsConstructor
     public static class VoucherArticle {
 
+        private Integer skuId;
         private String providerSkuId;
         private String productName;
         private String imageUrl;
@@ -39,5 +40,18 @@ public class ChariVoucherArticlesResponse {
         private String description;
         private Integer providerId;
         private Integer brandId;
+        private VoucherPricing pricing;
+    }
+
+    @Data
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class VoucherPricing {
+
+        private BigDecimal maxValueAmount;
+        private BigDecimal baseValueAmount;
+        private Boolean isVariableValue;
+        private Integer multiplicateur;
     }
 }

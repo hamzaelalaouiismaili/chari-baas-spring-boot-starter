@@ -16,4 +16,5 @@ public class ChariVoucherCatalogQuery {
     private Integer brandId;
     private Integer page;
     private Integer take;
+    private String keyword;
 }

@@ -23,25 +23,6 @@ public class ChariVoucherPurchaseResponse {
     @AllArgsConstructor
     public static class VoucherPurchaseData {
 
-        private Integer type;
-        private VoucherPurchaseOperation operation;
-        private BigDecimal feesAmount;
-        private BigDecimal totalAmount;
-        private String checkedAt;
-        private Boolean openLoop;
-
-        @JsonIgnore
-        public ChariOperationType getTypedOperationType() {
-            return ChariOperationType.fromCode(type);
-        }
-    }
-
-    @Data
-    @Builder
-    @NoArgsConstructor
-    @AllArgsConstructor
-    public static class VoucherPurchaseOperation {
-
         private Integer operationType;
         private String voucherName;
         private BigDecimal amount;

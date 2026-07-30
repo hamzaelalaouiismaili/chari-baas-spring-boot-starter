@@ -7,6 +7,7 @@ import com.github.hamzaelalaouiismaili.chari.model.response.ChariVoucherArticles
 import com.github.hamzaelalaouiismaili.chari.model.response.ChariVoucherBrandResponse;
 import com.github.hamzaelalaouiismaili.chari.model.response.ChariVoucherBrandsResponse;
 import com.github.hamzaelalaouiismaili.chari.model.response.ChariVoucherPreviewResponse;
+import com.github.hamzaelalaouiismaili.chari.model.response.ChariVoucherProductResponse;
 import com.github.hamzaelalaouiismaili.chari.model.response.ChariVoucherPurchaseResponse;
 import com.github.hamzaelalaouiismaili.chari.util.PhoneNumberUtil;
 import lombok.RequiredArgsConstructor;
@@ -54,9 +55,54 @@ public class ChariVoucherClient {
         return httpClient.get(path, ChariVoucherBrandResponse.class, "GET_VOUCHERS_BY_BRAND");
     }
 
+    public ChariVoucherArticlesResponse getProducts(Integer page, Integer take) {
+        UriComponentsBuilder builder = UriComponentsBuilder.fromPath("/api/vouchers/product");
+        if (page != null) {
+            if (page < 1) {
+                throw new IllegalArgumentException("Voucher page must be at least 1");
+            }
+            builder.queryParam("page", page);
+        }
+        if (take != null) {
+            if (take < 1) {
+                throw new IllegalArgumentException("Voucher page size must be positive");
+            }
+            builder.queryParam("take", take);
+        }
+        return httpClient.get(builder.toUriString(),
+                ChariVoucherArticlesResponse.class, "GET_VOUCHER_PRODUCTS");
+    }
+
+    public ChariVoucherProductResponse getProductDetail(String configId) {
+        if (configId == null || configId.isBlank()) {
+            throw new IllegalArgumentException("Voucher product config ID is required");
+        }
+        String path = UriComponentsBuilder.fromPath("/api/vouchers/products/{configId}")
+                .buildAndExpand(configId)
+                .toUriString();
+        return httpClient.get(path, ChariVoucherProductResponse.class, "GET_VOUCHER_PRODUCT_DETAIL");
+    }
+
+    public ChariVoucherArticlesResponse getLocalVouchers(ChariVoucherCatalogQuery query) {
+        if (query == null) {
+            throw new IllegalArgumentException("Voucher catalog query is required");
+        }
+        if (!PhoneNumberUtil.isValidMoroccanNumber(query.getPhoneNumber())) {
+            throw new IllegalArgumentException("A valid Moroccan mobile phone number is required");
+        }
+        if (query.getPage() != null && query.getPage() < 1) {
+            throw new IllegalArgumentException("Voucher page must be at least 1");
+        }
+        if (query.getTake() != null && query.getTake() < 1) {
+            throw new IllegalArgumentException("Voucher page size must be positive");
+        }
+        return httpClient.get(buildCatalogUrl("/api/vouchers", query),
+                ChariVoucherArticlesResponse.class, "GET_LOCAL_VOUCHERS");
+    }
+
     public ChariVoucherPreviewResponse previewPurchase(ChariVoucherPurchasePayload payload) {
         ChariVoucherPurchasePayload normalized = normalizePurchase(payload);
-        log.debug("Previewing voucher {} for recipient {}", normalized.getProviderSkuId(),
+        log.debug("Previewing voucher {} for recipient {}", normalized.getSkuId(),
                 PhoneNumberUtil.mask(normalized.getDestinationPhoneNumber()));
         return httpClient.post("/api/operations/voucher/preview", normalized,
                 ChariVoucherPreviewResponse.class, "PREVIEW_VOUCHER_PURCHASE");
@@ -64,21 +110,42 @@ public class ChariVoucherClient {
 
     public ChariVoucherPurchaseResponse confirmPurchase(ChariVoucherPurchasePayload payload) {
         ChariVoucherPurchasePayload normalized = normalizePurchase(payload);
-        log.info("Confirming voucher {} for recipient {}", normalized.getProviderSkuId(),
+        log.info("Confirming voucher {} for recipient {}", normalized.getSkuId(),
                 PhoneNumberUtil.mask(normalized.getDestinationPhoneNumber()));
         return httpClient.post("/api/operations/voucher/confirm", normalized,
                 ChariVoucherPurchaseResponse.class, "CONFIRM_VOUCHER_PURCHASE");
     }
 
+    public ChariVoucherPreviewResponse previewServicePurchase(ChariVoucherPurchasePayload payload) {
+        ChariVoucherPurchasePayload normalized = normalizePurchase(payload);
+        log.debug("Previewing service voucher {} for recipient {}", normalized.getSkuId(),
+                PhoneNumberUtil.mask(normalized.getDestinationPhoneNumber()));
+        return httpClient.post("/api/operations/service/voucher/preview", normalized,
+                ChariVoucherPreviewResponse.class, "PREVIEW_SERVICE_VOUCHER_PURCHASE");
+    }
+
+    public ChariVoucherPurchaseResponse purchaseServiceVoucher(ChariVoucherPurchasePayload payload) {
+        ChariVoucherPurchasePayload normalized = normalizePurchase(payload);
+        log.info("Purchasing service voucher {} for recipient {}", normalized.getSkuId(),
+                PhoneNumberUtil.mask(normalized.getDestinationPhoneNumber()));
+        return httpClient.post("/api/operations/service/voucher", normalized,
+                ChariVoucherPurchaseResponse.class, "PURCHASE_SERVICE_VOUCHER");
+    }
+
     private String buildCatalogUrl(String path, ChariVoucherCatalogQuery query) {
         UriComponentsBuilder builder = UriComponentsBuilder.fromPath(path)
-                .queryParam("phoneNumber", PhoneNumberUtil.normalize(query.getPhoneNumber()))
-                .queryParam("brandId", query.getBrandId());
+                .queryParam("phoneNumber", PhoneNumberUtil.normalize(query.getPhoneNumber()));
+        if (query.getBrandId() != null) {
+            builder.queryParam("brandId", query.getBrandId());
+        }
         if (query.getPage() != null) {
             builder.queryParam("page", query.getPage());
         }
         if (query.getTake() != null) {
             builder.queryParam("take", query.getTake());
+        }
+        if (query.getKeyword() != null && !query.getKeyword().isBlank()) {
+            builder.queryParam("keyword", query.getKeyword());
         }
         return builder.toUriString();
     }
@@ -89,7 +156,10 @@ public class ChariVoucherClient {
                 .customerPhoneNumber(PhoneNumberUtil.normalize(payload.getCustomerPhoneNumber()))
                 .destinationPhoneNumber(PhoneNumberUtil.normalize(payload.getDestinationPhoneNumber()))
                 .beneficiaryName(payload.getBeneficiaryName().trim())
-                .providerSkuId(payload.getProviderSkuId().trim())
+                .amount(payload.getAmount())
+                .skuId(payload.getSkuId())
+                .providerSkuId(payload.getProviderSkuId() == null ? null : payload.getProviderSkuId().trim())
+                .price(payload.getPrice())
                 .providerId(payload.getProviderId())
                 .build();
     }
@@ -129,8 +199,8 @@ public class ChariVoucherClient {
         if (payload.getBeneficiaryName() == null || payload.getBeneficiaryName().isBlank()) {
             throw new IllegalArgumentException("Voucher beneficiary name is required");
         }
-        if (payload.getProviderSkuId() == null || payload.getProviderSkuId().isBlank()) {
-            throw new IllegalArgumentException("Voucher provider SKU ID is required");
+        if (payload.getSkuId() == null || payload.getSkuId() <= 0) {
+            throw new IllegalArgumentException("Voucher SKU ID must be positive");
         }
         if (payload.getProviderId() == null || payload.getProviderId() <= 0) {
             throw new IllegalArgumentException("Voucher provider ID must be positive");
