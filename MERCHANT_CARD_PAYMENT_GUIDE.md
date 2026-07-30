@@ -261,6 +261,121 @@ Example redirect response:
 Do not assume that `operationId`, `operationDate`, or `feesAmount` is always present;
 a redirect response can return them as `null` until the payment flow completes.
 
+## 3. Authorize, capture, reverse, and refund (lifecycle)
+
+To decouple authorization from settlement, execute the card payment (step 2) with
+`autoCapture = false`. The funds are authorized without being debited, then you
+finalize the transaction — targeting it via the `orderId` and `transactionTrackId`
+returned by the payment.
+
+Typical flow:
+
+```
+card payment (autoCapture = false) → authorization
+    ├── capture   → debit the authorized funds
+    ├── reverse   → release an uncaptured authorization (order abandoned)
+    └── refund    → return funds on an already-captured payment (full or partial)
+```
+
+> **Scopes:** capture and reverse require `operations:merchant-payment`; refund
+> requires the distinct `operations:refund` scope.
+
+### Direct preview
+
+A preview against the non-push card endpoint (`/api/operations/merchant/payment/card/preview`):
+
+```java
+ChariMerchantCardPaymentPreviewResponse preview =
+        chari.previewMerchantCardPaymentDirect("0612345678", new BigDecimal("250"));
+```
+
+Returns the same `ChariMerchantCardPaymentPreviewResponse` as step 1.
+
+### Capture
+
+```java
+ChariMerchantCardLifecycleResponse captured = chari.captureMerchantCardPayment(
+        ChariMerchantCardCapturePayload.builder()
+                .phoneNumber("0612345678")
+                .amount(new BigDecimal("250"))
+                .orderId("CH473bbe51d546")
+                .transactionTrackId("600789381213")
+                .skipGatewayCall(false)   // optional
+                .build());
+```
+
+`POST /api/operations/merchant/payment/card/capture`
+
+### Reverse
+
+An abandoned order releases the authorized funds without debiting. The request body
+is identical to capture. Use reverse for an **uncaptured** authorization; for an
+already-captured payment, use refund instead.
+
+```java
+ChariMerchantCardLifecycleResponse reversed = chari.reverseMerchantCardPayment(
+        ChariMerchantCardCapturePayload.builder()
+                .phoneNumber("0612345678")
+                .amount(new BigDecimal("250"))
+                .orderId("CH473bbe51d546")
+                .transactionTrackId("600789381213")
+                .build());
+```
+
+`POST /api/operations/merchant/payment/card/reverse`
+
+### Refund
+
+Refunds an already-captured payment, identified by `operationId`. A `refundAmount`
+lower than the captured amount performs a **partial refund**.
+
+```java
+ChariMerchantCardLifecycleResponse refunded = chari.refundMerchantCardPayment(
+        ChariMerchantCardRefundPayload.builder()
+                .phoneNumber("0612345678")
+                .operationId(5231L)
+                .refundAmount(new BigDecimal("100"))   // partial: below captured amount
+                .orderId("CH473bbe51d546")
+                .transactionTrackId("600789381213")
+                .build());
+```
+
+`POST /api/operations/merchant/payment/card/refund`
+
+### Lifecycle response DTO
+
+Capture, reverse, and refund all return `ChariMerchantCardLifecycleResponse`:
+
+| Getter from `response.getData()` | Description |
+|---|---|
+| `getPhoneNumber()` | Merchant phone number |
+| `getOperationId()` | Operation ID (`Long`) |
+| `getRefundAmount()` | Settled/refunded amount (`BigDecimal`) |
+| `getOrderId()` | Order identifier |
+| `getTransactionTrackId()` | Gateway transaction track ID |
+
+### Payload fields
+
+**`ChariMerchantCardCapturePayload`** (capture + reverse):
+
+| Field | Type | Required |
+|---|---|---:|
+| `phoneNumber` | `String` | Yes |
+| `amount` | `BigDecimal` | Yes |
+| `orderId` | `String` | Yes |
+| `transactionTrackId` | `String` | Yes |
+| `skipGatewayCall` | `Boolean` | No |
+
+**`ChariMerchantCardRefundPayload`** (refund):
+
+| Field | Type | Required |
+|---|---|---:|
+| `phoneNumber` | `String` | Yes |
+| `operationId` | `Long` | Yes |
+| `refundAmount` | `BigDecimal` | Yes |
+| `orderId` | `String` | Yes |
+| `transactionTrackId` | `String` | Yes |
+
 ## Error handling
 
 API, timeout, connection, and response-parsing failures are exposed as
