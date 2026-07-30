@@ -2,11 +2,14 @@ package com.github.hamzaelalaouiismaili.chari.client.api.operations;
 
 import com.github.hamzaelalaouiismaili.chari.client.core.ChariHttpClient;
 import com.github.hamzaelalaouiismaili.chari.model.payload.ChariGenerateQrCodePayload;
+import com.github.hamzaelalaouiismaili.chari.model.payload.ChariMerchantCardCapturePayload;
 import com.github.hamzaelalaouiismaili.chari.model.payload.ChariMerchantCardPaymentPayload;
+import com.github.hamzaelalaouiismaili.chari.model.payload.ChariMerchantCardRefundPayload;
 import com.github.hamzaelalaouiismaili.chari.model.payload.ChariMerchantPaymentByPhonePayload;
 import com.github.hamzaelalaouiismaili.chari.model.payload.ChariMerchantTokenizedCardPaymentPayload;
 import com.github.hamzaelalaouiismaili.chari.model.payload.ChariQrCodePaymentPayload;
 import com.github.hamzaelalaouiismaili.chari.model.response.ChariGenerateQrCodeResponse;
+import com.github.hamzaelalaouiismaili.chari.model.response.ChariMerchantCardLifecycleResponse;
 import com.github.hamzaelalaouiismaili.chari.model.response.ChariMerchantCardPaymentPreviewResponse;
 import com.github.hamzaelalaouiismaili.chari.model.response.ChariMerchantCardPaymentResponse;
 import com.github.hamzaelalaouiismaili.chari.model.response.ChariMerchantPaymentByPhonePreviewResponse;
@@ -92,6 +95,51 @@ public class ChariMerchantPaymentClient {
                                 .toUriString();
                 return httpClient.post(url, buildCardPaymentPayload(payload),
                                 ChariMerchantCardPaymentResponse.class, "EXECUTE_MERCHANT_CARD_PAYMENT");
+        }
+
+        public ChariMerchantCardPaymentPreviewResponse previewCardPaymentDirect(String phoneNumber, BigDecimal amount) {
+                String normalizedPhone = PhoneNumberUtil.normalize(phoneNumber);
+                if (!PhoneNumberUtil.isValidMoroccanNumber(phoneNumber)) {
+                        throw new IllegalArgumentException("A valid Moroccan mobile phone number is required");
+                }
+                if (amount == null || amount.signum() <= 0) {
+                        throw new IllegalArgumentException("Amount must be positive");
+                }
+                log.debug("Previewing merchant card payment (direct) for phone: {}, amount: {}",
+                                PhoneNumberUtil.mask(normalizedPhone), amount);
+
+                String url = UriComponentsBuilder.fromPath("/api/operations/merchant/payment/card/preview")
+                                .queryParam("phoneNumber", normalizedPhone)
+                                .toUriString();
+                return httpClient.post(url, amountPayload(amount),
+                                ChariMerchantCardPaymentPreviewResponse.class, "PREVIEW_MERCHANT_CARD_PAYMENT_DIRECT");
+        }
+
+        public ChariMerchantCardLifecycleResponse captureCardPayment(ChariMerchantCardCapturePayload payload) {
+                validateCapture(payload);
+                log.info("Capturing merchant card payment for order: {}, amount: {}",
+                                payload.getOrderId(), payload.getAmount());
+                return httpClient.post("/api/operations/merchant/payment/card/capture",
+                                buildCapturePayload(payload),
+                                ChariMerchantCardLifecycleResponse.class, "CAPTURE_MERCHANT_CARD_PAYMENT");
+        }
+
+        public ChariMerchantCardLifecycleResponse reverseCardPayment(ChariMerchantCardCapturePayload payload) {
+                validateCapture(payload);
+                log.info("Reversing merchant card payment for order: {}, amount: {}",
+                                payload.getOrderId(), payload.getAmount());
+                return httpClient.post("/api/operations/merchant/payment/card/reverse",
+                                buildCapturePayload(payload),
+                                ChariMerchantCardLifecycleResponse.class, "REVERSE_MERCHANT_CARD_PAYMENT");
+        }
+
+        public ChariMerchantCardLifecycleResponse refundCardPayment(ChariMerchantCardRefundPayload payload) {
+                validateRefund(payload);
+                log.info("Refunding merchant card payment for operation: {}, amount: {}",
+                                payload.getOperationId(), payload.getRefundAmount());
+                return httpClient.post("/api/operations/merchant/payment/card/refund",
+                                buildRefundPayload(payload),
+                                ChariMerchantCardLifecycleResponse.class, "REFUND_MERCHANT_CARD_PAYMENT");
         }
 
         public ChariMerchantCardPaymentResponse executeTokenizedCardPayment(
@@ -191,6 +239,65 @@ public class ChariMerchantPaymentClient {
                 requestPayload.put("cvv", payload.getCvv());
                 requestPayload.put("amount", payload.getAmount());
                 return requestPayload;
+        }
+
+        private Map<String, Object> buildCapturePayload(ChariMerchantCardCapturePayload payload) {
+                Map<String, Object> requestPayload = new HashMap<>();
+                requestPayload.put("phoneNumber", PhoneNumberUtil.normalize(payload.getPhoneNumber()));
+                requestPayload.put("amount", payload.getAmount());
+                requestPayload.put("orderId", payload.getOrderId());
+                requestPayload.put("transactionTrackId", payload.getTransactionTrackId());
+                putIfNotNull(requestPayload, "skipGatewayCall", payload.getSkipGatewayCall());
+                return requestPayload;
+        }
+
+        private Map<String, Object> buildRefundPayload(ChariMerchantCardRefundPayload payload) {
+                Map<String, Object> requestPayload = new HashMap<>();
+                requestPayload.put("phoneNumber", PhoneNumberUtil.normalize(payload.getPhoneNumber()));
+                requestPayload.put("operationId", payload.getOperationId());
+                requestPayload.put("refundAmount", payload.getRefundAmount());
+                requestPayload.put("orderId", payload.getOrderId());
+                requestPayload.put("transactionTrackId", payload.getTransactionTrackId());
+                return requestPayload;
+        }
+
+        private void validateCapture(ChariMerchantCardCapturePayload payload) {
+                if (payload == null) {
+                        throw new IllegalArgumentException("Merchant card capture payload is required");
+                }
+                if (!PhoneNumberUtil.isValidMoroccanNumber(payload.getPhoneNumber())) {
+                        throw new IllegalArgumentException("A valid Moroccan mobile phone number is required");
+                }
+                if (payload.getAmount() == null || payload.getAmount().signum() <= 0) {
+                        throw new IllegalArgumentException("Amount must be positive");
+                }
+                if (payload.getOrderId() == null || payload.getOrderId().isBlank()) {
+                        throw new IllegalArgumentException("Order ID is required");
+                }
+                if (payload.getTransactionTrackId() == null || payload.getTransactionTrackId().isBlank()) {
+                        throw new IllegalArgumentException("Transaction track ID is required");
+                }
+        }
+
+        private void validateRefund(ChariMerchantCardRefundPayload payload) {
+                if (payload == null) {
+                        throw new IllegalArgumentException("Merchant card refund payload is required");
+                }
+                if (!PhoneNumberUtil.isValidMoroccanNumber(payload.getPhoneNumber())) {
+                        throw new IllegalArgumentException("A valid Moroccan mobile phone number is required");
+                }
+                if (payload.getOperationId() == null || payload.getOperationId() <= 0) {
+                        throw new IllegalArgumentException("Operation ID must be positive");
+                }
+                if (payload.getRefundAmount() == null || payload.getRefundAmount().signum() <= 0) {
+                        throw new IllegalArgumentException("Refund amount must be positive");
+                }
+                if (payload.getOrderId() == null || payload.getOrderId().isBlank()) {
+                        throw new IllegalArgumentException("Order ID is required");
+                }
+                if (payload.getTransactionTrackId() == null || payload.getTransactionTrackId().isBlank()) {
+                        throw new IllegalArgumentException("Transaction track ID is required");
+                }
         }
 
         private void putIfNotNull(Map<String, Object> payload, String fieldName, Object value) {

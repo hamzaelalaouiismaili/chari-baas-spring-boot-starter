@@ -4,6 +4,7 @@ import com.github.hamzaelalaouiismaili.chari.client.core.ChariHttpClient;
 import com.github.hamzaelalaouiismaili.chari.model.payload.ChariCashinByReferencePayload;
 import com.github.hamzaelalaouiismaili.chari.model.payload.ChariCashoutByReferencePayload;
 import com.github.hamzaelalaouiismaili.chari.model.payload.ChariExecuteRequestOperationByReferencePayload;
+import com.github.hamzaelalaouiismaili.chari.model.payload.ChariFatouratiCashinRequestPayload;
 import com.github.hamzaelalaouiismaili.chari.model.response.ChariCashinByReferenceResponse;
 import com.github.hamzaelalaouiismaili.chari.model.response.ChariCashoutByReferenceResponse;
 import com.github.hamzaelalaouiismaili.chari.util.PhoneNumberUtil;
@@ -65,10 +66,37 @@ public class ChariRequestOperationClient {
                                 ChariCashoutByReferenceResponse.class, "EXECUTE_CASHOUT_BY_REFERENCE");
         }
 
+        public ChariCashinByReferenceResponse requestFatouratiCashin(ChariFatouratiCashinRequestPayload payload) {
+                if (payload == null || payload.getCode() == null || payload.getCode().isBlank()) {
+                        throw new IllegalArgumentException("Fatourati cash-in code is required");
+                }
+                if (payload.getAmount() == null || payload.getAmount().signum() <= 0) {
+                        throw new IllegalArgumentException("Amount must be positive");
+                }
+                log.debug("Requesting Fatourati cash-in for code: {}, amount: {}",
+                                payload.getCode(), payload.getAmount());
+                return httpClient.post("/api/operations/fatourati/cashin/request",
+                                buildFatouratiPayload(payload),
+                                ChariCashinByReferenceResponse.class, "FATOURATI_CASHIN_REQUEST");
+        }
+
         private Map<String, Object> buildRequestPayload(String phoneNumber, Object amount) {
                 Map<String, Object> requestPayload = new HashMap<>();
                 requestPayload.put("PhoneNumber", PhoneNumberUtil.normalize(phoneNumber));
                 requestPayload.put("amount", amount);
+                return requestPayload;
+        }
+
+        private Map<String, Object> buildFatouratiPayload(ChariFatouratiCashinRequestPayload payload) {
+                Map<String, Object> requestPayload = new HashMap<>();
+                requestPayload.put("code", payload.getCode());
+                requestPayload.put("Amount", payload.getAmount());
+                if (payload.getFeesPercent() != null) {
+                        requestPayload.put("FeesPercent", payload.getFeesPercent());
+                }
+                if (payload.getDescription() != null) {
+                        requestPayload.put("Description", payload.getDescription());
+                }
                 return requestPayload;
         }
 }

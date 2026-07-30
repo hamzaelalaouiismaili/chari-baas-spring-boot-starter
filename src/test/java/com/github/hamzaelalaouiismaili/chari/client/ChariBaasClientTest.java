@@ -37,7 +37,11 @@ import com.github.hamzaelalaouiismaili.chari.model.payload.ChariCustomerConfirmP
 import com.github.hamzaelalaouiismaili.chari.model.payload.ChariExecuteRequestOperationByReferencePayload;
 import com.github.hamzaelalaouiismaili.chari.model.payload.ChariGenerateQrCodePayload;
 import com.github.hamzaelalaouiismaili.chari.model.payload.ChariLoginWithPinPayload;
+import com.github.hamzaelalaouiismaili.chari.model.payload.ChariFatouratiCashinRequestPayload;
+import com.github.hamzaelalaouiismaili.chari.model.payload.ChariMerchantCardCapturePayload;
 import com.github.hamzaelalaouiismaili.chari.model.payload.ChariMerchantCardPaymentPayload;
+import com.github.hamzaelalaouiismaili.chari.model.payload.ChariMerchantCardRefundPayload;
+import com.github.hamzaelalaouiismaili.chari.model.payload.ChariNetworkOperationPayload;
 import com.github.hamzaelalaouiismaili.chari.model.payload.ChariMerchantKycUploadPayload;
 import com.github.hamzaelalaouiismaili.chari.model.payload.ChariMerchantPaymentByPhonePayload;
 import com.github.hamzaelalaouiismaili.chari.model.payload.ChariMerchantTokenizedCardPaymentPayload;
@@ -65,8 +69,10 @@ import com.github.hamzaelalaouiismaili.chari.model.response.ChariCustomerStatusR
 import com.github.hamzaelalaouiismaili.chari.model.response.ChariDefaultWalletResponse;
 import com.github.hamzaelalaouiismaili.chari.model.response.ChariGenerateQrCodeResponse;
 import com.github.hamzaelalaouiismaili.chari.model.response.ChariLoginWithPinResponse;
+import com.github.hamzaelalaouiismaili.chari.model.response.ChariMerchantCardLifecycleResponse;
 import com.github.hamzaelalaouiismaili.chari.model.response.ChariMerchantCardPaymentPreviewResponse;
 import com.github.hamzaelalaouiismaili.chari.model.response.ChariMerchantCardPaymentResponse;
+import com.github.hamzaelalaouiismaili.chari.model.response.ChariNetworkOperationResponse;
 import com.github.hamzaelalaouiismaili.chari.model.response.ChariMerchantPaymentByPhonePreviewResponse;
 import com.github.hamzaelalaouiismaili.chari.model.response.ChariMerchantPaymentByPhoneResponse;
 import com.github.hamzaelalaouiismaili.chari.model.response.ChariOperationResponse;
@@ -1285,6 +1291,222 @@ class ChariBaasClientTest {
     assertThat(response.getData().getOperationDate()).isNull();
     assertThat(response.getData().getFeesAmount()).isNull();
     assertThat(response.getData().getExternalReference()).isNull();
+    server.verify();
+  }
+
+  @Test
+  void previewMerchantCardPaymentDirectSendsAmountAndMapsResponse() {
+    RestTemplate restTemplate = new RestTemplate();
+    MockRestServiceServer server = MockRestServiceServer.bindTo(restTemplate).build();
+    ChariBaasClient client = new ChariBaasClient(restTemplate, properties());
+
+    server.expect(once(), requestTo(
+        "https://sandbox.charimoney.com/api/operations/merchant/payment/card/preview?phoneNumber=+212612345678"))
+        .andExpect(method(HttpMethod.POST))
+        .andExpect(content().string(containsString("\"amount\":250")))
+        .andRespond(withSuccess("""
+            {"data":{"type":5,"operation":{"phoneNumber":"+212612345678","amount":250,"method":2},
+              "feesAmount":0,"checkedAt":"2025-04-12T12:55:39.213Z","openLoop":false}}
+            """, MediaType.APPLICATION_JSON));
+
+    ChariMerchantCardPaymentPreviewResponse response =
+        client.previewMerchantCardPaymentDirect("0612345678", new BigDecimal("250"));
+
+    assertThat(response.getData().getType()).isEqualTo(5);
+    assertThat(response.getData().getOperation().getMethod()).isEqualTo(2);
+    server.verify();
+  }
+
+  @Test
+  void captureMerchantCardPaymentSendsBodyAndMapsResponse() {
+    RestTemplate restTemplate = new RestTemplate();
+    MockRestServiceServer server = MockRestServiceServer.bindTo(restTemplate).build();
+    ChariBaasClient client = new ChariBaasClient(restTemplate, properties());
+
+    server.expect(once(), requestTo(
+        "https://sandbox.charimoney.com/api/operations/merchant/payment/card/capture"))
+        .andExpect(method(HttpMethod.POST))
+        .andExpect(content().string(containsString("\"phoneNumber\":\"+212612345678\"")))
+        .andExpect(content().string(containsString("\"amount\":250")))
+        .andExpect(content().string(containsString("\"orderId\":\"CH473bbe51d546\"")))
+        .andExpect(content().string(containsString("\"transactionTrackId\":\"600789381213\"")))
+        .andExpect(content().string(containsString("\"skipGatewayCall\":false")))
+        .andRespond(withSuccess("""
+            {"data":{"phoneNumber":"+212612345678","operationId":5231,"refundAmount":250,
+              "orderId":"CH473bbe51d546","transactionTrackId":"600789381213"}}
+            """, MediaType.APPLICATION_JSON));
+
+    ChariMerchantCardLifecycleResponse response = client.captureMerchantCardPayment(
+        ChariMerchantCardCapturePayload.builder()
+            .phoneNumber("0612345678")
+            .amount(new BigDecimal("250"))
+            .orderId("CH473bbe51d546")
+            .transactionTrackId("600789381213")
+            .skipGatewayCall(false)
+            .build());
+
+    assertThat(response.getData().getOperationId()).isEqualTo(5231L);
+    assertThat(response.getData().getRefundAmount()).isEqualByComparingTo("250");
+    server.verify();
+  }
+
+  @Test
+  void reverseMerchantCardPaymentHitsReverseEndpoint() {
+    RestTemplate restTemplate = new RestTemplate();
+    MockRestServiceServer server = MockRestServiceServer.bindTo(restTemplate).build();
+    ChariBaasClient client = new ChariBaasClient(restTemplate, properties());
+
+    server.expect(once(), requestTo(
+        "https://sandbox.charimoney.com/api/operations/merchant/payment/card/reverse"))
+        .andExpect(method(HttpMethod.POST))
+        .andExpect(content().string(containsString("\"orderId\":\"CH473bbe51d546\"")))
+        .andRespond(withSuccess("""
+            {"data":{"phoneNumber":"+212612345678","operationId":5231,"refundAmount":250,
+              "orderId":"CH473bbe51d546","transactionTrackId":"600789381213"}}
+            """, MediaType.APPLICATION_JSON));
+
+    ChariMerchantCardLifecycleResponse response = client.reverseMerchantCardPayment(
+        ChariMerchantCardCapturePayload.builder()
+            .phoneNumber("0612345678")
+            .amount(new BigDecimal("250"))
+            .orderId("CH473bbe51d546")
+            .transactionTrackId("600789381213")
+            .build());
+
+    assertThat(response.getData().getOrderId()).isEqualTo("CH473bbe51d546");
+    server.verify();
+  }
+
+  @Test
+  void refundMerchantCardPaymentSendsPartialRefundBodyAndMapsResponse() {
+    RestTemplate restTemplate = new RestTemplate();
+    MockRestServiceServer server = MockRestServiceServer.bindTo(restTemplate).build();
+    ChariBaasClient client = new ChariBaasClient(restTemplate, properties());
+
+    server.expect(once(), requestTo(
+        "https://sandbox.charimoney.com/api/operations/merchant/payment/card/refund"))
+        .andExpect(method(HttpMethod.POST))
+        .andExpect(content().string(containsString("\"operationId\":5231")))
+        .andExpect(content().string(containsString("\"refundAmount\":100")))
+        .andExpect(content().string(containsString("\"orderId\":\"CH473bbe51d546\"")))
+        .andRespond(withSuccess("""
+            {"data":{"phoneNumber":"+212612345678","operationId":5231,"refundAmount":100,
+              "orderId":"CH473bbe51d546","transactionTrackId":"600789381213"}}
+            """, MediaType.APPLICATION_JSON));
+
+    ChariMerchantCardLifecycleResponse response = client.refundMerchantCardPayment(
+        ChariMerchantCardRefundPayload.builder()
+            .phoneNumber("0612345678")
+            .operationId(5231L)
+            .refundAmount(new BigDecimal("100"))
+            .orderId("CH473bbe51d546")
+            .transactionTrackId("600789381213")
+            .build());
+
+    assertThat(response.getData().getRefundAmount()).isEqualByComparingTo("100");
+    server.verify();
+  }
+
+  @Test
+  void refundMerchantCardPaymentRejectsNonPositiveOperationId() {
+    ChariBaasClient client = new ChariBaasClient(new RestTemplate(), properties());
+    assertThatThrownBy(() -> client.refundMerchantCardPayment(
+        ChariMerchantCardRefundPayload.builder()
+            .phoneNumber("0612345678")
+            .operationId(0L)
+            .refundAmount(new BigDecimal("100"))
+            .orderId("CH473bbe51d546")
+            .transactionTrackId("600789381213")
+            .build()))
+        .isInstanceOf(IllegalArgumentException.class)
+        .hasMessage("Operation ID must be positive");
+  }
+
+  @Test
+  void simulateNetworkCashinSendsReferenceAndMapsResponse() {
+    RestTemplate restTemplate = new RestTemplate();
+    MockRestServiceServer server = MockRestServiceServer.bindTo(restTemplate).build();
+    ChariBaasClient client = new ChariBaasClient(restTemplate, properties());
+
+    server.expect(once(), requestTo(
+        "https://sandbox.charimoney.com/api/network/operations/cashin?withContext=true"))
+        .andExpect(method(HttpMethod.POST))
+        .andExpect(content().string(containsString("\"reference\":\"1122334455\"")))
+        .andExpect(content().string(containsString("\"entity\":\"AGENCY\"")))
+        .andRespond(withSuccess("""
+            {"data":{"reference":"1122334455","entity":"AGENCY",
+              "createdAt":"2025-05-15T23:55:55.082Z","executedAt":"2025-05-15T23:57:07.000Z",
+              "phoneNumber":"+212612345678","amount":10,"description":"CashIn by reference",
+              "partner":"PARTNER_NAME"}}
+            """, MediaType.APPLICATION_JSON));
+
+    ChariNetworkOperationResponse response = client.simulateNetworkCashin(
+        ChariNetworkOperationPayload.builder().reference("1122334455").entity("AGENCY").build(),
+        true);
+
+    assertThat(response.getData().getPartner()).isEqualTo("PARTNER_NAME");
+    assertThat(response.getData().getAmount()).isEqualByComparingTo("10");
+    server.verify();
+  }
+
+  @Test
+  void simulateNetworkCashoutHitsCashoutEndpointWithoutWithContext() {
+    RestTemplate restTemplate = new RestTemplate();
+    MockRestServiceServer server = MockRestServiceServer.bindTo(restTemplate).build();
+    ChariBaasClient client = new ChariBaasClient(restTemplate, properties());
+
+    server.expect(once(), requestTo(
+        "https://sandbox.charimoney.com/api/network/operations/cashout"))
+        .andExpect(method(HttpMethod.POST))
+        .andExpect(content().string(containsString("\"reference\":\"1122334455\"")))
+        .andRespond(withSuccess("{\"data\":{\"reference\":\"1122334455\"}}",
+            MediaType.APPLICATION_JSON));
+
+    ChariNetworkOperationResponse response = client.simulateNetworkCashout(
+        ChariNetworkOperationPayload.builder().reference("1122334455").build(), null);
+
+    assertThat(response.getData().getReference()).isEqualTo("1122334455");
+    server.verify();
+  }
+
+  @Test
+  void simulateNetworkCashinRejectsBlankReference() {
+    ChariBaasClient client = new ChariBaasClient(new RestTemplate(), properties());
+    assertThatThrownBy(() -> client.simulateNetworkCashin(
+        ChariNetworkOperationPayload.builder().reference(" ").build(), null))
+        .isInstanceOf(IllegalArgumentException.class)
+        .hasMessage("Network operation reference is required");
+  }
+
+  @Test
+  void requestFatouratiCashinSendsCapitalizedKeysAndMapsResponse() {
+    RestTemplate restTemplate = new RestTemplate();
+    MockRestServiceServer server = MockRestServiceServer.bindTo(restTemplate).build();
+    ChariBaasClient client = new ChariBaasClient(restTemplate, properties());
+
+    server.expect(once(), requestTo(
+        "https://sandbox.charimoney.com/api/operations/fatourati/cashin/request"))
+        .andExpect(method(HttpMethod.POST))
+        .andExpect(content().string(containsString("\"code\":\"1880375\"")))
+        .andExpect(content().string(containsString("\"Amount\":100")))
+        .andExpect(content().string(containsString("\"FeesPercent\":1")))
+        .andExpect(content().string(containsString("\"Description\":\"Test it\"")))
+        .andRespond(withSuccess("""
+            {"data":{"reference":"FATREF-E6C8ECC690AC","createdAt":"2026-06-11T00:42:09.654Z",
+              "executedAt":null,"phoneNumber":null,"code":"1880375","amount":100,
+              "description":"Test it","status":1,"type":1}}
+            """, MediaType.APPLICATION_JSON));
+
+    ChariCashinByReferenceResponse response = client.requestFatouratiCashin(
+        ChariFatouratiCashinRequestPayload.builder()
+            .code("1880375")
+            .amount(new BigDecimal("100"))
+            .feesPercent(new BigDecimal("1"))
+            .description("Test it")
+            .build());
+
+    assertThat(response.getData().getReference()).isEqualTo("FATREF-E6C8ECC690AC");
+    assertThat(response.getData().getCode()).isEqualTo("1880375");
     server.verify();
   }
 
