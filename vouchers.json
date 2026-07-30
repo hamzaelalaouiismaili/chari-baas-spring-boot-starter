@@ -1,0 +1,1412 @@
+{
+  "info": {
+    "_postman_id": "d52cee0c-51ed-4e7c-96ad-96651d01e9bf",
+    "name": "voucer",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "51803851",
+    "_collection_link": "https://go.postman.co/collection/51803851-d52cee0c-51ed-4e7c-96ad-96651d01e9bf?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Vouchers",
+      "item": [
+        {
+          "name": "Voucher Service : Purchase a Voucher (virgo + carry1st + clickApporter)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "C-Request-Id",
+                "value": "{{requestId}}",
+                "description": "UUID v4 per request (tracing)"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"customerPhoneNumber\": \"+212608814003\",\n    \"destinationPhoneNumber\": \"+212608814003\",\n    \"beneficiaryName\": \"string\",\n    \"amount\": 0,\n    \"skuId\": 18,\n    \"providerSkuId\": null,\n    \"price\": 512.76,\n    \"providerId\": 2\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{host}}/api/operations/voucher/confirm",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "api",
+                "operations",
+                "voucher",
+                "confirm"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Voucher Service : Purchase a Voucher (virgo + carry1st + clickApporter)",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "C-Request-Id",
+                    "value": "{{requestId}}",
+                    "description": "UUID v4 per request (tracing)"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"customerPhoneNumber\": \"+212608814003\",\n    \"destinationPhoneNumber\": \"+212608814003\",\n    \"beneficiaryName\": \"string\",\n    \"amount\": 0,\n    \"skuId\": 18,\n    \"providerSkuId\": null,\n    \"price\": 512.76,\n    \"providerId\": 2\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{host}}/api/operations/voucher/confirm",
+                  "host": [
+                    "{{host}}"
+                  ],
+                  "path": [
+                    "api",
+                    "operations",
+                    "voucher",
+                    "confirm"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": ":status",
+                  "value": 200
+                },
+                {
+                  "key": "date",
+                  "value": "Thu, 30 Jul 2026 15:05:59 GMT"
+                },
+                {
+                  "key": "content-type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "x-content-type-options",
+                  "value": "nosniff"
+                },
+                {
+                  "key": "x-frame-options",
+                  "value": "DENY"
+                },
+                {
+                  "key": "strict-transport-security",
+                  "value": "max-age=31536000; includeSubDomains"
+                },
+                {
+                  "key": "content-security-policy",
+                  "value": "default-src 'none'; frame-ancestors 'none'"
+                },
+                {
+                  "key": "permissions-policy",
+                  "value": "accelerometer=(), camera=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()"
+                },
+                {
+                  "key": "referrer-policy",
+                  "value": "strict-origin-when-cross-origin"
+                },
+                {
+                  "key": "x-permitted-cross-domain-policies",
+                  "value": "none"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"data\": {\n        \"operationType\": 23,\n        \"voucherName\": \"USD 50\",\n        \"amount\": 564.04,\n        \"cashBack\": 36.66,\n        \"totalAmount\": 512.76,\n        \"reason\": null,\n        \"recipientPhoneNumber\": \"+212608814003\",\n        \"checkedAt\": \"2026-07-30T15:05:59.8632851Z\",\n        \"urlActivateCard\": null,\n        \"destinationPhoneNumber\": \"+212608814003\",\n        \"beneficiaryName\": \"string \",\n        \"code\": \"0qGNUOQWAWHVT1\",\n        \"description\": \"Étape 1: Dans la page de paiement, sélectionnez Razer comme mode de paiement\\r\\n Étape 2: Entrez le code imprimé sur le ticket quand demandé\\r\\n\\r\\n Vous pouvez utiliser le solde restant pour acheter autre chose.\"\n    }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Voucher Service : Voucher Preview",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "C-Request-Id",
+                "value": "{{requestId}}",
+                "description": "UUID v4 per request (tracing)"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"customerPhoneNumber\": \"+212608814003\",\n    \"destinationPhoneNumber\": \"+212608814003\",\n    \"beneficiaryName\": \"string\",\n    \"amount\": 0,\n    \"skuId\": 18,\n    \"providerSkuId\": null,\n    \"price\": 512.76,\n    \"providerId\": 2\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{host}}/api/operations/voucher/preview",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "api",
+                "operations",
+                "voucher",
+                "preview"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Voucher Service : Voucher Preview",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "C-Request-Id",
+                    "value": "{{requestId}}",
+                    "description": "UUID v4 per request (tracing)"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"customerPhoneNumber\": \"+212608814003\",\n    \"destinationPhoneNumber\": \"+212608814003\",\n    \"beneficiaryName\": \"string\",\n    \"amount\": 0,\n    \"skuId\": 18,\n    \"providerSkuId\": null,\n    \"price\": 512.76,\n    \"providerId\": 2\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{host}}/api/operations/voucher/preview",
+                  "host": [
+                    "{{host}}"
+                  ],
+                  "path": [
+                    "api",
+                    "operations",
+                    "voucher",
+                    "preview"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": ":status",
+                  "value": 200
+                },
+                {
+                  "key": "date",
+                  "value": "Thu, 30 Jul 2026 15:06:36 GMT"
+                },
+                {
+                  "key": "content-type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "x-content-type-options",
+                  "value": "nosniff"
+                },
+                {
+                  "key": "x-frame-options",
+                  "value": "DENY"
+                },
+                {
+                  "key": "strict-transport-security",
+                  "value": "max-age=31536000; includeSubDomains"
+                },
+                {
+                  "key": "content-security-policy",
+                  "value": "default-src 'none'; frame-ancestors 'none'"
+                },
+                {
+                  "key": "permissions-policy",
+                  "value": "accelerometer=(), camera=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()"
+                },
+                {
+                  "key": "referrer-policy",
+                  "value": "strict-origin-when-cross-origin"
+                },
+                {
+                  "key": "x-permitted-cross-domain-policies",
+                  "value": "none"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"data\": {\n        \"type\": 23,\n        \"operation\": {\n            \"customerPhoneNumber\": \"+212608814003\",\n            \"amount\": 564.04,\n            \"reason\": \"\",\n            \"beneficiaryId\": null,\n            \"recipientPhoneNumber\": \"+212608814003\"\n        },\n        \"feesAmount\": 39.48,\n        \"totalAmount\": 564.04,\n        \"checkedAt\": \"2026-07-30T15:06:36.0387276Z\",\n        \"openLoop\": false\n    }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Voucher Service : Voucher Preview",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "C-Request-Id",
+                "value": "{{requestId}}",
+                "description": "UUID v4 per request (tracing)"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"customerPhoneNumber\": \"+212608814003\",\n    \"destinationPhoneNumber\": \"+212608814003\",\n    \"beneficiaryName\": \"string\",\n    \"amount\": 0,\n    \"skuId\": 18,\n    \"providerSkuId\": null,\n    \"price\": 512.76,\n    \"providerId\": 2\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{host}}/api/operations/service/voucher/preview",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "api",
+                "operations",
+                "service",
+                "voucher",
+                "preview"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Voucher Service : Voucher Preview",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "C-Request-Id",
+                    "value": "{{requestId}}",
+                    "description": "UUID v4 per request (tracing)"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"customerPhoneNumber\": \"+212608814003\",\n    \"destinationPhoneNumber\": \"+212608814003\",\n    \"beneficiaryName\": \"string\",\n    \"amount\": 0,\n    \"skuId\": 18,\n    \"providerSkuId\": null,\n    \"price\": 512.76,\n    \"providerId\": 2\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{host}}/api/operations/service/voucher/preview",
+                  "host": [
+                    "{{host}}"
+                  ],
+                  "path": [
+                    "api",
+                    "operations",
+                    "service",
+                    "voucher",
+                    "preview"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": ":status",
+                  "value": 200
+                },
+                {
+                  "key": "date",
+                  "value": "Thu, 30 Jul 2026 15:07:00 GMT"
+                },
+                {
+                  "key": "content-type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "x-content-type-options",
+                  "value": "nosniff"
+                },
+                {
+                  "key": "x-frame-options",
+                  "value": "DENY"
+                },
+                {
+                  "key": "strict-transport-security",
+                  "value": "max-age=31536000; includeSubDomains"
+                },
+                {
+                  "key": "content-security-policy",
+                  "value": "default-src 'none'; frame-ancestors 'none'"
+                },
+                {
+                  "key": "permissions-policy",
+                  "value": "accelerometer=(), camera=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()"
+                },
+                {
+                  "key": "referrer-policy",
+                  "value": "strict-origin-when-cross-origin"
+                },
+                {
+                  "key": "x-permitted-cross-domain-policies",
+                  "value": "none"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"data\": {\n        \"type\": 23,\n        \"operation\": {\n            \"customerPhoneNumber\": \"+212608814003\",\n            \"amount\": 564.04,\n            \"reason\": \"\",\n            \"beneficiaryId\": null,\n            \"recipientPhoneNumber\": \"+212608814003\"\n        },\n        \"feesAmount\": 39.48,\n        \"totalAmount\": 564.04,\n        \"checkedAt\": \"2026-07-30T15:07:00.1363306Z\",\n        \"openLoop\": false\n    }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Voucher Service : Purchase an Voucher",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "C-Request-Id",
+                "value": "{{requestId}}",
+                "description": "UUID v4 per request (tracing)"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"customerPhoneNumber\": \"+212608814003\",\n    \"destinationPhoneNumber\": \"+212608814000\",\n    \"beneficiaryName\": \"string\",\n    \"amount\": 0,\n    \"skuId\": 18,\n    \"providerSkuId\": null,\n    \"providerId\": 2\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{host}}/api/operations/service/voucher",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "api",
+                "operations",
+                "service",
+                "voucher"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Fetches products list for click apporter",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "C-Request-Id",
+                "value": "{{requestId}}",
+                "description": "UUID v4 per request (tracing)"
+              }
+            ],
+            "url": {
+              "raw": "{{host}}/api/vouchers/product",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "api",
+                "vouchers",
+                "product"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "",
+                  "description": "(optional)",
+                  "disabled": true
+                },
+                {
+                  "key": "take",
+                  "value": "",
+                  "description": "(optional)",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Fetches products list for click apporter",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "C-Request-Id",
+                    "value": "{{requestId}}",
+                    "description": "UUID v4 per request (tracing)"
+                  }
+                ],
+                "url": {
+                  "raw": "{{host}}/api/vouchers/product",
+                  "host": [
+                    "{{host}}"
+                  ],
+                  "path": [
+                    "api",
+                    "vouchers",
+                    "product"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "",
+                      "description": "(optional)",
+                      "disabled": true
+                    },
+                    {
+                      "key": "take",
+                      "value": "",
+                      "description": "(optional)",
+                      "disabled": true
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": ":status",
+                  "value": 200
+                },
+                {
+                  "key": "date",
+                  "value": "Thu, 30 Jul 2026 15:00:20 GMT"
+                },
+                {
+                  "key": "content-type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "x-content-type-options",
+                  "value": "nosniff"
+                },
+                {
+                  "key": "x-frame-options",
+                  "value": "DENY"
+                },
+                {
+                  "key": "strict-transport-security",
+                  "value": "max-age=31536000; includeSubDomains"
+                },
+                {
+                  "key": "content-security-policy",
+                  "value": "default-src 'none'; frame-ancestors 'none'"
+                },
+                {
+                  "key": "permissions-policy",
+                  "value": "accelerometer=(), camera=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()"
+                },
+                {
+                  "key": "referrer-policy",
+                  "value": "strict-origin-when-cross-origin"
+                },
+                {
+                  "key": "x-permitted-cross-domain-policies",
+                  "value": "none"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"data\": {\n        \"collection\": [\n            {\n                \"skuId\": 0,\n                \"providerSkuId\": \"NPAPCWWCJXWG61A9579JY2XC6C\",\n                \"productName\": \"1800 Flowers.com eGift FRC\",\n                \"imageUrl\": \"https://content.blackhawknetwork.com/gcmimages/product/large/80247.png\",\n                \"price\": 150,\n                \"description\": \"\",\n                \"providerId\": 3,\n                \"brandId\": -1,\n                \"pricing\": {\n                    \"maxValueAmount\": 5000,\n                    \"baseValueAmount\": 150,\n                    \"isVariableValue\": true,\n                    \"multiplicateur\": 0\n                }\n            },\n            {\n                \"skuId\": 0,\n                \"providerSkuId\": \"VW0DGS1XD2P3F3K9PS3645DATG\",\n                \"productName\": \"AMC Popcorn eGift FRC\",\n                \"imageUrl\": \"https://content.blackhawknetwork.com/gcmimages/product/large/76696.png\",\n                \"price\": 50,\n                \"description\": \"\",\n                \"providerId\": 3,\n                \"brandId\": -1,\n                \"pricing\": {\n                    \"maxValueAmount\": 1000,\n                    \"baseValueAmount\": 50,\n                    \"isVariableValue\": true,\n                    \"multiplicateur\": 0\n                }\n            },\n            {\n                \"skuId\": 0,\n                \"providerSkuId\": \"VBYLRQRG87G4B12SYAFMRC00LG\",\n                \"productName\": \"AT&T Prepaid Phone Card (e-delivery) FRC\",\n                \"imageUrl\": \"https://content.blackhawknetwork.com/gcmimages/product/large/76727.png\",\n                \"price\": 100,\n                \"description\": \"\",\n                \"providerId\": 3,\n                \"brandId\": -1,\n                \"pricing\": {\n                    \"maxValueAmount\": 1000,\n                    \"baseValueAmount\": 100,\n                    \"isVariableValue\": true,\n                    \"multiplicateur\": 0\n                }\n            },\n            {\n                \"skuId\": 0,\n                \"providerSkuId\": \"X15T26TTQYT6ZWGNN9Q4CA4F4J\",\n                \"productName\": \"Abercrombie and Fitch eGift FRC\",\n                \"imageUrl\": \"https://content.blackhawknetwork.com/gcmimages/product/large/84301.jpg\",\n                \"price\": 250,\n                \"description\": \"\",\n                \"providerId\": 3,\n                \"brandId\": -1,\n                \"pricing\": {\n                    \"maxValueAmount\": 5000,\n                    \"baseValueAmount\": 250,\n                    \"isVariableValue\": true,\n                    \"multiplicateur\": 0\n                }\n            },\n            {\n                \"skuId\": 0,\n                \"providerSkuId\": \"ZFMKWPZ2LPB7LLDCKKQLXK7TAV\",\n                \"productName\": \"Aeropostale eGift FRC\",\n                \"imageUrl\": \"https://content.blackhawknetwork.com/gcmimages/product/large/76694.png\",\n                \"price\": 150,\n                \"description\": \"\",\n                \"providerId\": 3,\n                \"brandId\": -1,\n                \"pricing\": {\n                    \"maxValueAmount\": 2000,\n                    \"baseValueAmount\": 150,\n                    \"isVariableValue\": true,\n                    \"multiplicateur\": 0\n                }\n            },\n            {\n                \"skuId\": 0,\n                \"providerSkuId\": \"N8GC3KT6P6BTVPV240LH29Y7S4\",\n                \"productName\": \"Airbnb eGift FRC\",\n                \"imageUrl\": \"https://content.blackhawknetwork.com/gcmimages/product/large/82799.jpg\",\n                \"price\": 250,\n                \"description\": \"\",\n                \"providerId\": 3,\n                \"brandId\": -1,\n                \"pricing\": {\n                    \"maxValueAmount\": 5000,\n                    \"baseValueAmount\": 250,\n                    \"isVariableValue\": true,\n                    \"multiplicateur\": 0\n                }\n            },\n            {\n                \"skuId\": 0,\n                \"providerSkuId\": \"D6PSS81CPN3VKRLK4GTPJ3JHPW\",\n                \"productName\": \"Amazon.com eGift FRC\",\n                \"imageUrl\": \"https://content.blackhawknetwork.com/gcmimages/product/large/74763.png\",\n                \"price\": 200,\n                \"description\": \"\",\n                \"providerId\": 3,\n                \"brandId\": -1,\n                \"pricing\": {\n                    \"maxValueAmount\": 2000,\n                    \"baseValueAmount\": 200,\n                    \"isVariableValue\": true,\n                    \"multiplicateur\": 0\n                }\n            },\n            {\n                \"skuId\": 0,\n                \"providerSkuId\": \"9464PPVQNQ46K184X2DVNGYXZR\",\n                \"productName\": \"American Eagle Outfitters eGift FRC\",\n                \"imageUrl\": \"https://content.blackhawknetwork.com/gcmimages/product/large/72753.png\",\n                \"price\": 50,\n                \"description\": \"\",\n                \"providerId\": 3,\n                \"brandId\": -1,\n                \"pricing\": {\n                    \"maxValueAmount\": 2000,\n                    \"baseValueAmount\": 50,\n                    \"isVariableValue\": true,\n                    \"multiplicateur\": 0\n                }\n            },\n            {\n                \"skuId\": 0,\n                \"providerSkuId\": \"S0SKAYP3QB5LG43KMH72J1WHX3\",\n                \"productName\": \"Applebees eGift FRC\",\n                \"imageUrl\": \"https://content.blackhawknetwork.com/gcmimages/product/large/102744.png\",\n                \"price\": 50,\n                \"description\": \"\",\n                \"providerId\": 3,\n                \"brandId\": -1,\n                \"pricing\": {\n                    \"maxValueAmount\": 5000,\n                    \"baseValueAmount\": 50,\n                    \"isVariableValue\": true,\n                    \"multiplicateur\": 0\n                }\n            },\n            {\n                \"skuId\": 0,\n                \"providerSkuId\": \"FASH1LBY8R4TSWSGG4NG3YKH83\",\n                \"productName\": \"Athleta eGift FRC\",\n                \"imageUrl\": \"https://content.blackhawknetwork.com/gcmimages/product/large/76447.png\",\n                \"price\": 100,\n                \"description\": \"\",\n                \"providerId\": 3,\n                \"brandId\": -1,\n                \"pricing\": {\n                    \"maxValueAmount\": 5000,\n                    \"baseValueAmount\": 100,\n                    \"isVariableValue\": true,\n                    \"multiplicateur\": 0\n                }\n            }\n        ],\n        \"count\": 168\n    }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Fetches detailed product information",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "C-Request-Id",
+                "value": "{{requestId}}",
+                "description": "UUID v4 per request (tracing)"
+              }
+            ],
+            "url": {
+              "raw": "{{host}}/api/vouchers/products/:configId",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "api",
+                "vouchers",
+                "products",
+                ":configId"
+              ],
+              "variable": [
+                {
+                  "key": "configId",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Fetches detailed product information",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "C-Request-Id",
+                    "value": "{{requestId}}",
+                    "description": "UUID v4 per request (tracing)"
+                  }
+                ],
+                "url": {
+                  "raw": "{{host}}/api/vouchers/products/:configId",
+                  "host": [
+                    "{{host}}"
+                  ],
+                  "path": [
+                    "api",
+                    "vouchers",
+                    "products",
+                    ":configId"
+                  ],
+                  "variable": [
+                    {
+                      "key": "configId",
+                      "value": "NPAPCWWCJXWG61A9579JY2XC6C"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": ":status",
+                  "value": 200
+                },
+                {
+                  "key": "date",
+                  "value": "Thu, 30 Jul 2026 15:01:43 GMT"
+                },
+                {
+                  "key": "content-type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "x-content-type-options",
+                  "value": "nosniff"
+                },
+                {
+                  "key": "x-frame-options",
+                  "value": "DENY"
+                },
+                {
+                  "key": "strict-transport-security",
+                  "value": "max-age=31536000; includeSubDomains"
+                },
+                {
+                  "key": "content-security-policy",
+                  "value": "default-src 'none'; frame-ancestors 'none'"
+                },
+                {
+                  "key": "permissions-policy",
+                  "value": "accelerometer=(), camera=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()"
+                },
+                {
+                  "key": "referrer-policy",
+                  "value": "strict-origin-when-cross-origin"
+                },
+                {
+                  "key": "x-permitted-cross-domain-policies",
+                  "value": "none"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"data\": {\n        \"capProductId\": 29,\n        \"capDefaultUpc\": \"07675021141\",\n        \"name\": \"1800 Flowers.com eGift FRC\",\n        \"blackhawkId\": \"https://api.certification.blackhawknetwork.com/productManagement/v1/product/C6S715W4VTM9SH8T6W9ZCY38DA\",\n        \"priceUsd\": 15,\n        \"priceMadCurrent\": 135.025,\n        \"productConfigId\": \"NPAPCWWCJXWG61A9579JY2XC6C\",\n        \"productDescription\": \"1-800-Flowers and their family of brands offers a wide selection of flowers, gift baskets and specialty items to help deliver smiles!\",\n        \"productImages\": [\n            {\n                \"id\": \"Q717QMT6V789MR724KX7Q5BS98\",\n                \"imageSize\": \"SMALL\",\n                \"frontImage\": \"https://content.blackhawknetwork.com/gcmimages/product/icon/80247.png\"\n            },\n            {\n                \"id\": \"MCRGM1YXRYTGBT3SKW30YHHGF8\",\n                \"imageSize\": \"MEDIUM\",\n                \"frontImage\": \"https://content.blackhawknetwork.com/gcmimages/product/medium/80247.png\"\n            },\n            {\n                \"id\": \"DJAQMLHQ88FD2CMD7MJ2DMJNNR\",\n                \"imageSize\": \"LARGE\",\n                \"frontImage\": \"https://content.blackhawknetwork.com/gcmimages/product/large/80247.png\"\n            },\n            {\n                \"id\": \"Y0BNW25F7W2LVZCTDJ0W1DF96C\",\n                \"imageSize\": \"EXTRA_LARGE\",\n                \"frontImage\": \"https://content.blackhawknetwork.com/gcmimages/product/xlarge/80247.png\"\n            },\n            {\n                \"id\": \"A8DS2MKTPF74693LT6TB9G8GDM\",\n                \"imageSize\": \"EXTRA_EXTRA_LARGE\",\n                \"frontImage\": \"https://content.blackhawknetwork.com/gcmimages/product/xxlarge/80247.png\"\n            }\n        ],\n        \"activationCharacteristics\": {\n            \"maxValueAmount\": 500,\n            \"baseValueAmount\": 15,\n            \"isVariableValue\": true\n        },\n        \"redemptionCharacteristics\": {\n            \"redemptionOptions\": [\n                \"IN_STORE\",\n                \"ON_LINE\"\n            ]\n        },\n        \"termsAndConditions\": [\n            {\n                \"id\": \"816B2LR8S8HH60HBRHB5HZ6ZG4\",\n                \"termsAndConditions\": \"The Gift Card and Gift Certificate is a prepaid payment device that comes with a set dollar value. It is not a credit card, charge card or debit card. The Gift Card and Gift Certificate has no associated service or dormancy fees and no expiration date. The Gift Card and Gift Certificate can be used at the brands, the company owned and participating franchised retail stores, web sites and on phone orders, as listed at www.FreshGift.com &lt;http://www.freshgift.com/&gt; . We reserve the right to require credit card or alternate non-promotional payment method information for verification purposes, even if the Gift Card or Gift Certificate fully covers the transaction order total. We do not allow the purchase of a Gift Card with another Gift Card, Gift Certificate, Savings Pass, Appreciation Award, Award Card, or Rewards Pass. Your 19-digit Gift Card may become redeemable at additional brands and locations, which information will be updated on this page. The Gift Card and Gift Certificates may only be used to purchase products and services and may not be redeemed for cash, unless otherwise prohibited by law. The Gift Cards and Gift Certificates are not transferable and may not be used for unlawful purposes. Please visit www.freshgift.com http://www.freshgift.com/ or full terms and conditions.\",\n                \"termsAndConditionsType\": \"WEB\"\n            },\n            {\n                \"id\": \"B2XMAFHXWMQZP8RSZ6Q19KWC9M\",\n                \"termsAndConditions\": \"The Gift Card and Gift Certificate is a prepaid payment device that comes with a set dollar value. It is not a credit card, charge card or debit card. The Gift Card and Gift Certificate has no associated service or dormancy fees and no expiration date. The Gift Card and Gift Certificate can be used at the brands, the company owned and participating franchised retail stores, web sites and on phone orders, as listed at www.FreshGift.com &lt;http://www.freshgift.com/&gt; . We reserve the right to require credit card or alternate non-promotional payment method information for verification purposes, even if the Gift Card or Gift Certificate fully covers the transaction order total. We do not allow the purchase of a Gift Card with another Gift Card, Gift Certificate, Savings Pass, Appreciation Award, Award Card, or Rewards Pass. Your 19-digit Gift Card may become redeemable at additional brands and locations, which information will be updated on this page. The Gift Card and Gift Certificates may only be used to purchase products and services and may not be redeemed for cash, unless otherwise prohibited by law. The Gift Cards and Gift Certificates are not transferable and may not be used for unlawful purposes. Please visit www.freshgift.com http://www.freshgift.com/ or full terms and conditions.\",\n                \"termsAndConditionsType\": \"EMAIL\"\n            },\n            {\n                \"id\": \"YRSCYVQAX2TNWXW46SLGWFSTKR\",\n                \"termsAndConditions\": \"The Gift Card and Gift Certificate is a prepaid payment device that comes with a set dollar value. It is not a credit card, charge card or debit card. The Gift Card and Gift Certificate has no associated service or dormancy fees and no expiration date. The Gift Card and Gift Certificate can be used at the brands, the company owned and participating franchised retail stores, web sites and on phone orders, as listed at www.FreshGift.com &lt;http://www.freshgift.com/&gt; . We reserve the right to require credit card or alternate non-promotional payment method information for verification purposes, even if the Gift Card or Gift Certificate fully covers the transaction order total. We do not allow the purchase of a Gift Card with another Gift Card, Gift Certificate, Savings Pass, Appreciation Award, Award Card, or Rewards Pass. Your 19-digit Gift Card may become redeemable at additional brands and locations, which information will be updated on this page. The Gift Card and Gift Certificates may only be used to purchase products and services and may not be redeemed for cash, unless otherwise prohibited by law. The Gift Cards and Gift Certificates are not transferable and may not be used for unlawful purposes. Please visit www.freshgift.com http://www.freshgift.com/ or full terms and conditions.\",\n                \"termsAndConditionsType\": \"PHYSICAL\"\n            }\n        ]\n    }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Fetches a list of local vouchers",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "C-Request-Id",
+                "value": "{{requestId}}",
+                "description": "UUID v4 per request (tracing)"
+              }
+            ],
+            "url": {
+              "raw": "{{host}}/api/vouchers?phoneNumber=",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "api",
+                "vouchers"
+              ],
+              "query": [
+                {
+                  "key": "phoneNumber",
+                  "value": "",
+                  "description": "(required)"
+                },
+                {
+                  "key": "page",
+                  "value": "",
+                  "description": "(optional)",
+                  "disabled": true
+                },
+                {
+                  "key": "take",
+                  "value": "",
+                  "description": "(optional)",
+                  "disabled": true
+                },
+                {
+                  "key": "brandId",
+                  "value": "",
+                  "description": "(optional)",
+                  "disabled": true
+                },
+                {
+                  "key": "keyword",
+                  "value": "",
+                  "description": "(optional)",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Fetches a list of local vouchers",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "C-Request-Id",
+                    "value": "{{requestId}}",
+                    "description": "UUID v4 per request (tracing)"
+                  }
+                ],
+                "url": {
+                  "raw": "{{host}}/api/vouchers?phoneNumber=+212608814003",
+                  "host": [
+                    "{{host}}"
+                  ],
+                  "path": [
+                    "api",
+                    "vouchers"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "",
+                      "description": "(optional)",
+                      "disabled": true
+                    },
+                    {
+                      "key": "take",
+                      "value": "",
+                      "description": "(optional)",
+                      "disabled": true
+                    },
+                    {
+                      "key": "brandId",
+                      "value": "",
+                      "description": "(optional)",
+                      "disabled": true
+                    },
+                    {
+                      "key": "keyword",
+                      "value": "",
+                      "description": "(optional)",
+                      "disabled": true
+                    },
+                    {
+                      "key": "phoneNumber",
+                      "value": "+212608814003"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": ":status",
+                  "value": 200
+                },
+                {
+                  "key": "date",
+                  "value": "Thu, 30 Jul 2026 15:02:27 GMT"
+                },
+                {
+                  "key": "content-type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "x-content-type-options",
+                  "value": "nosniff"
+                },
+                {
+                  "key": "x-frame-options",
+                  "value": "DENY"
+                },
+                {
+                  "key": "strict-transport-security",
+                  "value": "max-age=31536000; includeSubDomains"
+                },
+                {
+                  "key": "content-security-policy",
+                  "value": "default-src 'none'; frame-ancestors 'none'"
+                },
+                {
+                  "key": "permissions-policy",
+                  "value": "accelerometer=(), camera=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()"
+                },
+                {
+                  "key": "referrer-policy",
+                  "value": "strict-origin-when-cross-origin"
+                },
+                {
+                  "key": "x-permitted-cross-domain-policies",
+                  "value": "none"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"data\": {\n        \"collection\": [\n            {\n                \"skuId\": 15,\n                \"providerSkuId\": \"15\",\n                \"productName\": \"600 + 60 UC - PUBG Mobile UC\",\n                \"imageUrl\": null,\n                \"price\": 100,\n                \"description\": \"Dominez PUBG Mobile en rechargeant instantanément vos UC avec des options de paiement locales au Maroc! Prenez l'avantage sur PUBG Mobile avec une recharge instantanée en UC ! Améliorez votre jeu avec des objets, des skins et des boosts avancés. Rechargez facilement avec des méthodes locales populaires - aucune carte de crédit n'est nécessaire au Maroc! Recharges sécurisées et rapides pour les joueurs au Maroc. Soyez le dernier debout !\",\n                \"providerId\": 1,\n                \"brandId\": 44,\n                \"pricing\": null\n            }\n        ],\n        \"count\": 1\n    }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Fetches digital virgo and carry1st",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "C-Request-Id",
+                "value": "{{requestId}}",
+                "description": "UUID v4 per request (tracing)"
+              }
+            ],
+            "url": {
+              "raw": "{{host}}/api/vouchers/articles?phoneNumber=",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "api",
+                "vouchers",
+                "articles"
+              ],
+              "query": [
+                {
+                  "key": "phoneNumber",
+                  "value": "",
+                  "description": "(required)"
+                },
+                {
+                  "key": "page",
+                  "value": "",
+                  "description": "(optional)",
+                  "disabled": true
+                },
+                {
+                  "key": "take",
+                  "value": "",
+                  "description": "(optional)",
+                  "disabled": true
+                },
+                {
+                  "key": "brandId",
+                  "value": "",
+                  "description": "(optional)",
+                  "disabled": true
+                },
+                {
+                  "key": "keyword",
+                  "value": "",
+                  "description": "(optional)",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Fetches digital virgo and carry1st",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "C-Request-Id",
+                    "value": "{{requestId}}",
+                    "description": "UUID v4 per request (tracing)"
+                  }
+                ],
+                "url": {
+                  "raw": "{{host}}/api/vouchers/articles?phoneNumber=+212608814003",
+                  "host": [
+                    "{{host}}"
+                  ],
+                  "path": [
+                    "api",
+                    "vouchers",
+                    "articles"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "",
+                      "description": "(optional)",
+                      "disabled": true
+                    },
+                    {
+                      "key": "take",
+                      "value": "",
+                      "description": "(optional)",
+                      "disabled": true
+                    },
+                    {
+                      "key": "brandId",
+                      "value": "",
+                      "description": "(optional)",
+                      "disabled": true
+                    },
+                    {
+                      "key": "keyword",
+                      "value": "",
+                      "description": "(optional)",
+                      "disabled": true
+                    },
+                    {
+                      "key": "phoneNumber",
+                      "value": "+212608814003"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": ":status",
+                  "value": 200
+                },
+                {
+                  "key": "date",
+                  "value": "Thu, 30 Jul 2026 15:03:01 GMT"
+                },
+                {
+                  "key": "content-type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "x-content-type-options",
+                  "value": "nosniff"
+                },
+                {
+                  "key": "x-frame-options",
+                  "value": "DENY"
+                },
+                {
+                  "key": "strict-transport-security",
+                  "value": "max-age=31536000; includeSubDomains"
+                },
+                {
+                  "key": "content-security-policy",
+                  "value": "default-src 'none'; frame-ancestors 'none'"
+                },
+                {
+                  "key": "permissions-policy",
+                  "value": "accelerometer=(), camera=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()"
+                },
+                {
+                  "key": "referrer-policy",
+                  "value": "strict-origin-when-cross-origin"
+                },
+                {
+                  "key": "x-permitted-cross-domain-policies",
+                  "value": "none"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"data\": {\n        \"collection\": [\n            {\n                \"skuId\": 15,\n                \"providerSkuId\": \"15\",\n                \"productName\": \"600 + 60 UC - PUBG Mobile UC\",\n                \"imageUrl\": null,\n                \"price\": 100,\n                \"description\": \"Dominez PUBG Mobile en rechargeant instantanément vos UC avec des options de paiement locales au Maroc! Prenez l'avantage sur PUBG Mobile avec une recharge instantanée en UC ! Améliorez votre jeu avec des objets, des skins et des boosts avancés. Rechargez facilement avec des méthodes locales populaires - aucune carte de crédit n'est nécessaire au Maroc! Recharges sécurisées et rapides pour les joueurs au Maroc. Soyez le dernier debout !\",\n                \"providerId\": 1,\n                \"brandId\": 44,\n                \"pricing\": null\n            },\n            {\n                \"skuId\": 467,\n                \"providerSkuId\": \"467\",\n                \"productName\": \"300 + 25 UC\",\n                \"imageUrl\": \"https://asset.staging.voucher.dv-content.io/store/articles/467.png\",\n                \"price\": 56.29,\n                \"description\": \"Étape 1: Connectez-vous à votre compte à Midasbuy (https://www.midasbuy.com/ot/pubgm/#getinfo)\\r\\n Étape 2: Accédez à la page \\\"PUBG Mobile Game Credit\\\" et entrez votre identifiant PUBG Mobile Player\\r\\n Étape 3: Accédez à la page \\\"ACTIVER CODE\\\", entrez le code fourni sur cette page\\r\\n Étape 4: Vous pouvez ensuite échanger cette valeur du code en tant que PUBG Mobile Unknown Cash\",\n                \"providerId\": 2,\n                \"brandId\": null,\n                \"pricing\": null\n            },\n            {\n                \"skuId\": 20,\n                \"providerSkuId\": \"20\",\n                \"productName\": \"USD 5\",\n                \"imageUrl\": \"https://asset.staging.voucher.dv-content.io/store/articles/20.png\",\n                \"price\": 56.41,\n                \"description\": \"Étape 1: Dans la page de paiement, sélectionnez Razer comme mode de paiement\\r\\n Étape 2: Entrez le code imprimé sur le ticket quand demandé\\r\\n\\r\\n Vous pouvez utiliser le solde restant pour acheter autre chose.\",\n                \"providerId\": 2,\n                \"brandId\": null,\n                \"pricing\": null\n            },\n            {\n                \"skuId\": 468,\n                \"providerSkuId\": \"468\",\n                \"productName\": \"600 + 60 UC\",\n                \"imageUrl\": \"https://asset.staging.voucher.dv-content.io/store/articles/468.png\",\n                \"price\": 112.7,\n                \"description\": \"Étape 1: Connectez-vous à votre compte à Midasbuy (https://www.midasbuy.com/ot/pubgm/#getinfo)\\r\\n Étape 2: Accédez à la page \\\"PUBG Mobile Game Credit\\\" et entrez votre identifiant PUBG Mobile Player\\r\\n Étape 3: Accédez à la page \\\"ACTIVER CODE\\\", entrez le code fourni sur cette page\\r\\n Étape 4: Vous pouvez ensuite échanger cette valeur du code en tant que PUBG Mobile Unknown Cash\",\n                \"providerId\": 2,\n                \"brandId\": null,\n                \"pricing\": null\n            },\n            {\n                \"skuId\": 16,\n                \"providerSkuId\": \"16\",\n                \"productName\": \"USD 10\",\n                \"imageUrl\": \"https://asset.staging.voucher.dv-content.io/store/articles/16.png\",\n                \"price\": 112.8,\n                \"description\": \"Étape 1: Dans la page de paiement, sélectionnez Razer comme mode de paiement\\r\\n Étape 2: Entrez le code imprimé sur le ticket quand demandé\\r\\n\\r\\n Vous pouvez utiliser le solde restant pour acheter autre chose.\",\n                \"providerId\": 2,\n                \"brandId\": null,\n                \"pricing\": null\n            },\n            {\n                \"skuId\": 17,\n                \"providerSkuId\": \"17\",\n                \"productName\": \"USD 20\",\n                \"imageUrl\": \"https://asset.staging.voucher.dv-content.io/store/articles/17.png\",\n                \"price\": 225.61,\n                \"description\": \"Étape 1: Dans la page de paiement, sélectionnez Razer comme mode de paiement\\r\\n Étape 2: Entrez le code imprimé sur le ticket quand demandé\\r\\n\\r\\n Vous pouvez utiliser le solde restant pour acheter autre chose.\",\n                \"providerId\": 2,\n                \"brandId\": null,\n                \"pricing\": null\n            },\n            {\n                \"skuId\": 469,\n                \"providerSkuId\": \"469\",\n                \"productName\": \"1500 + 300 UC\",\n                \"imageUrl\": \"https://asset.staging.voucher.dv-content.io/store/articles/469.png\",\n                \"price\": 281.91,\n                \"description\": \"Étape 1: Connectez-vous à votre compte à Midasbuy (https://www.midasbuy.com/ot/pubgm/#getinfo)\\r\\n Étape 2: Accédez à la page \\\"PUBG Mobile Game Credit\\\" et entrez votre identifiant PUBG Mobile Player\\r\\n Étape 3: Accédez à la page \\\"ACTIVER CODE\\\", entrez le code fourni sur cette page\\r\\n Étape 4: Vous pouvez ensuite échanger cette valeur du code en tant que PUBG Mobile Unknown Cash\",\n                \"providerId\": 2,\n                \"brandId\": null,\n                \"pricing\": null\n            },\n            {\n                \"skuId\": 18,\n                \"providerSkuId\": \"18\",\n                \"productName\": \"USD 50\",\n                \"imageUrl\": \"https://asset.staging.voucher.dv-content.io/store/articles/18.png\",\n                \"price\": 564.04,\n                \"description\": \"Étape 1: Dans la page de paiement, sélectionnez Razer comme mode de paiement\\r\\n Étape 2: Entrez le code imprimé sur le ticket quand demandé\\r\\n\\r\\n Vous pouvez utiliser le solde restant pour acheter autre chose.\",\n                \"providerId\": 2,\n                \"brandId\": null,\n                \"pricing\": null\n            },\n            {\n                \"skuId\": 471,\n                \"providerSkuId\": \"471\",\n                \"productName\": \"3000 + 850 UC\",\n                \"imageUrl\": \"https://asset.staging.voucher.dv-content.io/store/articles/471.png\",\n                \"price\": 564.04,\n                \"description\": \"Étape 1: Connectez-vous à votre compte à Midasbuy (https://www.midasbuy.com/ot/pubgm/#getinfo)\\r\\n Étape 2: Accédez à la page \\\"PUBG Mobile Game Credit\\\" et entrez votre identifiant PUBG Mobile Player\\r\\n Étape 3: Accédez à la page \\\"ACTIVER CODE\\\", entrez le code fourni sur cette page\\r\\n Étape 4: Vous pouvez ensuite échanger cette valeur du code en tant que PUBG Mobile Unknown Cash\",\n                \"providerId\": 2,\n                \"brandId\": null,\n                \"pricing\": null\n            },\n            {\n                \"skuId\": 470,\n                \"providerSkuId\": \"470\",\n                \"productName\": \"60 UC\",\n                \"imageUrl\": \"https://asset.staging.voucher.dv-content.io/store/articles/470.png\",\n                \"price\": 676.84,\n                \"description\": \"Étape 1: Connectez-vous à votre compte à Midasbuy (https://www.midasbuy.com/ot/pubgm/#getinfo)\\r\\n Étape 2: Accédez à la page \\\"PUBG Mobile Game Credit\\\" et entrez votre identifiant PUBG Mobile Player\\r\\n Étape 3: Accédez à la page \\\"ACTIVER CODE\\\", entrez le code fourni sur cette page\\r\\n Étape 4: Vous pouvez ensuite échanger cette valeur du code en tant que PUBG Mobile Unknown Cash\",\n                \"providerId\": 2,\n                \"brandId\": null,\n                \"pricing\": null\n            }\n        ],\n        \"count\": 180\n    }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Fetches digital virgo  brands",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "C-Request-Id",
+                "value": "{{requestId}}",
+                "description": "UUID v4 per request (tracing)"
+              }
+            ],
+            "url": {
+              "raw": "{{host}}/api/vouchers/brands?phoneNumber=",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "api",
+                "vouchers",
+                "brands"
+              ],
+              "query": [
+                {
+                  "key": "phoneNumber",
+                  "value": "",
+                  "description": "(required)"
+                },
+                {
+                  "key": "page",
+                  "value": "",
+                  "description": "(optional)",
+                  "disabled": true
+                },
+                {
+                  "key": "take",
+                  "value": "",
+                  "description": "(optional)",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Fetches digital virgo  brands",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "C-Request-Id",
+                    "value": "{{requestId}}",
+                    "description": "UUID v4 per request (tracing)"
+                  }
+                ],
+                "url": {
+                  "raw": "{{host}}/api/vouchers/brands?phoneNumber=+212608814003",
+                  "host": [
+                    "{{host}}"
+                  ],
+                  "path": [
+                    "api",
+                    "vouchers",
+                    "brands"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "",
+                      "description": "(optional)",
+                      "disabled": true
+                    },
+                    {
+                      "key": "take",
+                      "value": "",
+                      "description": "(optional)",
+                      "disabled": true
+                    },
+                    {
+                      "key": "phoneNumber",
+                      "value": "+212608814003"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": ":status",
+                  "value": 200
+                },
+                {
+                  "key": "date",
+                  "value": "Thu, 30 Jul 2026 15:03:16 GMT"
+                },
+                {
+                  "key": "content-type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "x-content-type-options",
+                  "value": "nosniff"
+                },
+                {
+                  "key": "x-frame-options",
+                  "value": "DENY"
+                },
+                {
+                  "key": "strict-transport-security",
+                  "value": "max-age=31536000; includeSubDomains"
+                },
+                {
+                  "key": "content-security-policy",
+                  "value": "default-src 'none'; frame-ancestors 'none'"
+                },
+                {
+                  "key": "permissions-policy",
+                  "value": "accelerometer=(), camera=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()"
+                },
+                {
+                  "key": "referrer-policy",
+                  "value": "strict-origin-when-cross-origin"
+                },
+                {
+                  "key": "x-permitted-cross-domain-policies",
+                  "value": "none"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"data\": {\n        \"collection\": [\n            {\n                \"id\": 2,\n                \"name\": \"Razer Gold\",\n                \"description\": \"Please, note that this brand may only be available for country-specific accounts.\",\n                \"image\": \"https://asset.staging.voucher.dv-content.io/store/brands/2.png\",\n                \"expirationDelay\": \"none\"\n            },\n            {\n                \"id\": 44,\n                \"name\": \"PUBG\",\n                \"description\": \"Please, note that this brand may only be available for country-specific accounts.\",\n                \"image\": \"https://asset.staging.voucher.dv-content.io/store/brands/44.png\",\n                \"expirationDelay\": \"P12M\"\n            },\n            {\n                \"id\": -1,\n                \"name\": \"Divers\",\n                \"description\": null,\n                \"image\": null,\n                \"expirationDelay\": null\n            }\n        ],\n        \"count\": 3\n    }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Fetches Brand By Id",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "C-Request-Id",
+                "value": "{{requestId}}",
+                "description": "UUID v4 per request (tracing)"
+              }
+            ],
+            "url": {
+              "raw": "{{host}}/api/vouchers/brands/:brandId?phoneNumber=",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "api",
+                "vouchers",
+                "brands",
+                ":brandId"
+              ],
+              "query": [
+                {
+                  "key": "phoneNumber",
+                  "value": "",
+                  "description": "(required)"
+                },
+                {
+                  "key": "page",
+                  "value": "",
+                  "description": "(optional)",
+                  "disabled": true
+                },
+                {
+                  "key": "take",
+                  "value": "",
+                  "description": "(optional)",
+                  "disabled": true
+                }
+              ],
+              "variable": [
+                {
+                  "key": "brandId",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Fetches Brand By Id",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "C-Request-Id",
+                    "value": "{{requestId}}",
+                    "description": "UUID v4 per request (tracing)"
+                  }
+                ],
+                "url": {
+                  "raw": "{{host}}/api/vouchers/brands/:brandId?phoneNumber=+212608814003",
+                  "host": [
+                    "{{host}}"
+                  ],
+                  "path": [
+                    "api",
+                    "vouchers",
+                    "brands",
+                    ":brandId"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "",
+                      "description": "(optional)",
+                      "disabled": true
+                    },
+                    {
+                      "key": "take",
+                      "value": "",
+                      "description": "(optional)",
+                      "disabled": true
+                    },
+                    {
+                      "key": "phoneNumber",
+                      "value": "+212608814003"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "key": "brandId",
+                      "value": "2"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": ":status",
+                  "value": 200
+                },
+                {
+                  "key": "date",
+                  "value": "Thu, 30 Jul 2026 15:03:57 GMT"
+                },
+                {
+                  "key": "content-type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "x-content-type-options",
+                  "value": "nosniff"
+                },
+                {
+                  "key": "x-frame-options",
+                  "value": "DENY"
+                },
+                {
+                  "key": "strict-transport-security",
+                  "value": "max-age=31536000; includeSubDomains"
+                },
+                {
+                  "key": "content-security-policy",
+                  "value": "default-src 'none'; frame-ancestors 'none'"
+                },
+                {
+                  "key": "permissions-policy",
+                  "value": "accelerometer=(), camera=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()"
+                },
+                {
+                  "key": "referrer-policy",
+                  "value": "strict-origin-when-cross-origin"
+                },
+                {
+                  "key": "x-permitted-cross-domain-policies",
+                  "value": "none"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"data\": {\n        \"id\": 2,\n        \"name\": \"Razer Gold\",\n        \"description\": \"Please, note that this brand may only be available for country-specific accounts.\",\n        \"image\": \"https://asset.staging.voucher.dv-content.io/store/brands/2.png\",\n        \"expirationDelay\": \"none\"\n    }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Fetches artikles by brand id",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "C-Request-Id",
+                "value": "{{requestId}}",
+                "description": "UUID v4 per request (tracing)"
+              }
+            ],
+            "url": {
+              "raw": "{{host}}/api/vouchers/:brandId/articles?phoneNumber=",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "api",
+                "vouchers",
+                ":brandId",
+                "articles"
+              ],
+              "query": [
+                {
+                  "key": "phoneNumber",
+                  "value": "",
+                  "description": "(required)"
+                },
+                {
+                  "key": "page",
+                  "value": "",
+                  "description": "(optional)",
+                  "disabled": true
+                },
+                {
+                  "key": "take",
+                  "value": "",
+                  "description": "(optional)",
+                  "disabled": true
+                }
+              ],
+              "variable": [
+                {
+                  "key": "brandId",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Fetches artikles by brand id",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "C-Request-Id",
+                    "value": "{{requestId}}",
+                    "description": "UUID v4 per request (tracing)"
+                  }
+                ],
+                "url": {
+                  "raw": "{{host}}/api/vouchers/:brandId/articles?phoneNumber=+212608814003",
+                  "host": [
+                    "{{host}}"
+                  ],
+                  "path": [
+                    "api",
+                    "vouchers",
+                    ":brandId",
+                    "articles"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "",
+                      "description": "(optional)",
+                      "disabled": true
+                    },
+                    {
+                      "key": "take",
+                      "value": "",
+                      "description": "(optional)",
+                      "disabled": true
+                    },
+                    {
+                      "key": "phoneNumber",
+                      "value": "+212608814003"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "key": "brandId",
+                      "value": "2"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": ":status",
+                  "value": 200
+                },
+                {
+                  "key": "date",
+                  "value": "Thu, 30 Jul 2026 15:04:16 GMT"
+                },
+                {
+                  "key": "content-type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "x-content-type-options",
+                  "value": "nosniff"
+                },
+                {
+                  "key": "x-frame-options",
+                  "value": "DENY"
+                },
+                {
+                  "key": "strict-transport-security",
+                  "value": "max-age=31536000; includeSubDomains"
+                },
+                {
+                  "key": "content-security-policy",
+                  "value": "default-src 'none'; frame-ancestors 'none'"
+                },
+                {
+                  "key": "permissions-policy",
+                  "value": "accelerometer=(), camera=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()"
+                },
+                {
+                  "key": "referrer-policy",
+                  "value": "strict-origin-when-cross-origin"
+                },
+                {
+                  "key": "x-permitted-cross-domain-policies",
+                  "value": "none"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"data\": {\n        \"collection\": [\n            {\n                \"skuId\": 20,\n                \"providerSkuId\": null,\n                \"productName\": \"USD 5\",\n                \"imageUrl\": \"https://asset.staging.voucher.dv-content.io/store/articles/20.png\",\n                \"price\": 51.28,\n                \"description\": \"Étape 1: Dans la page de paiement, sélectionnez Razer comme mode de paiement\\r\\n Étape 2: Entrez le code imprimé sur le ticket quand demandé\\r\\n\\r\\n Vous pouvez utiliser le solde restant pour acheter autre chose.\",\n                \"providerId\": 2,\n                \"brandId\": null,\n                \"pricing\": null\n            },\n            {\n                \"skuId\": 16,\n                \"providerSkuId\": null,\n                \"productName\": \"USD 10\",\n                \"imageUrl\": \"https://asset.staging.voucher.dv-content.io/store/articles/16.png\",\n                \"price\": 102.55,\n                \"description\": \"Étape 1: Dans la page de paiement, sélectionnez Razer comme mode de paiement\\r\\n Étape 2: Entrez le code imprimé sur le ticket quand demandé\\r\\n\\r\\n Vous pouvez utiliser le solde restant pour acheter autre chose.\",\n                \"providerId\": 2,\n                \"brandId\": null,\n                \"pricing\": null\n            },\n            {\n                \"skuId\": 17,\n                \"providerSkuId\": null,\n                \"productName\": \"USD 20\",\n                \"imageUrl\": \"https://asset.staging.voucher.dv-content.io/store/articles/17.png\",\n                \"price\": 205.1,\n                \"description\": \"Étape 1: Dans la page de paiement, sélectionnez Razer comme mode de paiement\\r\\n Étape 2: Entrez le code imprimé sur le ticket quand demandé\\r\\n\\r\\n Vous pouvez utiliser le solde restant pour acheter autre chose.\",\n                \"providerId\": 2,\n                \"brandId\": null,\n                \"pricing\": null\n            },\n            {\n                \"skuId\": 18,\n                \"providerSkuId\": null,\n                \"productName\": \"USD 50\",\n                \"imageUrl\": \"https://asset.staging.voucher.dv-content.io/store/articles/18.png\",\n                \"price\": 512.76,\n                \"description\": \"Étape 1: Dans la page de paiement, sélectionnez Razer comme mode de paiement\\r\\n Étape 2: Entrez le code imprimé sur le ticket quand demandé\\r\\n\\r\\n Vous pouvez utiliser le solde restant pour acheter autre chose.\",\n                \"providerId\": 2,\n                \"brandId\": null,\n                \"pricing\": null\n            },\n            {\n                \"skuId\": 19,\n                \"providerSkuId\": null,\n                \"productName\": \"USD 100\",\n                \"imageUrl\": \"https://asset.staging.voucher.dv-content.io/store/articles/19.png\",\n                \"price\": 1025.51,\n                \"description\": \"Étape 1: Dans la page de paiement, sélectionnez Razer comme mode de paiement\\r\\n Étape 2: Entrez le code imprimé sur le ticket quand demandé\\r\\n\\r\\n Vous pouvez utiliser le solde restant pour acheter autre chose.\",\n                \"providerId\": 2,\n                \"brandId\": null,\n                \"pricing\": null\n            }\n        ],\n        \"count\": 5\n    }\n}"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

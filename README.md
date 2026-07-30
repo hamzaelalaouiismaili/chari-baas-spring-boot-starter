@@ -182,7 +182,8 @@ ChariVoucherPurchasePayload purchase = ChariVoucherPurchasePayload.builder()
         .customerPhoneNumber("0661231234")
         .destinationPhoneNumber("0662345678")
         .beneficiaryName("Abdennour")
-        .providerSkuId(article.getProviderSkuId())
+        .skuId(article.getSkuId())
+        .price(article.getPrice())
         .providerId(article.getProviderId())
         .build();
 
@@ -190,10 +191,10 @@ ChariVoucherPreviewResponse preview = chari.previewVoucherPurchase(purchase);
 
 // Confirm only after displaying preview fees and total to the customer.
 ChariVoucherPurchaseResponse confirmed = chari.confirmVoucherPurchase(purchase);
-String voucherCode = confirmed.getData().getOperation().getCode();
+String voucherCode = confirmed.getData().getCode();
 ```
 
-Catalog methods include `getVoucherArticles`, `getVoucherBrands`, `getVoucherBrand`, and `getVouchersByBrand`. Local Moroccan phone numbers are normalized automatically. Voucher preview and confirmation report `ChariOperationType.VOUCHER` (operation code 23).
+`skuId` is the purchase identifier; `amount`, `price`, and `providerSkuId` are optional. Catalog methods include `getVoucherArticles`, `getVoucherBrands`, `getVoucherBrand`, `getVouchersByBrand`, `getVoucherProducts`, `getVoucherProductDetail`, and `getLocalVouchers`; the `service` endpoint variants are `previewServiceVoucherPurchase` and `purchaseServiceVoucher`. Local Moroccan phone numbers are normalized automatically. Voucher preview and confirmation report `ChariOperationType.VOUCHER` (operation code 23).
 
 ### Bill Payment (Fatourati)
 

@@ -577,6 +577,6 @@ Prefer these enums over hard-coded integer codes where builder overloads or resp
 | Retail agents | `getRetailAgents`, `getRetailAgentByCode`, `addRetailAgent` |
 | Operation history | `getOperationsByCustomer`, `getAllOperationsByPartner`, `getOperationById` |
 | Telco top-up | `getSupportedTelcoOperators`, `getTelcoCatalog`, `rechargeTelco` |
-| Vouchers | `getVoucherArticles`, `getVoucherBrands`, `getVoucherBrand`, `getVouchersByBrand`, `previewVoucherPurchase`, `confirmVoucherPurchase` |
+| Vouchers | `getVoucherArticles`, `getVoucherBrands`, `getVoucherBrand`, `getVouchersByBrand`, `getVoucherProducts`, `getVoucherProductDetail`, `getLocalVouchers`, `previewVoucherPurchase`, `confirmVoucherPurchase`, `previewServiceVoucherPurchase`, `purchaseServiceVoucher` |
 | Bill payment | `getBillCreditors`, `getBillReceivables`, `getBillIdentificationForm`, `getBillUnpaidItems`, `getBillUnpaidItemsByQrCode`, `confirmBillPayment`, `getBillReceipt` |
 | Card management | `getCardPrograms`, `addCardApplication`, `getCardApplications`, `getCardApplicationsByCustomer`, `validateCardApplication`, `rejectCardApplication`, `getManagedCards`, `getManagedCard`, `manageCard`, `updateCardUsageControl`, `getCardTransactions` |
