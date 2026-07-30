@@ -72,8 +72,77 @@ public class ChariBaasException extends RuntimeException {
         return new ChariBaasException(message, stage, statusCode, errorCode, errorDescription);
     }
 
+    /**
+     * Builds an exception from a Chari {@code errorCode}/{@code errorDescription}
+     * envelope, with a self-explanatory message: the failing stage, the HTTP
+     * status, the numeric code, the documented meaning of that code when it is
+     * known, and the raw provider text.
+     *
+     * @param fallbackMessage used when Chari returned neither a known code nor a
+     *                        description (typically the transport error message)
+     */
+    public static ChariBaasException fromErrorResponse(
+            String stage,
+            Integer statusCode,
+            Integer errorCode,
+            String errorDescription,
+            String fallbackMessage) {
+        ChariErrorCode known = ChariErrorCode.fromCode(errorCode);
+        StringBuilder message = new StringBuilder()
+                .append('[').append(stage == null ? "UNKNOWN_STAGE" : stage).append("] Chari API error");
+        if (errorCode != null) {
+            message.append(' ').append(errorCode);
+        }
+        if (statusCode != null) {
+            message.append(" (HTTP ").append(statusCode).append(')');
+        }
+        message.append(": ");
+
+        if (known != ChariErrorCode.UNKNOWN) {
+            message.append(known.getDefaultMessage());
+            if (hasText(errorDescription) && !known.getDefaultMessage().equalsIgnoreCase(errorDescription.trim())) {
+                message.append(" Chari reported: \"").append(errorDescription.trim()).append("\".");
+            }
+        } else if (hasText(errorDescription)) {
+            message.append(errorDescription.trim());
+        } else if (hasText(fallbackMessage)) {
+            message.append(fallbackMessage.trim());
+        } else {
+            message.append("no error description returned by Chari.");
+        }
+
+        return new ChariBaasException(message.toString(), stage, statusCode, errorCode, errorDescription);
+    }
+
+    private static boolean hasText(String value) {
+        return value != null && !value.isBlank();
+    }
+
     public boolean hasErrorCode(ChariErrorCode errorCode) {
         return this.knownErrorCode == errorCode;
+    }
+
+    public boolean hasAnyErrorCode(ChariErrorCode... errorCodes) {
+        for (ChariErrorCode candidate : errorCodes) {
+            if (this.knownErrorCode == candidate) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /** True when Fatourati reported that the account has nothing outstanding (35008). */
+    public boolean isNoBillToPay() {
+        return knownErrorCode == ChariErrorCode.BILL_NO_BILL_TO_PAY;
+    }
+
+    /**
+     * True when the bill lookup failed because the identification values do not
+     * resolve to a payable account (35008 / 35026) — a user-fixable input error
+     * rather than an outage.
+     */
+    public boolean isBillLookupFailure() {
+        return hasAnyErrorCode(ChariErrorCode.BILL_NO_BILL_TO_PAY, ChariErrorCode.BILL_SYSTEM_ERROR);
     }
 
     public boolean isAuthenticationFailure() {

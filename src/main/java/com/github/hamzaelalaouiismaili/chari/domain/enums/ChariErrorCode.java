@@ -36,6 +36,16 @@ public enum ChariErrorCode {
         BENEFICIARY_NOT_FOUND(27001, "The Beneficiary does not exist.", "Beneficiary management"),
         UPGRADE_REQUEST_UNDER_REVIEW(32000, "An upgrade request is already under review for this account.",
                         "KYC / account upgrade"),
+        BILL_NO_BILL_TO_PAY(35008,
+                        "Fatourati has no bill to pay for this account: nothing is outstanding, "
+                                        + "or the bill was already settled. Ask the customer to check the "
+                                        + "identification values (or try again later for a new billing period).",
+                        "Bill payment (Fatourati)"),
+        BILL_SYSTEM_ERROR(35026,
+                        "Fatourati rejected the lookup with a system error. This usually means the "
+                                        + "identification values do not match a real account (wrong number or "
+                                        + "wrong format) — re-check them against the identification form.",
+                        "Bill payment (Fatourati)"),
         UNAUTHORIZED(401, "Authentication credentials (API KEY) not authorized.", "Authentication"),
         ACCOUNT_LOCKED(423, "The access is locked for the given customer.", "Customer & registration"),
         UNKNOWN(-1, "Unknown Chari error.", "Unknown");

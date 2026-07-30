@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
+import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
@@ -98,19 +99,19 @@ public class ChariHttpClient {
             long duration = System.currentTimeMillis() - startTime;
             logResponse(requestId, stage, e.getStatusCode().value(),
                     e.getResponseHeaders(), e.getResponseBodyAsString(), duration, e);
-            throw ChariBaasException.apiError(stage, "Chari service error: " + e.getMessage(),
-                    e.getStatusCode().value());
+            throw toChariBaasException(stage, e);
         } catch (ResourceAccessException e) {
             long duration = System.currentTimeMillis() - startTime;
             logConnectionError(requestId, stage, url, duration, e);
-            if (e.getMessage().contains("timeout")) {
+            if (e.getMessage() != null && e.getMessage().contains("timeout")) {
                 throw ChariBaasException.timeout(stage);
             }
             throw ChariBaasException.connectionError(stage, e);
         } catch (RestClientException e) {
             long duration = System.currentTimeMillis() - startTime;
             logParsingError(requestId, stage, url, duration, e);
-            throw ChariBaasException.apiError(stage, "Failed to parse Chari response: " + e.getMessage(), 500);
+            throw ChariBaasException.apiError(stage,
+                    "[" + stage + "] Failed to parse the Chari response: " + e.getMessage(), 500);
         }
     }
 
@@ -312,20 +313,18 @@ public class ChariHttpClient {
         return json;
     }
 
-    private ChariBaasException toChariBaasException(String stage, HttpClientErrorException e) {
+    private ChariBaasException toChariBaasException(String stage, HttpStatusCodeException e) {
         ChariErrorResponse errorResponse = parseErrorResponse(e.getResponseBodyAsString());
         if (errorResponse != null) {
-            String message = errorResponse.getErrorDescription() != null
-                    ? errorResponse.getErrorDescription()
-                    : e.getMessage();
-            return ChariBaasException.apiError(
+            return ChariBaasException.fromErrorResponse(
                     stage,
-                    message,
                     e.getStatusCode().value(),
                     errorResponse.getErrorCode(),
-                    errorResponse.getErrorDescription());
+                    errorResponse.getErrorDescription(),
+                    e.getMessage());
         }
-        return ChariBaasException.apiError(stage, extractErrorMessage(e), e.getStatusCode().value());
+        return ChariBaasException.fromErrorResponse(
+                stage, e.getStatusCode().value(), null, null, extractErrorMessage(e));
     }
 
     private ChariErrorResponse parseErrorResponse(String body) {
@@ -343,7 +342,7 @@ public class ChariHttpClient {
         return null;
     }
 
-    private String extractErrorMessage(HttpClientErrorException e) {
+    private String extractErrorMessage(HttpStatusCodeException e) {
         String body = e.getResponseBodyAsString();
         ChariErrorResponse errorResponse = parseErrorResponse(body);
         if (errorResponse != null && errorResponse.getErrorDescription() != null) {

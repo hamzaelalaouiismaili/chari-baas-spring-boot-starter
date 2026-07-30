@@ -289,12 +289,12 @@ logging is enabled so PAN and CVV values are masked in SDK request logs.
 
 git push origin master            
 
-git tag -a v1.0.12 -m "Release v1.0.12"
+git tag -a v1.0.15 -m "Release v1.0.15"
 
-git push origin v1.0.12
+git push origin v1.0.15
 
-git show v1.0.12 --stat 
+git show v1.0.15 --stat 
 
-https://jitpack.io/#hamzaelalaouiismaili/chari-baas-spring-boot-starter/v1.0.12
+https://jitpack.io/#hamzaelalaouiismaili/chari-baas-spring-boot-starter/v1.0.15
 
 https://jitpack.io/#hamzaelalaouiismaili/chari-baas-spring-boot-starter

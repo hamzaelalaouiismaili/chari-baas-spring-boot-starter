@@ -6,11 +6,14 @@ import static org.springframework.test.web.client.ExpectedCount.once;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.content;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.method;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
+import static org.springframework.test.web.client.response.MockRestResponseCreators.withStatus;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
 
 import com.github.hamzaelalaouiismaili.chari.config.ChariBaasProperties;
 import com.github.hamzaelalaouiismaili.chari.domain.enums.ChariBillArticleType;
 import com.github.hamzaelalaouiismaili.chari.domain.enums.ChariBillFormFieldType;
+import com.github.hamzaelalaouiismaili.chari.domain.enums.ChariErrorCode;
+import com.github.hamzaelalaouiismaili.chari.domain.exception.ChariBaasException;
 import com.github.hamzaelalaouiismaili.chari.model.bill.ChariBillArticle;
 import com.github.hamzaelalaouiismaili.chari.model.bill.ChariBillFieldValue;
 import com.github.hamzaelalaouiismaili.chari.model.payload.ChariBillPaymentPayload;
@@ -25,6 +28,7 @@ import java.math.BigDecimal;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.test.json.JsonCompareMode;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.client.MockRestServiceServer;
@@ -311,6 +315,82 @@ class ChariBillPaymentClientTest {
                                                 .build()))
                                 .isInstanceOf(IllegalArgumentException.class)
                                 .hasMessageContaining("alias");
+        }
+
+        @Test
+        void translatesNoBillToPayErrorIntoActionableException() {
+                TestContext context = context();
+                context.server.expect(once(), requestTo(
+                                "https://sandbox.charimoney.com/api/bills/impayes?creancierId=1003&creanceId=01"))
+                                .andExpect(method(HttpMethod.POST))
+                                .andRespond(withStatus(HttpStatus.BAD_REQUEST)
+                                                .contentType(MediaType.APPLICATION_JSON)
+                                                .body("""
+                                                                {"errorCode":35008,
+                                                                 "errorDescription":"Fatourati – No bill to pay"}
+                                                                """));
+
+                assertThatThrownBy(() -> context.client.getBillUnpaidItems("1003", "01",
+                                ChariBillUnpaidItemsPayload.forFields(
+                                                List.of(ChariBillFieldValue.of("ND", "0669440735")))))
+                                .isInstanceOfSatisfying(ChariBaasException.class, exception -> {
+                                        assertThat(exception.getKnownErrorCode())
+                                                        .isEqualTo(ChariErrorCode.BILL_NO_BILL_TO_PAY);
+                                        assertThat(exception.getErrorCode()).isEqualTo(35008);
+                                        assertThat(exception.getErrorDescription())
+                                                        .isEqualTo("Fatourati – No bill to pay");
+                                        assertThat(exception.isNoBillToPay()).isTrue();
+                                        assertThat(exception.isBillLookupFailure()).isTrue();
+                                        assertThat(exception.isBusinessError()).isTrue();
+                                        assertThat(exception.getMessage())
+                                                        .contains("[GET_BILL_UNPAID_ITEMS]")
+                                                        .contains("35008")
+                                                        .contains("HTTP 400")
+                                                        .contains("no bill to pay for this account")
+                                                        .contains("Fatourati – No bill to pay");
+                                });
+                context.server.verify();
+        }
+
+        @Test
+        void keepsUnknownErrorCodesReadableAndFlagsBillSystemErrors() {
+                TestContext context = context();
+                context.server.expect(once(), requestTo(
+                                "https://sandbox.charimoney.com/api/bills/impayes?creancierId=1003&creanceId=01"))
+                                .andExpect(method(HttpMethod.POST))
+                                .andRespond(withStatus(HttpStatus.BAD_REQUEST)
+                                                .contentType(MediaType.APPLICATION_JSON)
+                                                .body("""
+                                                                {"errorCode":35026,
+                                                                 "errorDescription":"Fatourati – System error"}
+                                                                """));
+                context.server.expect(once(), requestTo(
+                                "https://sandbox.charimoney.com/api/bills/creanciers"))
+                                .andExpect(method(HttpMethod.GET))
+                                .andRespond(withStatus(HttpStatus.BAD_REQUEST)
+                                                .contentType(MediaType.APPLICATION_JSON)
+                                                .body("""
+                                                                {"errorCode":99999,"errorDescription":"Brand new failure"}
+                                                                """));
+
+                assertThatThrownBy(() -> context.client.getBillUnpaidItems("1003", "01",
+                                ChariBillUnpaidItemsPayload.forQrCode("QR-CONTENT")))
+                                .isInstanceOfSatisfying(ChariBaasException.class, exception -> {
+                                        assertThat(exception.isBillLookupFailure()).isTrue();
+                                        assertThat(exception.isNoBillToPay()).isFalse();
+                                        assertThat(exception.getMessage())
+                                                        .contains("35026")
+                                                        .contains("do not match a real account");
+                                });
+
+                assertThatThrownBy(context.client::getBillCreditors)
+                                .isInstanceOfSatisfying(ChariBaasException.class, exception -> {
+                                        assertThat(exception.getKnownErrorCode()).isEqualTo(ChariErrorCode.UNKNOWN);
+                                        assertThat(exception.getMessage())
+                                                        .isEqualTo("[GET_BILL_CREDITORS] Chari API error 99999 "
+                                                                        + "(HTTP 400): Brand new failure");
+                                });
+                context.server.verify();
         }
 
         private TestContext context() {
