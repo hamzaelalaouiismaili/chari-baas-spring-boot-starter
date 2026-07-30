@@ -16,6 +16,7 @@ import com.github.hamzaelalaouiismaili.chari.client.api.operations.ChariChargeba
 import com.github.hamzaelalaouiismaili.chari.client.api.operations.ChariMerchantPaymentClient;
 import com.github.hamzaelalaouiismaili.chari.client.api.operations.ChariOperationsClient;
 import com.github.hamzaelalaouiismaili.chari.client.api.operations.ChariRefundClient;
+import com.github.hamzaelalaouiismaili.chari.client.api.operations.ChariNetworkOperationClient;
 import com.github.hamzaelalaouiismaili.chari.client.api.operations.ChariRequestOperationClient;
 import com.github.hamzaelalaouiismaili.chari.client.api.operations.ChariTransferClient;
 import com.github.hamzaelalaouiismaili.chari.domain.enums.ChariAccountLevel;
@@ -57,6 +58,7 @@ public class ChariBaasClient {
     private final ChariChargebackClient chargebackClient;
     private final ChariTokenizedCardClient tokenizedCardClient;
     private final ChariRequestOperationClient requestOperationClient;
+    private final ChariNetworkOperationClient networkOperationClient;
     private final ChariOperationsClient operationsClient;
     private final ChariRefundClient refundClient;
     private final ChariTelcoTopUpClient telcoTopUpClient;
@@ -80,6 +82,7 @@ public class ChariBaasClient {
         this.chargebackClient = new ChariChargebackClient(httpClient);
         this.tokenizedCardClient = new ChariTokenizedCardClient(httpClient);
         this.requestOperationClient = new ChariRequestOperationClient(httpClient);
+        this.networkOperationClient = new ChariNetworkOperationClient(httpClient);
         this.operationsClient = new ChariOperationsClient(httpClient);
         this.refundClient = new ChariRefundClient(httpClient);
         this.telcoTopUpClient = new ChariTelcoTopUpClient(httpClient);
@@ -637,6 +640,52 @@ public class ChariBaasClient {
     }
 
     /**
+     * Preview a merchant card payment via the direct (non-push) card endpoint.
+     *
+     * @param phoneNumber merchant phone number
+     * @param amount      payment amount
+     * @return merchant card payment preview response
+     */
+    public ChariMerchantCardPaymentPreviewResponse previewMerchantCardPaymentDirect(
+            String phoneNumber, BigDecimal amount) {
+        return merchantPaymentClient.previewCardPaymentDirect(phoneNumber, amount);
+    }
+
+    /**
+     * Capture an authorized merchant card payment (autoCapture=false flow).
+     *
+     * @param payload capture payload targeting the transaction via orderId/transactionTrackId
+     * @return merchant card lifecycle response
+     */
+    public ChariMerchantCardLifecycleResponse captureMerchantCardPayment(
+            ChariMerchantCardCapturePayload payload) {
+        return merchantPaymentClient.captureCardPayment(payload);
+    }
+
+    /**
+     * Reverse an uncaptured merchant card authorization, releasing the funds.
+     *
+     * @param payload reverse payload targeting the transaction via orderId/transactionTrackId
+     * @return merchant card lifecycle response
+     */
+    public ChariMerchantCardLifecycleResponse reverseMerchantCardPayment(
+            ChariMerchantCardCapturePayload payload) {
+        return merchantPaymentClient.reverseCardPayment(payload);
+    }
+
+    /**
+     * Refund a captured merchant card payment. A refundAmount below the captured
+     * amount performs a partial refund.
+     *
+     * @param payload refund payload with phoneNumber, operationId, refundAmount, orderId, transactionTrackId
+     * @return merchant card lifecycle response
+     */
+    public ChariMerchantCardLifecycleResponse refundMerchantCardPayment(
+            ChariMerchantCardRefundPayload payload) {
+        return merchantPaymentClient.refundCardPayment(payload);
+    }
+
+    /**
      * Preview a chargeback operation.
      *
      * @param payload chargeback payload
@@ -818,6 +867,43 @@ public class ChariBaasClient {
     public ChariCashoutByReferenceResponse executeCashoutByReference(
             ChariExecuteRequestOperationByReferencePayload payload) {
         return requestOperationClient.executeCashoutByReference(payload);
+    }
+
+    /**
+     * Request the dedicated Fatourati cash-in (FATREF- reference flow).
+     *
+     * @param payload code, amount, and optional feesPercent/description
+     * @return cash-in-by-reference response carrying the generated reference
+     */
+    public ChariCashinByReferenceResponse requestFatouratiCashin(
+            ChariFatouratiCashinRequestPayload payload) {
+        return requestOperationClient.requestFatouratiCashin(payload);
+    }
+
+    // ==================== Network Operations (sandbox simulation) ====================
+
+    /**
+     * Simulate a network CashIn by reference (sandbox network agent step).
+     *
+     * @param payload     reference (required) and optional entity
+     * @param withContext when non-null, returns the result with its context if it exists
+     * @return network operation response
+     */
+    public ChariNetworkOperationResponse simulateNetworkCashin(
+            ChariNetworkOperationPayload payload, Boolean withContext) {
+        return networkOperationClient.simulateCashin(payload, withContext);
+    }
+
+    /**
+     * Simulate a network CashOut by reference (sandbox network agent step).
+     *
+     * @param payload     reference (required) and optional entity
+     * @param withContext when non-null, returns the result with its context if it exists
+     * @return network operation response
+     */
+    public ChariNetworkOperationResponse simulateNetworkCashout(
+            ChariNetworkOperationPayload payload, Boolean withContext) {
+        return networkOperationClient.simulateCashout(payload, withContext);
     }
 
     // ==================== Retail Agent Operations ====================

@@ -117,6 +117,12 @@ Moroccan local mobile numbers such as `0661231234` are normalized to `+212661231
 | Bill payment | `getBillUnpaidItemsByQrCode(...)` | Same lookup from a scanned bill QR code |
 | Bill payment | `confirmBillPayment(...)` | Pay selected articles |
 | Bill payment | `getBillReceipt(...)` | Download the receipt of a settled operation |
+| Bill payment | `requestFatouratiCashin(...)` | Dedicated Fatourati cash-in request (FATREF-) |
+| Merchant card | `previewMerchantCardPaymentDirect(...)` | Preview via the direct (non-push) card endpoint |
+| Merchant card | `captureMerchantCardPayment(...)` | Capture an authorized card payment |
+| Merchant card | `reverseMerchantCardPayment(...)` | Release an uncaptured authorization |
+| Merchant card | `refundMerchantCardPayment(...)` | Refund a captured payment (full or partial) |
+| Network | `simulateNetworkCashin(...)` / `simulateNetworkCashout(...)` | Sandbox network agent simulation |
 | Card management | `getCardPrograms(...)` | List available issuing programs |
 | Card management | `addCardApplication(...)` | Apply for a card program |
 | Card management | `getCardApplications(...)` | List and filter applications |
@@ -616,6 +622,54 @@ String reference = receipt.getString("refReglement");
 ```
 
 Receipt content is creditor-dependent, so it is exposed as a key/value map with `getString(key)` convenience access.
+
+### Fatourati cash-in request
+
+Fatourati has its own reference-generation flow (`FATREF-` prefix). Use the
+dedicated request instead of the standard cash-in endpoint. For a principal agent,
+`code` replaces the phone number; `feesPercent` and `description` are optional.
+
+```java
+ChariCashinByReferenceResponse response = chari.requestFatouratiCashin(
+        ChariFatouratiCashinRequestPayload.builder()
+                .code("1880375")
+                .amount(new BigDecimal("100"))
+                .feesPercent(new BigDecimal("1"))   // optional
+                .description("Test it")             // optional
+                .build());
+
+String reference = response.getData().getReference();   // FATREF-...
+```
+
+`POST /api/operations/fatourati/cashin/request`. The response reuses
+`ChariCashinByReferenceResponse` (`reference`, `code`, `amount`, `status`, `type`, …).
+
+### Network cash-in/out simulation (sandbox)
+
+The network endpoints execute a CashIn/CashOut by reference from a network entity
+(the network-agent step). In sandbox you can call them yourself to complete test
+flows without a real agent network. The body carries `reference` (required) and an
+optional `entity`; the optional `withContext` flag returns the result with its
+context when it exists.
+
+```java
+ChariNetworkOperationResponse cashin = chari.simulateNetworkCashin(
+        ChariNetworkOperationPayload.builder()
+                .reference("1122334455")
+                .entity("AGENCY")     // optional
+                .build(),
+        true);                        // withContext (nullable)
+
+ChariNetworkOperationResponse cashout = chari.simulateNetworkCashout(
+        ChariNetworkOperationPayload.builder().reference("1122334455").build(),
+        null);
+```
+
+`POST /api/network/operations/cashin` and `POST /api/network/operations/cashout`.
+Execution triggers the `cashin.network.executed` / `cashout.network.executed`
+webhook events. `ChariNetworkOperationResponse.getData()` exposes `reference`,
+`entity`, `createdAt`, `executedAt`, `phoneNumber`, `amount`, `description`, and
+`partner`.
 
 ## 6. Card Management
 
