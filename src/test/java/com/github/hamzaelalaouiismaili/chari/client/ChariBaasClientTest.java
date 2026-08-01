@@ -1226,8 +1226,13 @@ class ChariBaasClientTest {
         .keepAlive(true)
         .threeDSecure(true)
         .autoCapture(true)
+        .feesPercent(new BigDecimal("1.5"))
+        .internationalFeesPercent(new BigDecimal("2.5"))
+        .allowInternationalCards(true)
+        .cardName("John Doe Visa")
         .notificationUrl("https://merchant.example.com/webhook")
         .acceptUrl("https://merchant.example.com/success")
+        .declineUrl("https://merchant.example.com/failure")
         .externalReference("ORDER-1001")
         .build();
 
@@ -1246,10 +1251,16 @@ class ChariBaasClientTest {
         .andExpect(content().string(containsString("\"keepAlive\":true")))
         .andExpect(content().string(containsString("\"3dSecure\":true")))
         .andExpect(content().string(containsString("\"autoCapture\":true")))
+        .andExpect(content().string(containsString("\"feesPercent\":1.5")))
+        .andExpect(content().string(containsString("\"internationalFeesPercent\":2.5")))
+        .andExpect(content().string(containsString("\"allowInternationalCards\":true")))
+        .andExpect(content().string(containsString("\"cardName\":\"John Doe Visa\"")))
         .andExpect(content().string(containsString(
             "\"notificationUrl\":\"https://merchant.example.com/webhook\"")))
         .andExpect(content().string(containsString(
             "\"acceptUrl\":\"https://merchant.example.com/success\"")))
+        .andExpect(content().string(containsString(
+            "\"declineUrl\":\"https://merchant.example.com/failure\"")))
         .andExpect(content().string(containsString("\"externalReference\":\"ORDER-1001\"")))
         .andRespond(withSuccess(
             """
@@ -1519,6 +1530,15 @@ class ChariBaasClientTest {
     ChariMerchantTokenizedCardPaymentPayload payload = ChariMerchantTokenizedCardPaymentPayload.builder()
         .cvv("123")
         .amount(new BigDecimal("188"))
+        .feesPercent(new BigDecimal("1.5"))
+        .internationalFeesPercent(new BigDecimal("2.5"))
+        .threeDSecure(true)
+        .autoCapture(false)
+        .allowInternationalCards(true)
+        .acceptUrl("https://www.chari.com")
+        .declineUrl("https://www.chari.fail.com")
+        .notificationUrl("https://www.chari.com/notify")
+        .externalReference("EXT-REF-1")
         .build();
 
     server.expect(once(), requestTo(
@@ -1529,6 +1549,15 @@ class ChariBaasClientTest {
         .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
         .andExpect(content().string(containsString("\"cvv\":\"123\"")))
         .andExpect(content().string(containsString("\"amount\":188")))
+        .andExpect(content().string(containsString("\"feesPercent\":1.5")))
+        .andExpect(content().string(containsString("\"internationalFeesPercent\":2.5")))
+        .andExpect(content().string(containsString("\"3dSecure\":true")))
+        .andExpect(content().string(containsString("\"autoCapture\":false")))
+        .andExpect(content().string(containsString("\"allowInternationalCards\":true")))
+        .andExpect(content().string(containsString("\"acceptUrl\":\"https://www.chari.com\"")))
+        .andExpect(content().string(containsString("\"declineUrl\":\"https://www.chari.fail.com\"")))
+        .andExpect(content().string(containsString("\"notificationUrl\":\"https://www.chari.com/notify\"")))
+        .andExpect(content().string(containsString("\"externalReference\":\"EXT-REF-1\"")))
         .andRespond(withSuccess(
             """
                 {

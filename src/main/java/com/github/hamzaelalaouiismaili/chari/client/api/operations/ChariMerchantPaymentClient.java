@@ -238,6 +238,15 @@ public class ChariMerchantPaymentClient {
                 Map<String, Object> requestPayload = new HashMap<>();
                 requestPayload.put("cvv", payload.getCvv());
                 requestPayload.put("amount", payload.getAmount());
+                putIfNotNull(requestPayload, "feesPercent", payload.getFeesPercent());
+                putIfNotNull(requestPayload, "internationalFeesPercent", payload.getInternationalFeesPercent());
+                putIfNotNull(requestPayload, "3dSecure", payload.getThreeDSecure());
+                putIfNotNull(requestPayload, "autoCapture", payload.getAutoCapture());
+                putIfNotNull(requestPayload, "allowInternationalCards", payload.getAllowInternationalCards());
+                putIfNotNull(requestPayload, "acceptUrl", payload.getAcceptUrl());
+                putIfNotNull(requestPayload, "declineUrl", payload.getDeclineUrl());
+                putIfNotNull(requestPayload, "notificationUrl", payload.getNotificationUrl());
+                putIfNotNull(requestPayload, "externalReference", payload.getExternalReference());
                 return requestPayload;
         }
 
