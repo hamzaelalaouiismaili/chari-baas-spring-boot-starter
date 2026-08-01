@@ -1174,7 +1174,7 @@ class ChariBaasClientTest {
     ChariBaasClient client = new ChariBaasClient(restTemplate, properties());
 
     server.expect(once(), requestTo(
-        "https://sandbox.charimoney.com/api/operations/merchant/payment/push/card/preview?phoneNumber=+212612345678"))
+        "https://sandbox.charimoney.com/api/operations/merchant/payment/card/preview?phoneNumber=+212612345678"))
         .andExpect(method(HttpMethod.POST))
         .andExpect(header("Chari-Api-Key", "test-key"))
         .andExpect(header("C-Request-Id", matchesPattern(uuidPattern())))

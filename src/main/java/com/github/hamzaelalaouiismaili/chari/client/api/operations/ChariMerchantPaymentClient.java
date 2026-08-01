@@ -77,7 +77,7 @@ public class ChariMerchantPaymentClient {
                 log.debug("Previewing merchant card payment for phone: {}, amount: {}",
                                 PhoneNumberUtil.mask(normalizedPhone), amount);
 
-                String url = UriComponentsBuilder.fromPath("/api/operations/merchant/payment/push/card/preview")
+                String url = UriComponentsBuilder.fromPath("/api/operations/merchant/payment/card/preview")
                                 .queryParam("phoneNumber", normalizedPhone)
                                 .toUriString();
                 return httpClient.post(url, amountPayload(amount),
