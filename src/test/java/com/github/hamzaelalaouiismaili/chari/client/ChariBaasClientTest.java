@@ -1279,7 +1279,8 @@ class ChariBaasClientTest {
                     "operationId": null,
                     "operationDate": null,
                     "feesAmount": null,
-                    "externalReference": null
+                    "externalReference": null,
+                    "tokenizedCardId": 508
                   }
                 }
                 """,
@@ -1302,6 +1303,7 @@ class ChariBaasClientTest {
     assertThat(response.getData().getOperationDate()).isNull();
     assertThat(response.getData().getFeesAmount()).isNull();
     assertThat(response.getData().getExternalReference()).isNull();
+    assertThat(response.getData().getTokenizedCardId()).isEqualTo(508L);
     server.verify();
   }
 

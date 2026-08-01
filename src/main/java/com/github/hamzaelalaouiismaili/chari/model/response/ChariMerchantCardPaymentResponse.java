@@ -54,5 +54,11 @@ public class ChariMerchantCardPaymentResponse {
         private BigDecimal feesAmount;
 
         private String externalReference;
+
+        /**
+         * Identifier of the card token created when {@code keepAlive} is requested.
+         * May be {@code null} when the card was not tokenized.
+         */
+        private Long tokenizedCardId;
     }
 }
