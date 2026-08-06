@@ -384,7 +384,8 @@ class ChariBaasClientTest {
     ChariBaasClient client = new ChariBaasClient(restTemplate, properties());
 
     server.expect(once(),
-        requestTo("https://sandbox.charimoney.com/api/kyc/shareid/auth?PhoneNumber=+212612345678"))
+        requestTo("https://sandbox.charimoney.com/api/kyc/shareid/auth"
+            + "?PhoneNumber=+212612345678&accountLevel=2"))
         .andExpect(method(HttpMethod.GET))
         .andExpect(header("Chari-Api-Key", "test-key"))
         .andExpect(header("C-Request-Id", matchesPattern(uuidPattern())))
@@ -403,6 +404,41 @@ class ChariBaasClientTest {
     assertThat(response.getData().getBaseUrl()).isEqualTo("https://v2.shareid.net");
     assertThat(response.getData().getApplicantId()).isEqualTo("a-o-251103-142417-pro-0003-c46cfaf1a");
     assertThat(response.getData().getToken()).isEqualTo("eyJhbGciO...");
+    server.verify();
+  }
+
+  @Test
+  void authenticateShareIdSendsRequestedAccountLevel() {
+    RestTemplate restTemplate = new RestTemplate();
+    MockRestServiceServer server = MockRestServiceServer.bindTo(restTemplate).build();
+    ChariBaasClient client = new ChariBaasClient(restTemplate, properties());
+
+    server.expect(once(),
+        requestTo("https://sandbox.charimoney.com/api/kyc/shareid/auth"
+            + "?PhoneNumber=+212612345678&accountLevel=3"))
+        .andExpect(method(HttpMethod.GET))
+        .andRespond(withSuccess("{\"data\":{\"token\":\"t\"}}", MediaType.APPLICATION_JSON));
+
+    assertThat(client.authenticateShareId("0612345678", ChariAccountLevel.KYC_LEVEL_3)
+        .getData().getToken())
+        .isEqualTo("t");
+    server.verify();
+  }
+
+  @Test
+  void authenticateShareIdFallsBackToLevelTwoWhenLevelMissing() {
+    RestTemplate restTemplate = new RestTemplate();
+    MockRestServiceServer server = MockRestServiceServer.bindTo(restTemplate).build();
+    ChariBaasClient client = new ChariBaasClient(restTemplate, properties());
+
+    server.expect(once(),
+        requestTo("https://sandbox.charimoney.com/api/kyc/shareid/auth"
+            + "?PhoneNumber=+212612345678&accountLevel=2"))
+        .andExpect(method(HttpMethod.GET))
+        .andRespond(withSuccess("{\"data\":{\"token\":\"t\"}}", MediaType.APPLICATION_JSON));
+
+    assertThat(client.authenticateShareId("0612345678", (Integer) null).getData().getToken())
+        .isEqualTo("t");
     server.verify();
   }
 

@@ -201,13 +201,37 @@ public class ChariBaasClient {
     // ==================== KYC Operations ====================
 
     /**
-     * Obtain a short-lived ShareID token for launching the ShareID SDK.
+     * Obtain a short-lived ShareID token for launching the ShareID SDK, targeting
+     * the default account level ({@link ChariAccountLevel#KYC_LEVEL_2}).
      *
      * @param phoneNumber customer phone number
      * @return ShareID auth response
      */
     public ChariShareIdAuthResponse authenticateShareId(String phoneNumber) {
         return kycClient.authenticateShareId(phoneNumber);
+    }
+
+    /**
+     * Obtain a short-lived ShareID token for launching the ShareID SDK.
+     *
+     * @param phoneNumber  customer phone number
+     * @param accountLevel account level the customer is upgrading to; falls back to
+     *                     {@link ChariAccountLevel#KYC_LEVEL_2} when null or level-less
+     * @return ShareID auth response
+     */
+    public ChariShareIdAuthResponse authenticateShareId(String phoneNumber, ChariAccountLevel accountLevel) {
+        return kycClient.authenticateShareId(phoneNumber, accountLevel);
+    }
+
+    /**
+     * Obtain a short-lived ShareID token for launching the ShareID SDK.
+     *
+     * @param phoneNumber  customer phone number
+     * @param accountLevel account level code; falls back to level 2 when null
+     * @return ShareID auth response
+     */
+    public ChariShareIdAuthResponse authenticateShareId(String phoneNumber, Integer accountLevel) {
+        return kycClient.authenticateShareId(phoneNumber, accountLevel);
     }
 
     /**

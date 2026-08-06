@@ -26,12 +26,29 @@ public class ChariKycClient {
 
     private final ChariHttpClient httpClient;
 
+    /**
+     * Account level requested when the caller does not specify one. ShareID sessions
+     * verify an individual identity, which maps to the full-KYC level.
+     */
+    private static final Integer DEFAULT_SHAREID_ACCOUNT_LEVEL = ChariAccountLevel.KYC_LEVEL_2.getCode();
+
     public ChariShareIdAuthResponse authenticateShareId(String phoneNumber) {
+        return authenticateShareId(phoneNumber, DEFAULT_SHAREID_ACCOUNT_LEVEL);
+    }
+
+    public ChariShareIdAuthResponse authenticateShareId(String phoneNumber, ChariAccountLevel accountLevel) {
+        return authenticateShareId(phoneNumber, accountLevel == null ? null : accountLevel.getCode());
+    }
+
+    public ChariShareIdAuthResponse authenticateShareId(String phoneNumber, Integer accountLevel) {
         String normalizedPhone = PhoneNumberUtil.normalize(phoneNumber);
-        log.debug("Authenticating ShareID for phone: {}", PhoneNumberUtil.mask(normalizedPhone));
+        Integer level = accountLevel == null ? DEFAULT_SHAREID_ACCOUNT_LEVEL : accountLevel;
+        log.debug("Authenticating ShareID for phone: {}, account level: {}",
+                PhoneNumberUtil.mask(normalizedPhone), level);
 
         String url = UriComponentsBuilder.fromPath("/api/kyc/shareid/auth")
                 .queryParam("PhoneNumber", normalizedPhone)
+                .queryParam("accountLevel", level)
                 .toUriString();
         return httpClient.get(url, ChariShareIdAuthResponse.class, "AUTHENTICATE_SHAREID");
     }

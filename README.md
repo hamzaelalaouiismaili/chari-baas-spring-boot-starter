@@ -361,14 +361,16 @@ The SDK sends `PUT /api/customers/unregister`, normalizes `phoneNumber`, and sen
 For the full personal wallet and merchant wallet KYC/KYB sequence, including app/backend responsibilities, ShareID handoff, file upload validation, and review tracking, see [KYC_UPGRADE_GUIDE.md](KYC_UPGRADE_GUIDE.md).
 
 ```java
-ChariShareIdAuthResponse response = chari.authenticateShareId("0612345678");
+ChariShareIdAuthResponse response = chari.authenticateShareId("0612345678", ChariAccountLevel.KYC_LEVEL_2);
 
 String baseUrl = response.getData().getBaseUrl();
 String applicantId = response.getData().getApplicantId();
 String token = response.getData().getToken();
 ```
 
-The SDK sends `GET /api/kyc/shareid/auth?PhoneNumber=+212...` and maps `applicant_id` to `applicantId`.
+The SDK sends `GET /api/kyc/shareid/auth?PhoneNumber=+212...&accountLevel=2` and maps `applicant_id` to
+`applicantId`. `accountLevel` is required by Chari; the single-argument
+`authenticateShareId(phoneNumber)` overload sends level 2.
 
 ### KYC Confirmation
 

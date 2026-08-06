@@ -13,7 +13,7 @@ The SDK methods used in this guide are exposed by `ChariBaasClient`.
 
 | Step | SDK method | Chari endpoint used by SDK | Purpose |
 |---|---|---|---|
-| Start ShareID session | `authenticateShareId(phoneNumber)` | `GET /api/kyc/shareid/auth?PhoneNumber=+212...` | Gets `baseUrl`, `applicantId`, and `token` for the ShareID SDK. |
+| Start ShareID session | `authenticateShareId(phoneNumber, accountLevel)` | `GET /api/kyc/shareid/auth?PhoneNumber=+212...&accountLevel=2` | Gets `baseUrl`, `applicantId`, and `token` for the ShareID SDK. |
 | Confirm personal KYC upgrade | `confirmKyc(phoneNumber, accountLevel)` | `POST /api/customers/upgrade/request?PhoneNumber=+212...&AccountLevel=2` | Tells Chari that the personal KYC flow finished and requests the target account level. |
 | Submit merchant KYC documents | `requestKyc(phoneNumber, documents)` | `POST /api/customers/merchant/kyc/request?phoneNumber=+212...` | Sends the owner or authorized signatory's identity documents as `multipart/form-data`. |
 | Submit merchant KYB documents | `requestKyb(phoneNumber, documents)` | `POST /api/customers/merchant/kyb/request?phoneNumber=+212...` | Sends the merchant's business documents as `multipart/form-data`. |
@@ -99,7 +99,7 @@ chari.confirmCustomer(confirmPayload);
 Your backend should request a ShareID session only when the user is ready to start identity verification. The token is sensitive and should not be logged or stored longer than needed.
 
 ```java
-ChariShareIdAuthResponse auth = chari.authenticateShareId("0612345678");
+ChariShareIdAuthResponse auth = chari.authenticateShareId("0612345678", ChariAccountLevel.KYC_LEVEL_2);
 
 String baseUrl = auth.getData().getBaseUrl();
 String applicantId = auth.getData().getApplicantId();
@@ -228,7 +228,7 @@ chari.confirmCustomer(confirmPayload);
 Use the same ShareID session flow as personal wallets:
 
 ```java
-ChariShareIdAuthResponse auth = chari.authenticateShareId("0612345678");
+ChariShareIdAuthResponse auth = chari.authenticateShareId("0612345678", ChariAccountLevel.KYC_LEVEL_2);
 ```
 
 The mobile/web app launches ShareID with the returned credentials. When ShareID succeeds, keep the `applicantId` in your local merchant onboarding record.

@@ -143,7 +143,7 @@ For the full personal wallet and merchant wallet KYC/KYB integration flow, inclu
 ShareID authentication:
 
 ```java
-ChariShareIdAuthResponse auth = chari.authenticateShareId("+2126xxxxxxxx");
+ChariShareIdAuthResponse auth = chari.authenticateShareId("+2126xxxxxxxx", ChariAccountLevel.KYC_LEVEL_2);
 ```
 
 Confirm KYC upgrade:
