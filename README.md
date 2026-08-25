@@ -59,6 +59,7 @@ chari:
 | `chari.baas.webhook.path`             |       No | `/webhooks/chari` | Path for webhook POST requests.                                       |
 | `chari.baas.audit.enabled`            |       No | `true`            | Logs structured Chari request/response audit records.                 |
 | `chari.baas.audit.mask-sensitive`     |       No | `true`            | Masks PAN, CVV, PIN, and expiry values in audit logs.                 |
+| `chari.baas.audit.format`             |       No | `banner`          | Audit log rendering: `banner` (multi-line ASCII box) or `kv` (single-line logfmt, Loki-friendly). |
 
 ## Client Usage
 

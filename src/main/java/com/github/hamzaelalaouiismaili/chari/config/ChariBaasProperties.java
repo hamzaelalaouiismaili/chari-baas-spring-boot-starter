@@ -111,6 +111,19 @@ public class ChariBaasProperties {
          * Whether audit logs should mask card PAN, CVV, PIN, and expiry fields.
          */
         private boolean maskSensitive = true;
+
+        /**
+         * Rendering format for audit log entries.
+         * {@link Format#BANNER} keeps the multi-line ASCII box (human console);
+         * {@link Format#KV} emits one single-line logfmt-style entry per event,
+         * suitable for log aggregators such as Loki ({@code | logfmt} parsable).
+         */
+        private Format format = Format.BANNER;
+
+        public enum Format {
+            BANNER,
+            KV
+        }
     }
 
     @Getter
