@@ -68,6 +68,13 @@ public class ChariBaasProperties {
     @Valid
     private Audit audit = new Audit();
 
+    /**
+     * Default browser information headers sent on every Chari API call when no
+     * per-request {@code ChariBrowserContext} is set.
+     */
+    @Valid
+    private Browser browser = new Browser();
+
     @Getter
     @Setter
     public static class Webhook {
@@ -104,6 +111,35 @@ public class ChariBaasProperties {
          * Whether audit logs should mask card PAN, CVV, PIN, and expiry fields.
          */
         private boolean maskSensitive = true;
+    }
+
+    @Getter
+    @Setter
+    public static class Browser {
+
+        /**
+         * Value of the {@code User-Agent} header.
+         */
+        private String userAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
+                + "(KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36";
+
+        /**
+         * Value of the {@code C-Browser-ColorDepth} header.
+         */
+        @Positive
+        private int colorDepth = 24;
+
+        /**
+         * Value of the {@code C-Browser-ScreenHeight} header.
+         */
+        @Positive
+        private int screenHeight = 1080;
+
+        /**
+         * Value of the {@code C-Browser-ScreenWidth} header.
+         */
+        @Positive
+        private int screenWidth = 1920;
     }
 
     @Getter

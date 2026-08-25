@@ -53,6 +53,11 @@ chari:
     audit:
       enabled: true
       mask-sensitive: true
+    browser:
+      user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36
+      color-depth: 24
+      screen-height: 1080
+      screen-width: 1920
 ```
 
 The SDK sends these headers automatically:
@@ -60,9 +65,36 @@ The SDK sends these headers automatically:
 ```text
 Chari-Api-Key: <configured API key>
 C-Request-Id: <generated UUID>
+User-Agent: <browser context or chari.baas.browser.user-agent>
+C-Browser-ColorDepth: <browser context or chari.baas.browser.color-depth>
+C-Browser-ScreenHeight: <browser context or chari.baas.browser.screen-height>
+C-Browser-ScreenWidth: <browser context or chari.baas.browser.screen-width>
 ```
 
 Use HTTPS URLs for `accept-url`, `decline-url`, and webhook endpoints in production.
+
+### Browser Information Headers
+
+The four browser headers describe the end user's browser (Chari uses them for 3DS
+device fingerprinting). By default the static `chari.baas.browser.*` values are sent.
+To forward the real end-user browser info, set `ChariBrowserContext` on the thread
+that performs the Chari call and always clear it in a `finally` block — the holder is
+thread-local and servlet threads are pooled:
+
+```java
+import com.github.hamzaelalaouiismaili.chari.client.core.ChariBrowserContext;
+
+ChariBrowserContext.set(userAgent, colorDepth, screenHeight, screenWidth);
+try {
+    chari.executeMerchantTokenizedCardPayment(cardId, phoneNumber, payload);
+} finally {
+    ChariBrowserContext.clear();
+}
+```
+
+When a context is set, its values are used wholesale; otherwise the configured
+defaults apply. The context does not propagate across `@Async` or
+`CompletableFuture` thread boundaries.
 
 ## Inject The Client
 
@@ -297,9 +329,13 @@ ChariMerchantCardPaymentPayload payload = ChariMerchantCardPaymentPayload.builde
         .amount(new BigDecimal("250"))
         .pan("4918914107195005")
         .expiryDate("08/26")
+        .cardName("John Doe Visa")
         .keepAlive(true)
         .threeDSecure(true)
         .autoCapture(true)
+        .feesPercent(new BigDecimal("1.5"))
+        .allowInternationalCards(true)
+        .internationalFeesPercent(new BigDecimal("2.5"))
         .notificationUrl("https://merchant.example.com/webhook")
         .acceptUrl("https://merchant.example.com/success")
         .declineUrl("https://merchant.example.com/fail")
@@ -317,10 +353,23 @@ ChariMerchantTokenizedCardPaymentPayload payload =
         ChariMerchantTokenizedCardPaymentPayload.builder()
                 .cvv("123")
                 .amount(new BigDecimal("188"))
+                .threeDSecure(true)
+                .autoCapture(true)
+                .feesPercent(new BigDecimal("1.5"))
+                .allowInternationalCards(true)
+                .internationalFeesPercent(new BigDecimal("2.5"))
+                .notificationUrl("https://merchant.example.com/webhook")
+                .acceptUrl("https://merchant.example.com/success")
+                .declineUrl("https://merchant.example.com/fail")
+                .externalReference("ORDER-1001")
                 .build();
 
 chari.executeMerchantTokenizedCardPayment(277, "+2126xxxxxxxx", payload);
 ```
+
+Only `cvv` and `amount` are always sent. Every other field is omitted from the
+request body when left `null`, so the Chari-side defaults apply. `threeDSecure`
+serializes as `3dSecure` on the wire.
 
 QR generation:
 

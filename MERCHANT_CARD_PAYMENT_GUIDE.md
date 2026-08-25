@@ -234,6 +234,7 @@ Content-Type: application/json
 | `operationDate` | `String` | Operation timestamp when immediately available. |
 | `feesAmount` | `BigDecimal` | Applied fees when available. |
 | `externalReference` | `String` | Your external reference when returned by the API. |
+| `tokenizedCardId` | `Long` | Identifier of the card token created when `keepAlive = true`. `null` when the card was not tokenized. |
 
 Example redirect response:
 
@@ -253,13 +254,16 @@ Example redirect response:
     "operationId": null,
     "operationDate": null,
     "feesAmount": null,
-    "externalReference": "ORDER-1001"
+    "externalReference": "ORDER-1001",
+    "tokenizedCardId": 508
   }
 }
 ```
 
 Do not assume that `operationId`, `operationDate`, or `feesAmount` is always present;
 a redirect response can return them as `null` until the payment flow completes.
+`tokenizedCardId` is returned when the card was tokenized (`keepAlive = true`) and is
+`null` otherwise — store it to charge the same card later without the PAN.
 
 ## 3. Authorize, capture, reverse, and refund (lifecycle)
 
@@ -400,16 +404,15 @@ try {
 The SDK automatically adds the configured `Chari-Api-Key` and a generated
 `C-Request-Id` header. Keep `chari.baas.audit.mask-sensitive: true` when audit
 logging is enabled so PAN and CVV values are masked in SDK request logs.
+<!-- 
+git push origin master   
 
+git tag -a v1.0.19 -m "Release v1.0.19"
 
-git push origin master            
+git push origin v1.0.19
 
-git tag -a v1.0.15 -m "Release v1.0.15"
+git show v1.0.19 --stat 
 
-git push origin v1.0.15
-
-git show v1.0.15 --stat 
-
-https://jitpack.io/#hamzaelalaouiismaili/chari-baas-spring-boot-starter/v1.0.15
-
+https://jitpack.io/#hamzaelalaouiismaili/chari-baas-spring-boot-starter/v1.0.19
 https://jitpack.io/#hamzaelalaouiismaili/chari-baas-spring-boot-starter
+-->

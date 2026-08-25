@@ -133,6 +133,19 @@ public class ChariHttpClient {
         HttpHeaders headers = new HttpHeaders();
         headers.set("Chari-Api-Key", properties.getApiKey());
         headers.set("C-Request-Id", requestId);
+        ChariBrowserContext.BrowserInfo context = ChariBrowserContext.get();
+        if (context != null) {
+            headers.set(HttpHeaders.USER_AGENT, context.userAgent());
+            headers.set("C-Browser-ColorDepth", String.valueOf(context.colorDepth()));
+            headers.set("C-Browser-ScreenHeight", String.valueOf(context.screenHeight()));
+            headers.set("C-Browser-ScreenWidth", String.valueOf(context.screenWidth()));
+        } else {
+            ChariBaasProperties.Browser browser = properties.getBrowser();
+            headers.set(HttpHeaders.USER_AGENT, browser.getUserAgent());
+            headers.set("C-Browser-ColorDepth", String.valueOf(browser.getColorDepth()));
+            headers.set("C-Browser-ScreenHeight", String.valueOf(browser.getScreenHeight()));
+            headers.set("C-Browser-ScreenWidth", String.valueOf(browser.getScreenWidth()));
+        }
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.setAccept(java.util.List.of(MediaType.APPLICATION_JSON));
         return headers;
