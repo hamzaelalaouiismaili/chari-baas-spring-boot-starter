@@ -904,6 +904,19 @@ public class ChariBaasClient {
         return requestOperationClient.requestFatouratiCashin(payload);
     }
 
+    /**
+     * List the cash-in / cash-out request operations of a customer.
+     *
+     * @param phoneNumber customer phone number
+     * @param pageSize    page size, optional
+     * @param pageNumber  page number, optional
+     * @return paginated request operations response
+     */
+    public ChariRequestOperationsResponse getRequestOperations(String phoneNumber, Integer pageSize,
+            Integer pageNumber) {
+        return requestOperationClient.getRequestOperations(phoneNumber, pageSize, pageNumber);
+    }
+
     // ==================== Network Operations (sandbox simulation) ====================
 
     /**

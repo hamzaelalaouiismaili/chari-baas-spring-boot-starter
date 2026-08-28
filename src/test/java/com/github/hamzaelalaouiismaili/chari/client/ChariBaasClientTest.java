@@ -35,6 +35,7 @@ import com.github.hamzaelalaouiismaili.chari.model.payload.ChariChargebackPayloa
 import com.github.hamzaelalaouiismaili.chari.model.payload.ChariCreatePinPayload;
 import com.github.hamzaelalaouiismaili.chari.model.payload.ChariCustomerConfirmPayload;
 import com.github.hamzaelalaouiismaili.chari.model.payload.ChariExecuteRequestOperationByReferencePayload;
+import com.github.hamzaelalaouiismaili.chari.model.response.ChariRequestOperationsResponse;
 import com.github.hamzaelalaouiismaili.chari.model.payload.ChariGenerateQrCodePayload;
 import com.github.hamzaelalaouiismaili.chari.model.payload.ChariLoginWithPinPayload;
 import com.github.hamzaelalaouiismaili.chari.model.payload.ChariFatouratiCashinRequestPayload;
@@ -1916,6 +1917,58 @@ class ChariBaasClientTest {
     assertThat(response.getData().getPartnerId()).isEqualTo(1);
     assertThat(response.getData().getAmount()).isEqualByComparingTo("100");
     assertThat(response.getData().getDescription()).isEqualTo("test request");
+    server.verify();
+  }
+
+  @Test
+  void getRequestOperationsSendsPaginationAndMapsCollection() {
+    RestTemplate restTemplate = new RestTemplate();
+    MockRestServiceServer server = MockRestServiceServer.bindTo(restTemplate).build();
+    ChariBaasClient client = new ChariBaasClient(restTemplate, properties());
+
+    server.expect(once(),
+        requestTo("https://sandbox.charimoney.com/api/operations/requests?phoneNumber=+212665638046&pageSize=100"))
+        .andExpect(method(HttpMethod.GET))
+        .andExpect(header("Chari-Api-Key", "test-key"))
+        .andExpect(header("C-Request-Id", matchesPattern(uuidPattern())))
+        .andRespond(withSuccess(
+            """
+                {
+                  "data": {
+                    "collection": [
+                      {
+                        "reference": "1122334456",
+                        "phoneNumber": "+212665638046",
+                        "accountId": 35,
+                        "partnerId": 1,
+                        "amount": 100,
+                        "code": "FATREF-123",
+                        "description": "test request",
+                        "createdAt": "2025-05-15T23:56:55.082Z",
+                        "operationType": 1,
+                        "operationStatus": 1,
+                        "channels": ["CHARI"]
+                      }
+                    ],
+                    "count": 12
+                  }
+                }
+                """,
+            MediaType.APPLICATION_JSON));
+
+    ChariRequestOperationsResponse response = client.getRequestOperations("+212665638046", 100, null);
+
+    assertThat(response.getData().getCount()).isEqualTo(12);
+    ChariRequestOperationsResponse.RequestOperationItem item = response.getData().getCollection().get(0);
+    assertThat(item.getReference()).isEqualTo("1122334456");
+    assertThat(item.getPhoneNumber()).isEqualTo("+212665638046");
+    assertThat(item.getAccountId()).isEqualTo(35L);
+    assertThat(item.getAmount()).isEqualByComparingTo("100");
+    assertThat(item.getCode()).isEqualTo("FATREF-123");
+    assertThat(item.getCreatedAt()).isEqualTo("2025-05-15T23:56:55.082Z");
+    assertThat(item.getChannels()).containsExactly("CHARI");
+    assertThat(item.getTypedOperationType()).isEqualTo(ChariRequestOperationType.CASHIN);
+    assertThat(item.getTypedOperationStatus()).isEqualTo(ChariRequestOperationStatus.OPEN);
     server.verify();
   }
 

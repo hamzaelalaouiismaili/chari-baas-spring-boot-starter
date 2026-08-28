@@ -474,6 +474,20 @@ chari.getCashoutByReference("1122334456");
 chari.executeCashoutByReference(executePayload);
 ```
 
+List every cash-in / cash-out request of a customer (`GET /api/operations/requests`):
+
+```java
+ChariRequestOperationsResponse requests = chari.getRequestOperations("+2126xxxxxxxx", 100, null);
+
+requests.getData().getCount();
+requests.getData().getCollection().forEach(item -> {
+    item.getReference();
+    item.getAmount();
+    item.getTypedOperationType();   // ChariRequestOperationType
+    item.getTypedOperationStatus(); // ChariRequestOperationStatus
+});
+```
+
 ## Retail And Principal Agents
 
 ```java
@@ -622,7 +636,7 @@ Prefer these enums over hard-coded integer codes where builder overloads or resp
 | Chargeback and refund | `previewChargeback`, `previewRefund`, `executeRefund` |
 | Beneficiaries | `getBeneficiaries`, `addBeneficiary`, `deleteBeneficiary` |
 | Tokenized cards | `saveCard`, `listSavedCards`, `getSavedCard`, `deleteSavedCard` |
-| Request operations | `requestCashinByReference`, `requestCashoutByReference`, `getCashinByReference`, `executeCashinByReference`, `getCashoutByReference`, `executeCashoutByReference` |
+| Request operations | `requestCashinByReference`, `requestCashoutByReference`, `getCashinByReference`, `executeCashinByReference`, `getCashoutByReference`, `executeCashoutByReference`, `getRequestOperations` |
 | Retail agents | `getRetailAgents`, `getRetailAgentByCode`, `addRetailAgent` |
 | Operation history | `getOperationsByCustomer`, `getAllOperationsByPartner`, `getOperationById` |
 | Telco top-up | `getSupportedTelcoOperators`, `getTelcoCatalog`, `rechargeTelco` |

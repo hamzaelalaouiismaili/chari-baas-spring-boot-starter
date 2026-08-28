@@ -7,6 +7,7 @@ import com.github.hamzaelalaouiismaili.chari.model.payload.ChariExecuteRequestOp
 import com.github.hamzaelalaouiismaili.chari.model.payload.ChariFatouratiCashinRequestPayload;
 import com.github.hamzaelalaouiismaili.chari.model.response.ChariCashinByReferenceResponse;
 import com.github.hamzaelalaouiismaili.chari.model.response.ChariCashoutByReferenceResponse;
+import com.github.hamzaelalaouiismaili.chari.model.response.ChariRequestOperationsResponse;
 import com.github.hamzaelalaouiismaili.chari.util.PhoneNumberUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -78,6 +79,32 @@ public class ChariRequestOperationClient {
                 return httpClient.post("/api/operations/fatourati/cashin/request",
                                 buildFatouratiPayload(payload),
                                 ChariCashinByReferenceResponse.class, "FATOURATI_CASHIN_REQUEST");
+        }
+
+        /**
+         * Lists the cash-in / cash-out request operations of a customer.
+         * GET /api/operations/requests
+         *
+         * @param phoneNumber customer phone number (required)
+         * @param pageSize    page size, optional
+         * @param pageNumber  page number, optional
+         */
+        public ChariRequestOperationsResponse getRequestOperations(String phoneNumber, Integer pageSize,
+                        Integer pageNumber) {
+                String normalizedPhone = PhoneNumberUtil.normalize(phoneNumber);
+                log.debug("Listing request operations for customer: {}", PhoneNumberUtil.mask(normalizedPhone));
+
+                UriComponentsBuilder builder = UriComponentsBuilder.fromPath("/api/operations/requests")
+                                .queryParam("phoneNumber", normalizedPhone);
+                if (pageSize != null) {
+                        builder.queryParam("pageSize", pageSize);
+                }
+                if (pageNumber != null) {
+                        builder.queryParam("pageNumber", pageNumber);
+                }
+
+                return httpClient.get(builder.toUriString(), ChariRequestOperationsResponse.class,
+                                "GET_REQUEST_OPERATIONS");
         }
 
         private Map<String, Object> buildRequestPayload(String phoneNumber, Object amount) {
