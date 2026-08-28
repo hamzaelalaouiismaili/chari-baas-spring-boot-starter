@@ -7,6 +7,7 @@ Official ChariBaaS API documentation: https://baas.ma/en/api-docs
 For complete `ChariBaasClient` examples, see [SDK_USAGE.md](SDK_USAGE.md).
 For webhook implementation examples, see [WEBHOOK_USAGE.md](WEBHOOK_USAGE.md).
 For personal and merchant KYC/KYB upgrade flows, see [KYC_UPGRADE_GUIDE.md](KYC_UPGRADE_GUIDE.md).
+For testing the request-operations listing (`GET /api/operations/requests`), see [REQUEST_OPERATIONS_TESTING.md](REQUEST_OPERATIONS_TESTING.md).
 
 
 ## Installation

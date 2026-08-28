@@ -104,6 +104,13 @@ public class ChariTestController {
         return chari.executeCardFunding(phoneNumber, payload);
     }
 
+    @GetMapping("/operations/requests")
+    public Object getRequestOperations(@RequestParam String phoneNumber,
+            @RequestParam(required = false) Integer pageSize,
+            @RequestParam(required = false) Integer pageNumber) {
+        return chari.getRequestOperations(phoneNumber, pageSize, pageNumber);
+    }
+
     @GetMapping("/card/accept")
     public Map<String, String> cardAccept(@RequestParam Map<String, String> params) {
         return params;
