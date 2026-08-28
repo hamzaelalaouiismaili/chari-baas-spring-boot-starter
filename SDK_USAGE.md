@@ -479,12 +479,33 @@ List every cash-in / cash-out request of a customer (`GET /api/operations/reques
 ```java
 ChariRequestOperationsResponse requests = chari.getRequestOperations("+2126xxxxxxxx", 100, null);
 
-requests.getData().getCount();
+requests.getData().getCount(); // total matching requests, not the page size
+
 requests.getData().getCollection().forEach(item -> {
+    item.getOperationRequestId();
     item.getReference();
-    item.getAmount();
-    item.getTypedOperationType();   // ChariRequestOperationType
-    item.getTypedOperationStatus(); // ChariRequestOperationStatus
+    item.getCreatedAt();
+    item.getClosedAt();              // null while the request is still open
+    item.getEntity();                // "Partner(121)-Agent(11210550)"
+    item.getCustomData();            // raw JSON string sent at request time
+    item.isOpen();                   // true when not executed yet
+
+    // Chari leaves the request-level type/status at 0 and only fills them on the
+    // executed operation, so these getters fall back to item.getOperation().
+    item.getTypedOperationType();    // CASHIN / CASHOUT / UNKNOWN
+    item.getTypedOperationStatus();  // OPEN / COMPLETED / FAILED / CANCELED / UNKNOWN
+
+    var operation = item.getOperation(); // null while the request is still open
+    if (operation != null) {
+        operation.getOperationId();
+        operation.getAmount();
+        operation.getFeesAmount();
+        operation.getPrimaryAccountNumber();
+        operation.getSecondaryAccountNumber();
+        operation.getOperationDate();
+        operation.getMethod();                       // "agent"
+        operation.getOperationRequest().getNetworkName(); // "Internal"
+    }
 });
 ```
 

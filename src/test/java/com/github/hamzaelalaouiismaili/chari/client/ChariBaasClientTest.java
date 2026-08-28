@@ -1937,20 +1937,75 @@ class ChariBaasClientTest {
                   "data": {
                     "collection": [
                       {
-                        "reference": "1122334456",
-                        "phoneNumber": "+212665638046",
-                        "accountId": 35,
-                        "partnerId": 1,
-                        "amount": 100,
-                        "code": "FATREF-123",
-                        "description": "test request",
-                        "createdAt": "2025-05-15T23:56:55.082Z",
-                        "operationType": 1,
-                        "operationStatus": 1,
-                        "channels": ["CHARI"]
+                        "operationRequestId": 2208,
+                        "createdAt": "2026-08-28T14:14:16.843644",
+                        "closedAt": "2026-08-28T15:15:13.123515",
+                        "reference": "1575006433",
+                        "phoneNumber": null,
+                        "code": null,
+                        "accountId": 0,
+                        "operationType": 0,
+                        "operationStatus": 0,
+                        "partnerId": 0,
+                        "amount": 0,
+                        "description": null,
+                        "networkId": 1,
+                        "entity": "Partner(121)-Agent(11210550)",
+                        "operationId": null,
+                        "customData": "{\\"notificationUrl\\":null,\\"externalReference\\":\\"ext-1\\"}",
+                        "operation": {
+                          "accountId": 550,
+                          "primaryAccountNumber": "+212600000000",
+                          "secondaryAccountNumber": "+212600000000",
+                          "feesAmount": 0,
+                          "operationDate": "2026-08-28T15:15:12.963236",
+                          "openLoop": false,
+                          "operationStatus": 2,
+                          "nonExistentUser": false,
+                          "transactions": null,
+                          "operationRequest": {
+                            "operationRequestId": 2208,
+                            "createdAt": "2026-08-28T14:14:16.843644",
+                            "closedAt": "2026-08-28T15:15:13.123515",
+                            "reference": "1575006433",
+                            "networkId": 1,
+                            "entity": "Partner(121)-Agent(11210550)",
+                            "networkName": "Internal"
+                          },
+                          "operationId": 16224,
+                          "transactionId": 0,
+                          "operationType": 1,
+                          "transactionType": 0,
+                          "method": "agent",
+                          "amount": 250.5,
+                          "sens": null,
+                          "partnerId": 121,
+                          "description": "retest agent cashin",
+                          "note": null,
+                          "images": null
+                        }
+                      },
+                      {
+                        "operationRequestId": 2206,
+                        "createdAt": "2026-08-27T11:45:51.697167",
+                        "closedAt": null,
+                        "reference": "2264511325",
+                        "phoneNumber": null,
+                        "code": null,
+                        "accountId": 0,
+                        "operationType": 0,
+                        "operationStatus": 0,
+                        "partnerId": 0,
+                        "amount": 0,
+                        "description": null,
+                        "networkId": null,
+                        "entity": null,
+                        "operationId": null,
+                        "customData": null,
+                        "operation": null
                       }
                     ],
-                    "count": 12
+                    "count": 2197
                   }
                 }
                 """,
@@ -1958,17 +2013,42 @@ class ChariBaasClientTest {
 
     ChariRequestOperationsResponse response = client.getRequestOperations("+212665638046", 100, null);
 
-    assertThat(response.getData().getCount()).isEqualTo(12);
-    ChariRequestOperationsResponse.RequestOperationItem item = response.getData().getCollection().get(0);
-    assertThat(item.getReference()).isEqualTo("1122334456");
-    assertThat(item.getPhoneNumber()).isEqualTo("+212665638046");
-    assertThat(item.getAccountId()).isEqualTo(35L);
-    assertThat(item.getAmount()).isEqualByComparingTo("100");
-    assertThat(item.getCode()).isEqualTo("FATREF-123");
-    assertThat(item.getCreatedAt()).isEqualTo("2025-05-15T23:56:55.082Z");
-    assertThat(item.getChannels()).containsExactly("CHARI");
-    assertThat(item.getTypedOperationType()).isEqualTo(ChariRequestOperationType.CASHIN);
-    assertThat(item.getTypedOperationStatus()).isEqualTo(ChariRequestOperationStatus.OPEN);
+    assertThat(response.getData().getCount()).isEqualTo(2197);
+    assertThat(response.getData().getCollection()).hasSize(2);
+
+    ChariRequestOperationsResponse.RequestOperationItem executed = response.getData().getCollection().get(0);
+    assertThat(executed.getOperationRequestId()).isEqualTo(2208L);
+    assertThat(executed.getReference()).isEqualTo("1575006433");
+    assertThat(executed.getCreatedAt()).isEqualTo("2026-08-28T14:14:16.843644");
+    assertThat(executed.getClosedAt()).isEqualTo("2026-08-28T15:15:13.123515");
+    assertThat(executed.getEntity()).isEqualTo("Partner(121)-Agent(11210550)");
+    assertThat(executed.getNetworkId()).isEqualTo(1);
+    assertThat(executed.getCustomData()).contains("ext-1");
+    assertThat(executed.isOpen()).isFalse();
+    // request-level type/status stay at 0; the typed getters fall back to the executed operation
+    assertThat(executed.getTypedOperationType()).isEqualTo(ChariRequestOperationType.CASHIN);
+    assertThat(executed.getTypedOperationStatus()).isEqualTo(ChariRequestOperationStatus.COMPLETED);
+
+    ChariRequestOperationsResponse.ExecutedOperation operation = executed.getOperation();
+    assertThat(operation.getOperationId()).isEqualTo(16224L);
+    assertThat(operation.getAccountId()).isEqualTo(550L);
+    assertThat(operation.getPrimaryAccountNumber()).isEqualTo("+212600000000");
+    assertThat(operation.getAmount()).isEqualByComparingTo("250.5");
+    assertThat(operation.getFeesAmount()).isEqualByComparingTo("0");
+    assertThat(operation.getMethod()).isEqualTo("agent");
+    assertThat(operation.getOpenLoop()).isFalse();
+    assertThat(operation.getDescription()).isEqualTo("retest agent cashin");
+    assertThat(operation.getTypedOperationType()).isEqualTo(ChariRequestOperationType.CASHIN);
+    assertThat(operation.getTypedOperationStatus()).isEqualTo(ChariRequestOperationStatus.COMPLETED);
+    assertThat(operation.getTypedSens()).isEqualTo(ChariSens.UNKNOWN);
+    assertThat(operation.getOperationRequest().getNetworkName()).isEqualTo("Internal");
+    assertThat(operation.getOperationRequest().getReference()).isEqualTo("1575006433");
+
+    ChariRequestOperationsResponse.RequestOperationItem pending = response.getData().getCollection().get(1);
+    assertThat(pending.getOperation()).isNull();
+    assertThat(pending.isOpen()).isTrue();
+    assertThat(pending.getTypedOperationType()).isEqualTo(ChariRequestOperationType.UNKNOWN);
+    assertThat(pending.getTypedOperationStatus()).isEqualTo(ChariRequestOperationStatus.UNKNOWN);
     server.verify();
   }
 

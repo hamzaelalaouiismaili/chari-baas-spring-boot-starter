@@ -22,7 +22,7 @@ For personal and merchant KYC/KYB upgrade flows, see [KYC_UPGRADE_GUIDE.md](KYC_
 <dependency>
     <groupId>com.github.hamzaelalaouiismaili</groupId>
     <artifactId>chari-baas-spring-boot-starter</artifactId>
-    <version>v1.0.23</version>
+    <version>v1.0.24</version>
 </dependency>
 ```
 

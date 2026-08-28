@@ -2,8 +2,10 @@ package com.github.hamzaelalaouiismaili.chari.model.response;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.github.hamzaelalaouiismaili.chari.domain.enums.ChariRequestOperationStatus;
 import com.github.hamzaelalaouiismaili.chari.domain.enums.ChariRequestOperationType;
+import com.github.hamzaelalaouiismaili.chari.domain.enums.ChariSens;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -34,6 +36,7 @@ public class ChariRequestOperationsResponse {
 
         private List<RequestOperationItem> collection;
 
+        /** Total number of request operations matching the filters, not the page size. */
         private Integer count;
     }
 
@@ -44,70 +47,175 @@ public class ChariRequestOperationsResponse {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     public static class RequestOperationItem {
 
-        private String reference;
-
-        private String entity;
+        private Long operationRequestId;
 
         private String createdAt;
 
+        /** Set once the request has been closed (executed or canceled); null while still open. */
         private String closedAt;
 
-        private String executedAt;
-
-        private Long accountId;
-
-        private Integer partnerId;
+        private String reference;
 
         private String phoneNumber;
 
         private String code;
 
+        private Long accountId;
+
+        private Integer operationType;
+
+        private Integer operationStatus;
+
+        private Integer partnerId;
+
         private BigDecimal amount;
 
         private String description;
 
-        private String partner;
+        private Integer networkId;
 
-        private Integer status;
+        /** Executing network entity, e.g. {@code Partner(121)-Agent(11210550)}. */
+        private String entity;
 
-        private Integer type;
+        private Long operationId;
 
-        private Integer operationStatus;
+        /** Raw JSON string supplied at request time, e.g. {@code {"externalReference":"..."}}. */
+        private String customData;
 
-        private Integer operationType;
+        /** The executed operation; null while the request is still open. */
+        private ExecutedOperation operation;
 
-        private String qrCode;
-
-        private List<String> channels;
-
+        /**
+         * Cash-in or cash-out. Chari leaves the request-level field at 0 and only fills
+         * the type on the executed operation, so this falls back to {@link #getOperation()}.
+         */
         @JsonIgnore
-        public ChariRequestOperationStatus getTypedStatus() {
-            return ChariRequestOperationStatus.fromCode(getEffectiveStatus());
+        public ChariRequestOperationType getTypedOperationType() {
+            return ChariRequestOperationType.fromCode(getEffectiveOperationType());
+        }
+
+        /**
+         * Request status. Chari leaves the request-level field at 0 and only fills the
+         * status on the executed operation, so this falls back to {@link #getOperation()}.
+         */
+        @JsonIgnore
+        public ChariRequestOperationStatus getTypedOperationStatus() {
+            return ChariRequestOperationStatus.fromCode(getEffectiveOperationStatus());
+        }
+
+        /** True when the request has not been executed yet. */
+        @JsonIgnore
+        public boolean isOpen() {
+            return closedAt == null && operation == null;
         }
 
         @JsonIgnore
-        public ChariRequestOperationType getTypedType() {
-            return ChariRequestOperationType.fromCode(getEffectiveType());
+        private Integer getEffectiveOperationType() {
+            if (operationType != null && operationType != 0) {
+                return operationType;
+            }
+            return operation == null ? operationType : operation.getOperationType();
+        }
+
+        @JsonIgnore
+        private Integer getEffectiveOperationStatus() {
+            if (operationStatus != null && operationStatus != 0) {
+                return operationStatus;
+            }
+            return operation == null ? operationStatus : operation.getOperationStatus();
+        }
+    }
+
+    /**
+     * Operation created when an agent executes the request.
+     */
+    @Data
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    public static class ExecutedOperation {
+
+        private Long operationId;
+
+        private Long transactionId;
+
+        private Long accountId;
+
+        private String primaryAccountNumber;
+
+        private String secondaryAccountNumber;
+
+        private BigDecimal amount;
+
+        private BigDecimal feesAmount;
+
+        private String operationDate;
+
+        private Boolean openLoop;
+
+        private Boolean nonExistentUser;
+
+        private Integer operationType;
+
+        private Integer operationStatus;
+
+        private Integer transactionType;
+
+        private Integer sens;
+
+        private Integer partnerId;
+
+        private String method;
+
+        private String description;
+
+        private String note;
+
+        private List<JsonNode> transactions;
+
+        private JsonNode images;
+
+        private OperationRequestSummary operationRequest;
+
+        @JsonIgnore
+        public ChariRequestOperationType getTypedOperationType() {
+            return ChariRequestOperationType.fromCode(operationType);
         }
 
         @JsonIgnore
         public ChariRequestOperationStatus getTypedOperationStatus() {
-            return getTypedStatus();
+            return ChariRequestOperationStatus.fromCode(operationStatus);
         }
 
         @JsonIgnore
-        public ChariRequestOperationType getTypedOperationType() {
-            return getTypedType();
+        public ChariSens getTypedSens() {
+            return ChariSens.fromCode(sens);
         }
+    }
 
-        @JsonIgnore
-        private Integer getEffectiveStatus() {
-            return operationStatus != null ? operationStatus : status;
-        }
+    /**
+     * Back-reference to the originating request carried inside the executed operation.
+     */
+    @Data
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    public static class OperationRequestSummary {
 
-        @JsonIgnore
-        private Integer getEffectiveType() {
-            return operationType != null ? operationType : type;
-        }
+        private Long operationRequestId;
+
+        private String createdAt;
+
+        private String closedAt;
+
+        private String reference;
+
+        private Integer networkId;
+
+        private String entity;
+
+        private String networkName;
     }
 }

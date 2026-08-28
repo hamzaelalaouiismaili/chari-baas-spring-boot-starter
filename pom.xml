@@ -13,7 +13,7 @@
 
     <groupId>com.github.hamzaelalaouiismaili</groupId>
     <artifactId>chari-baas-spring-boot-starter</artifactId>
-    <version>1.0.23</version>
+    <version>1.0.24</version>
     <packaging>jar</packaging>
 
     <name>Chari BaaS Spring Boot Starter</name>
