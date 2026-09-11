@@ -2676,6 +2676,13 @@ class ChariBaasClientTest {
         .andExpect(content().string(not(containsString("declineURL"))))
         .andExpect(content().string(not(containsString("acceptUrl"))))
         .andExpect(content().string(not(containsString("declineUrl"))))
+        .andExpect(content().string(not(containsString("3dSecure"))))
+        .andExpect(content().string(not(containsString("feesPercent"))))
+        .andExpect(content().string(not(containsString("internationalFeesPercent"))))
+        .andExpect(content().string(not(containsString("autoCapture"))))
+        .andExpect(content().string(not(containsString("allowInternationalCards"))))
+        .andExpect(content().string(not(containsString("notificationUrl"))))
+        .andExpect(content().string(not(containsString("externalReference"))))
         .andRespond(withSuccess("{\"data\":{\"redirect\":false,\"amount\":100}}",
             MediaType.APPLICATION_JSON));
 
@@ -2845,6 +2852,123 @@ class ChariBaasClientTest {
   }
 
   @Test
+  void executeCardFundingSendsOptionalFeeAndCaptureFields() {
+    RestTemplate restTemplate = new RestTemplate();
+    MockRestServiceServer server = MockRestServiceServer.bindTo(restTemplate).build();
+    ChariBaasClient client = new ChariBaasClient(restTemplate, properties());
+
+    ChariCardCashinPayload payload = ChariCardCashinPayload.builder()
+        .firstName("Mohammed")
+        .lastName("Chairi")
+        .pan("4918914107195005")
+        .expiryDate("2505")
+        .cvv("123")
+        .amount(new BigDecimal("100"))
+        .feesPercent(new BigDecimal("1.5"))
+        .internationalFeesPercent(new BigDecimal("2.5"))
+        .threeDSecure(true)
+        .autoCapture(false)
+        .allowInternationalCards(true)
+        .notificationUrl("https://merchant.example.com/webhook")
+        .externalReference("ORDER-1001")
+        .build();
+
+    server.expect(once(),
+        requestTo("https://sandbox.charimoney.com/api/operations/cashin/card?phoneNumber=+212612345678"))
+        .andExpect(method(HttpMethod.POST))
+        .andExpect(content().string(containsString("\"feesPercent\":1.5")))
+        .andExpect(content().string(containsString("\"internationalFeesPercent\":2.5")))
+        .andExpect(content().string(containsString("\"3dSecure\":true")))
+        .andExpect(content().string(containsString("\"autoCapture\":false")))
+        .andExpect(content().string(containsString("\"allowInternationalCards\":true")))
+        .andExpect(content().string(containsString(
+            "\"notificationUrl\":\"https://merchant.example.com/webhook\"")))
+        .andExpect(content().string(containsString("\"externalReference\":\"ORDER-1001\"")))
+        .andRespond(withSuccess("""
+            {"data":{"redirect":false,"amount":100,"externalReference":"ORDER-1001"}}
+            """, MediaType.APPLICATION_JSON));
+
+    ChariCardFundingExecutionResponse response = client.executeCardFunding("0612345678", payload);
+
+    assertThat(response.getData().getExternalReference()).isEqualTo("ORDER-1001");
+    server.verify();
+  }
+
+  @Test
+  void executeCardFundingByAgentSendsOptionalFeeAndCaptureFields() {
+    RestTemplate restTemplate = new RestTemplate();
+    MockRestServiceServer server = MockRestServiceServer.bindTo(restTemplate).build();
+    ChariBaasClient client = new ChariBaasClient(restTemplate, properties());
+
+    ChariCardCashinPayload payload = ChariCardCashinPayload.builder()
+        .firstName("Mohammed")
+        .lastName("Chairi")
+        .pan("4918914107195005")
+        .expiryDate("2505")
+        .cvv("123")
+        .amount(new BigDecimal("100"))
+        .feesPercent(new BigDecimal("1"))
+        .autoCapture(true)
+        .allowInternationalCards(false)
+        .build();
+
+    server.expect(once(),
+        requestTo("https://sandbox.charimoney.com/api/operations/cashin/card/agent?code=11023"))
+        .andExpect(method(HttpMethod.POST))
+        .andExpect(content().string(containsString("\"feesPercent\":1")))
+        .andExpect(content().string(containsString("\"autoCapture\":true")))
+        .andExpect(content().string(containsString("\"allowInternationalCards\":false")))
+        .andExpect(content().string(not(containsString("3dSecure"))))
+        .andExpect(content().string(not(containsString("internationalFeesPercent"))))
+        .andExpect(content().string(not(containsString("notificationUrl"))))
+        .andExpect(content().string(not(containsString("externalReference"))))
+        .andRespond(withSuccess("{\"data\":{\"redirect\":false,\"amount\":100}}",
+            MediaType.APPLICATION_JSON));
+
+    assertThat(client.executeCardFundingByAgent("11023", payload).getData().getRedirect()).isFalse();
+    server.verify();
+  }
+
+  @Test
+  void cashinWithSavedCardSendsOptionalFeeAndCaptureFields() {
+    RestTemplate restTemplate = new RestTemplate();
+    MockRestServiceServer server = MockRestServiceServer.bindTo(restTemplate).build();
+    ChariBaasClient client = new ChariBaasClient(restTemplate, properties());
+
+    ChariSavedCardCashinPayload payload = ChariSavedCardCashinPayload.builder()
+        .cvv("123")
+        .amount(new BigDecimal("200"))
+        .feesPercent(new BigDecimal("1.5"))
+        .internationalFeesPercent(new BigDecimal("2.5"))
+        .threeDSecure(true)
+        .autoCapture(false)
+        .allowInternationalCards(true)
+        .notificationUrl("https://merchant.example.com/webhook")
+        .externalReference("EXT-REF-1")
+        .build();
+
+    server.expect(once(),
+        requestTo("https://sandbox.charimoney.com/api/operations/cashin/card/123?phoneNumber=+212612345678"))
+        .andExpect(method(HttpMethod.POST))
+        .andExpect(content().string(containsString("\"feesPercent\":1.5")))
+        .andExpect(content().string(containsString("\"internationalFeesPercent\":2.5")))
+        .andExpect(content().string(containsString("\"3dSecure\":true")))
+        .andExpect(content().string(containsString("\"autoCapture\":false")))
+        .andExpect(content().string(containsString("\"allowInternationalCards\":true")))
+        .andExpect(content().string(containsString(
+            "\"notificationUrl\":\"https://merchant.example.com/webhook\"")))
+        .andExpect(content().string(containsString("\"externalReference\":\"EXT-REF-1\"")))
+        .andRespond(withSuccess("""
+            {"data":{"redirect":false,"amount":200,"externalReference":"EXT-REF-1"}}
+            """, MediaType.APPLICATION_JSON));
+
+    ChariSavedCardCashinResponse response = client.cashinWithSavedCard(123, "0612345678", payload);
+
+    assertThat(response.getData().getExternalReference()).isEqualTo("EXT-REF-1");
+    server.verify();
+  }
+
+  @Test
   void cashinWithSavedCardUsesPayloadRedirectUrlsAndMapsOfficialResponse() {
     RestTemplate restTemplate = new RestTemplate();
     MockRestServiceServer server = MockRestServiceServer.bindTo(restTemplate).build();
@@ -2947,6 +3071,13 @@ class ChariBaasClientTest {
         .andExpect(content().string(not(containsString("declineURL"))))
         .andExpect(content().string(not(containsString("acceptUrl"))))
         .andExpect(content().string(not(containsString("declineUrl"))))
+        .andExpect(content().string(not(containsString("3dSecure"))))
+        .andExpect(content().string(not(containsString("feesPercent"))))
+        .andExpect(content().string(not(containsString("internationalFeesPercent"))))
+        .andExpect(content().string(not(containsString("autoCapture"))))
+        .andExpect(content().string(not(containsString("allowInternationalCards"))))
+        .andExpect(content().string(not(containsString("notificationUrl"))))
+        .andExpect(content().string(not(containsString("externalReference"))))
         .andRespond(withSuccess("{\"data\":{\"redirect\":false,\"amount\":200}}",
             MediaType.APPLICATION_JSON));
 

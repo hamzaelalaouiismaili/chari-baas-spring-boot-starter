@@ -268,6 +268,8 @@ ChariCardFundingExecutionResponse result =
 
 If `result.getData().getRedirect()` is true, redirect the user to `redirectionURL`.
 
+Optional fee and capture fields are supported on both card cash-in payloads and are only sent when set: `feesPercent`, `internationalFeesPercent`, `threeDSecure` (sent as `3dSecure`), `autoCapture`, `allowInternationalCards`, `notificationUrl`, and `externalReference` (echoed back on the response as `getExternalReference()`).
+
 Execute with a saved card:
 
 ```java

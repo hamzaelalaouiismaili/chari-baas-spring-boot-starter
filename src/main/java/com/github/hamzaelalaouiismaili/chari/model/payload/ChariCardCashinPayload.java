@@ -74,6 +74,41 @@ public class ChariCardCashinPayload {
     private String declineUrl;
 
     /**
+     * Optional 3-D Secure flag (sent as "3dSecure").
+     */
+    private Boolean threeDSecure;
+
+    /**
+     * Optional fee percentage applied to the operation.
+     */
+    private BigDecimal feesPercent;
+
+    /**
+     * Optional fee percentage applied to international cards.
+     */
+    private BigDecimal internationalFeesPercent;
+
+    /**
+     * Optional flag to capture the authorisation immediately.
+     */
+    private Boolean autoCapture;
+
+    /**
+     * Optional flag allowing international cards.
+     */
+    private Boolean allowInternationalCards;
+
+    /**
+     * Optional server-to-server notification URL.
+     */
+    private String notificationUrl;
+
+    /**
+     * Optional merchant-side reference echoed back by Chari.
+     */
+    private String externalReference;
+
+    /**
      * Idempotency key for preventing duplicate transactions.
      */
     private String idempotencyKey;

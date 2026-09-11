@@ -89,6 +89,10 @@ public class ChariCashInCardClient {
         Map<String, Object> requestPayload = new HashMap<>();
         requestPayload.put("cvv", payload.getCvv());
         requestPayload.put("amount", payload.getAmount());
+        addOptionalCardFields(requestPayload, payload.getThreeDSecure(), payload.getFeesPercent(),
+                payload.getInternationalFeesPercent(), payload.getAutoCapture(),
+                payload.getAllowInternationalCards(), payload.getNotificationUrl(),
+                payload.getExternalReference());
         addRedirectUrls(requestPayload, payload.getAcceptUrl(), payload.getDeclineUrl());
 
         String url = UriComponentsBuilder.fromPath("/api/operations/cashin/card/{cardId}")
@@ -109,11 +113,33 @@ public class ChariCashInCardClient {
         requestPayload.put("amount", payload.getAmount());
         requestPayload.put("currency", payload.getCurrency() != null ? payload.getCurrency() : "MAD");
         requestPayload.put("keepAlive", payload.getKeepAlive() != null ? payload.getKeepAlive() : false);
+        addOptionalCardFields(requestPayload, payload.getThreeDSecure(), payload.getFeesPercent(),
+                payload.getInternationalFeesPercent(), payload.getAutoCapture(),
+                payload.getAllowInternationalCards(), payload.getNotificationUrl(),
+                payload.getExternalReference());
         addRedirectUrls(requestPayload, payload.getAcceptUrl(), payload.getDeclineUrl());
         if (payload.getCardName() != null) {
             requestPayload.put("cardName", payload.getCardName());
         }
         return requestPayload;
+    }
+
+    private void addOptionalCardFields(Map<String, Object> requestPayload, Boolean threeDSecure,
+            BigDecimal feesPercent, BigDecimal internationalFeesPercent, Boolean autoCapture,
+            Boolean allowInternationalCards, String notificationUrl, String externalReference) {
+        putIfNotNull(requestPayload, "3dSecure", threeDSecure);
+        putIfNotNull(requestPayload, "feesPercent", feesPercent);
+        putIfNotNull(requestPayload, "internationalFeesPercent", internationalFeesPercent);
+        putIfNotNull(requestPayload, "autoCapture", autoCapture);
+        putIfNotNull(requestPayload, "allowInternationalCards", allowInternationalCards);
+        putIfNotNull(requestPayload, "notificationUrl", notificationUrl);
+        putIfNotNull(requestPayload, "externalReference", externalReference);
+    }
+
+    private void putIfNotNull(Map<String, Object> requestPayload, String key, Object value) {
+        if (value != null) {
+            requestPayload.put(key, value);
+        }
     }
 
     private void addRedirectUrls(Map<String, Object> requestPayload, String payloadAcceptUrl,

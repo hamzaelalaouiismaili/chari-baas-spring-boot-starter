@@ -48,5 +48,7 @@ public class ChariCardFundingExecutionResponse {
         private BigDecimal feesAmount;
 
         private BigDecimal totalAmount;
+
+        private String externalReference;
     }
 }

@@ -23,7 +23,7 @@ For testing the request-operations listing (`GET /api/operations/requests`), see
 <dependency>
     <groupId>com.github.hamzaelalaouiismaili</groupId>
     <artifactId>chari-baas-spring-boot-starter</artifactId>
-    <version>v1.0.24</version>
+    <version>v1.0.25</version>
 </dependency>
 ```
 
@@ -532,6 +532,10 @@ ChariCardFundingExecutionResponse response =
 ```
 
 The SDK sends `POST /api/operations/cashin/card?phoneNumber=+212...`. `acceptURL` and `declineURL` use payload values first, then `chari.baas.card-funding.accept-url` / `decline-url` if configured, and are omitted when both payload and config are null. After 3DS, validate `RESPONSE_CODE` and `REASON_CODE` from the redirect URL in your application.
+
+Optional fee and capture fields are supported on both card cash-in payloads and are only sent when set: `feesPercent`, `internationalFeesPercent`, `threeDSecure` (sent as `3dSecure`), `autoCapture`, `allowInternationalCards`, `notificationUrl`, and `externalReference` (echoed back on the response as `getExternalReference()`).
+
+For a field-by-field reference of the card endpoints (cash-in, merchant card payment, capture, reverse) including which fields are required, see [CARD_API_GUIDE.md](CARD_API_GUIDE.md).
 
 ### Card Cash-In Execute By Agent
 

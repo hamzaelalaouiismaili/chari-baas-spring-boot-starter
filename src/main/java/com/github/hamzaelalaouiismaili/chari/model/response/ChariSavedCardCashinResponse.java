@@ -36,5 +36,6 @@ public class ChariSavedCardCashinResponse {
         private String acceptURL;
         private String declineURL;
         private String reference;
+        private String externalReference;
     }
 }
