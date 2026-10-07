@@ -23,7 +23,7 @@ For testing the request-operations listing (`GET /api/operations/requests`), see
 <dependency>
     <groupId>com.github.hamzaelalaouiismaili</groupId>
     <artifactId>chari-baas-spring-boot-starter</artifactId>
-    <version>v1.0.25</version>
+    <version>v1.0.26</version>
 </dependency>
 ```
 

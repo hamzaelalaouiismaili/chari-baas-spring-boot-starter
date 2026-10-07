@@ -562,6 +562,19 @@ Get operation by ID:
 chari.getOperationById(123L, "+2126xxxxxxxx");
 ```
 
+Reconcile a card operation by its Chari `orderId` (`GET /api/operations/gateway/state`).
+A non-null `gatewayTransactionState` means the operation completed on Chari's side:
+
+```java
+ChariGatewayStateResponse.GatewayStateData state = chari.getGatewayState("CH47d634908bb8").getData();
+
+state.isCompleted();                     // gatewayTransactionState is present
+state.isCaptured();                      // CAPTURED (vs AUTHORIZED only)
+state.getTypedGatewayTransactionState(); // ChariGatewayTransactionState: AUTHORIZED, CAPTURED, UNKNOWN
+state.getOperationId();
+state.getReference();
+```
+
 ## Webhooks
 
 The starter registers this endpoint by default:
@@ -661,7 +674,7 @@ Prefer these enums over hard-coded integer codes where builder overloads or resp
 | Tokenized cards | `saveCard`, `listSavedCards`, `getSavedCard`, `deleteSavedCard` |
 | Request operations | `requestCashinByReference`, `requestCashoutByReference`, `getCashinByReference`, `executeCashinByReference`, `getCashoutByReference`, `executeCashoutByReference`, `getRequestOperations` |
 | Retail agents | `getRetailAgents`, `getRetailAgentByCode`, `addRetailAgent` |
-| Operation history | `getOperationsByCustomer`, `getAllOperationsByPartner`, `getOperationById` |
+| Operation history | `getOperationsByCustomer`, `getAllOperationsByPartner`, `getOperationById`, `getGatewayState` |
 | Telco top-up | `getSupportedTelcoOperators`, `getTelcoCatalog`, `rechargeTelco` |
 | Vouchers | `getVoucherArticles`, `getVoucherBrands`, `getVoucherBrand`, `getVouchersByBrand`, `getVoucherProducts`, `getVoucherProductDetail`, `getLocalVouchers`, `previewVoucherPurchase`, `confirmVoucherPurchase`, `previewServiceVoucherPurchase`, `purchaseServiceVoucher` |
 | Bill payment | `getBillCreditors`, `getBillReceivables`, `getBillIdentificationForm`, `getBillUnpaidItems`, `getBillUnpaidItemsByQrCode`, `confirmBillPayment`, `getBillReceipt` |

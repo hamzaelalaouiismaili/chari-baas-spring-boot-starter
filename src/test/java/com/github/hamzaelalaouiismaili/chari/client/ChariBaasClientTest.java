@@ -36,6 +36,8 @@ import com.github.hamzaelalaouiismaili.chari.model.payload.ChariCreatePinPayload
 import com.github.hamzaelalaouiismaili.chari.model.payload.ChariCustomerConfirmPayload;
 import com.github.hamzaelalaouiismaili.chari.model.payload.ChariExecuteRequestOperationByReferencePayload;
 import com.github.hamzaelalaouiismaili.chari.model.response.ChariRequestOperationsResponse;
+import com.github.hamzaelalaouiismaili.chari.model.response.ChariGatewayStateResponse;
+import com.github.hamzaelalaouiismaili.chari.domain.enums.ChariGatewayTransactionState;
 import com.github.hamzaelalaouiismaili.chari.model.payload.ChariGenerateQrCodePayload;
 import com.github.hamzaelalaouiismaili.chari.model.payload.ChariLoginWithPinPayload;
 import com.github.hamzaelalaouiismaili.chari.model.payload.ChariFatouratiCashinRequestPayload;
@@ -2049,6 +2051,83 @@ class ChariBaasClientTest {
     assertThat(pending.isOpen()).isTrue();
     assertThat(pending.getTypedOperationType()).isEqualTo(ChariRequestOperationType.UNKNOWN);
     assertThat(pending.getTypedOperationStatus()).isEqualTo(ChariRequestOperationStatus.UNKNOWN);
+    server.verify();
+  }
+
+  @Test
+  void getGatewayStateSendsOrderIdAndMapsCapturedState() {
+    RestTemplate restTemplate = new RestTemplate();
+    MockRestServiceServer server = MockRestServiceServer.bindTo(restTemplate).build();
+    ChariBaasClient client = new ChariBaasClient(restTemplate, properties());
+
+    server.expect(once(),
+        requestTo("https://sandbox.charimoney.com/api/operations/gateway/state?orderId=CH47d634908bb8"))
+        .andExpect(method(HttpMethod.GET))
+        .andExpect(header("Chari-Api-Key", "test-key"))
+        .andExpect(header("C-Request-Id", matchesPattern(uuidPattern())))
+        .andRespond(withSuccess(
+            """
+                {
+                  "data": {
+                    "orderId": "CH47d634908bb8",
+                    "reference": "349998",
+                    "createdAt": "2026-10-07T15:27:11.459798",
+                    "operationId": 2411838,
+                    "validated": true,
+                    "feesPercent": null,
+                    "gatewayTransactionState": "CAPTURED",
+                    "gateway": "CHARIPAY"
+                  }
+                }
+                """,
+            MediaType.APPLICATION_JSON));
+
+    ChariGatewayStateResponse.GatewayStateData data = client.getGatewayState("CH47d634908bb8").getData();
+
+    assertThat(data.getOrderId()).isEqualTo("CH47d634908bb8");
+    assertThat(data.getReference()).isEqualTo("349998");
+    assertThat(data.getCreatedAt()).isEqualTo("2026-10-07T15:27:11.459798");
+    assertThat(data.getOperationId()).isEqualTo(2411838L);
+    assertThat(data.getValidated()).isTrue();
+    assertThat(data.getFeesPercent()).isNull();
+    assertThat(data.getGateway()).isEqualTo("CHARIPAY");
+    assertThat(data.getTypedGatewayTransactionState()).isEqualTo(ChariGatewayTransactionState.CAPTURED);
+    assertThat(data.isCompleted()).isTrue();
+    assertThat(data.isCaptured()).isTrue();
+    server.verify();
+  }
+
+  @Test
+  void getGatewayStateMapsAuthorizedAndMissingState() {
+    RestTemplate restTemplate = new RestTemplate();
+    MockRestServiceServer server = MockRestServiceServer.bindTo(restTemplate).build();
+    ChariBaasClient client = new ChariBaasClient(restTemplate, properties());
+
+    server.expect(once(),
+        requestTo("https://sandbox.charimoney.com/api/operations/gateway/state?orderId=CH3b9ac32a00c9"))
+        .andRespond(withSuccess(
+            """
+                {"data": {"orderId": "CH3b9ac32a00c9", "operationId": 2416010, "validated": true,
+                  "gatewayTransactionState": "AUTHORIZED", "gateway": "CHARIPAY"}}
+                """,
+            MediaType.APPLICATION_JSON));
+    server.expect(once(),
+        requestTo("https://sandbox.charimoney.com/api/operations/gateway/state?orderId=CHpending"))
+        .andRespond(withSuccess(
+            """
+                {"data": {"orderId": "CHpending", "validated": false, "gatewayTransactionState": null}}
+                """,
+            MediaType.APPLICATION_JSON));
+
+    ChariGatewayStateResponse.GatewayStateData authorized = client.getGatewayState("CH3b9ac32a00c9").getData();
+    assertThat(authorized.getTypedGatewayTransactionState()).isEqualTo(ChariGatewayTransactionState.AUTHORIZED);
+    assertThat(authorized.isCompleted()).isTrue();
+    assertThat(authorized.isCaptured()).isFalse();
+
+    ChariGatewayStateResponse.GatewayStateData pending = client.getGatewayState("CHpending").getData();
+    assertThat(pending.getTypedGatewayTransactionState()).isEqualTo(ChariGatewayTransactionState.UNKNOWN);
+    assertThat(pending.isCompleted()).isFalse();
+    assertThat(pending.isCaptured()).isFalse();
     server.verify();
   }
 

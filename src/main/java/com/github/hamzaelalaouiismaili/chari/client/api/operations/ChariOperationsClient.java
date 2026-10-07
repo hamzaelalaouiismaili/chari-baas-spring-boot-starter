@@ -2,6 +2,7 @@ package com.github.hamzaelalaouiismaili.chari.client.api.operations;
 
 import com.github.hamzaelalaouiismaili.chari.client.core.ChariHttpClient;
 import com.github.hamzaelalaouiismaili.chari.model.payload.ChariOperationsByCustomerQuery;
+import com.github.hamzaelalaouiismaili.chari.model.response.ChariGatewayStateResponse;
 import com.github.hamzaelalaouiismaili.chari.model.response.ChariOperationResponse;
 import com.github.hamzaelalaouiismaili.chari.model.response.ChariOperationsResponse;
 import com.github.hamzaelalaouiismaili.chari.util.PhoneNumberUtil;
@@ -67,5 +68,20 @@ public class ChariOperationsClient {
                 .buildAndExpand(id)
                 .toUriString();
         return httpClient.get(url, ChariOperationResponse.class, "GET_OPERATION_BY_ID");
+    }
+
+    /**
+     * Gets the card gateway state of an operation, for reconciliation.
+     * GET /api/operations/gateway/state
+     *
+     * @param orderId Chari order id (e.g. CH47d634908bb8)
+     */
+    public ChariGatewayStateResponse getGatewayState(String orderId) {
+        log.debug("Getting gateway state for order: {}", orderId);
+
+        String url = UriComponentsBuilder.fromPath("/api/operations/gateway/state")
+                .queryParam("orderId", orderId)
+                .toUriString();
+        return httpClient.get(url, ChariGatewayStateResponse.class, "GET_GATEWAY_STATE");
     }
 }

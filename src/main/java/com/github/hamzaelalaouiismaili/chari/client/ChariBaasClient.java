@@ -988,6 +988,18 @@ public class ChariBaasClient {
         return operationsClient.getOperationById(id, phoneNumber);
     }
 
+    /**
+     * Get the card gateway state of an operation by its Chari orderId, for
+     * reconciliation. A present gatewayTransactionState means the operation
+     * completed on Chari's side.
+     *
+     * @param orderId Chari order id
+     * @return gateway state response
+     */
+    public ChariGatewayStateResponse getGatewayState(String orderId) {
+        return operationsClient.getGatewayState(orderId);
+    }
+
     // ==================== Telco Top-up Operations ====================
 
     /**
